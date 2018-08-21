@@ -1,0 +1,17 @@
+{
+	"name": "redisgraph.js",
+	"version": "1.0.0",
+	"description": "Connect to RedisGraph 1.0.0 and up from JavaScript",
+	"author": "RedisLabs",
+	"license": "BSD 3",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/redislabs/redisgraphjs.git"
+	},
+	"dependencies": {
+		"redis": "^2.8.0"
+	},
+	"devDependencies": {
+		"mocha": "^5.2.0"
+	}
+}
