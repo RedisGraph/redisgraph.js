@@ -1,6 +1,6 @@
 # redisgraph.js
 
-RedisGraph JavaScript Client
+[RedisGraph](https://github.com/RedisLabsModules/redis-graph/) JavaScript Client
 
 ## Overview
 
