@@ -1,10 +1,9 @@
-const Statistics = require('./statistics');
+const Statistics = require('./statistics').Statistics;
 
 /**
  * Hold a query result
  */
 module.exports = class ResultSet {
-	
 
     constructor(resp) {
 
