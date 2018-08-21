@@ -1,15 +1,15 @@
-
-
 # redisgraph.js
 
+RedisGraph JavaScript Client
+
+## Overview
+
+### Official Releases
 
 
-## Usage
+# Example: Using the JavaScript Client
+
+```javascript
 
 
-
-## Developing
-
-
-
-### Tools
+```
