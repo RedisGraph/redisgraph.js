@@ -39,7 +39,7 @@ module.exports = class RedisGraph {
      * @return delete running time statistics 
      */
     deleteGraph() {
-		return this._sendCommand('graph.DELETE',[this._graphId, query])
+		return this._sendCommand('graph.DELETE',[this._graphId])
 		.then((res) => {
 			return new ResultSet(res);
 		});
