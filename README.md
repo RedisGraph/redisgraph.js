@@ -31,3 +31,17 @@ graph
 });
 
 ```
+
+## Running tests
+
+A simple test suite is provided, and can be run with:
+
+```sh
+$ mocha
+```
+
+The tests expect a Redis server with the RedisGraph module loaded to be available at localhost:6379
+
+## License
+
+redisgraph.js is distributed under the BSD3 license - see [LICENSE](LICENSE)
