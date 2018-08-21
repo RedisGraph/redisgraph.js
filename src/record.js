@@ -30,9 +30,5 @@ module.exports = class Record {
 
 	size() {
 		return this._header.length;
-	}
-	
-	toString() {
-		return this._values.toString();
-	}
+	}	
 }

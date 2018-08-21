@@ -68,5 +68,10 @@ module.exports ={
 			propertiesSet() {
 				return this.getIntValue(Label.PROPERTIES_SET);
 			}
+			
+			queryExecutionTime() {
+				return this.getIntValue(Label.QUERY_INTERNAL_EXECUTION_TIME);
+			}
+
 		}
 }
