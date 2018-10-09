@@ -4,6 +4,16 @@
 
 [RedisGraph](https://github.com/RedisLabsModules/redis-graph/) JavaScript Client
 
+
+# Installation
+
+Installation is done using the
+[`npm install` command](https://docs.npmjs.com/getting-started/installing-npm-packages-locally):
+
+```bash
+$ npm install redisgraph.js
+```
+
 ## Overview
 
 ### Official Releases
