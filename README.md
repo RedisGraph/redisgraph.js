@@ -1,6 +1,18 @@
+[![npm version](https://badge.fury.io/js/redisgraph.js.svg)](https://badge.fury.io/js/redisgraph.js)
+
 # redisgraph.js
 
 [RedisGraph](https://github.com/RedisLabsModules/redis-graph/) JavaScript Client
+
+
+# Installation
+
+Installation is done using the
+[`npm install` command](https://docs.npmjs.com/getting-started/installing-npm-packages-locally):
+
+```bash
+npm install redisgraph.js
+```
 
 ## Overview
 
@@ -45,3 +57,6 @@ The tests expect a Redis server with the RedisGraph module loaded to be availabl
 ## License
 
 redisgraph.js is distributed under the BSD3 license - see [LICENSE](LICENSE)
+
+[npm-image]: https://img.shields.io/npm/v/express.svg
+[npm-url]: https://npmjs.org/package/redisgraph.js
