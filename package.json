@@ -6,7 +6,7 @@
 	"license": "BSD 3",
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/redislabs/redisgraphjs.git"
+		"url": "git://github.com/redislabs/redisgraph.js.git"
 	},
 	"dependencies": {
 		"redis": "^2.8.0"

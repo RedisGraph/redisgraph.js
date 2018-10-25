@@ -40,7 +40,7 @@ describe('RedisGraphAPI Test', () =>{
 		let createResult2 = api.query("CREATE (:person{name:'amit',age:30})");
 
 		// Connect source and destination nodes.
-		return api.query("MATCH (a:person), (b:person) WHERE (a.name = 'roi' AND b.name='amit')  CREATE (a)-[knows]->(a)")
+		return api.query("MATCH (a:person), (b:person) WHERE (a.name = 'roi' AND b.name='amit') CREATE (a)-[:knows]->(a)")
 		.then( (matchResult) => {
 			assert.ok(!matchResult.hasNext());
 			assert.ifError(matchResult.getStatistics().getStringValue(Label.NODES_CREATED));
@@ -60,7 +60,7 @@ describe('RedisGraphAPI Test', () =>{
 		})
 		.then( (create2Result) => {
 			// Connect source and destination nodes.
-			return api.query("MATCH (a:qhuman), (b:qhuman) WHERE (a.name = 'roi' AND b.name='amit') CREATE (a)-[knows]->(b)");
+			return api.query("MATCH (a:qhuman), (b:qhuman) WHERE (a.name = 'roi' AND b.name='amit') CREATE (a)-[:knows]->(b)");
 		})
 		.then( (connectResult) => {
 			// Query
