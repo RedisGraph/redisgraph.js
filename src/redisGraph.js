@@ -12,15 +12,16 @@ module.exports = class RedisGraph {
 	 * See: node_redis for more options on createClient 
 	 *
 	 * @param graphId the graph id
-	 * @param host Redis host
+	 * @param host Redis host or node_redis client
 	 * @param port Redis port
+	 * @param options node_redis options
 	 */
 	constructor(graphId, host, port, options) {
-		this._graphId = graphId;
-		let client = redis.createClient.apply(redis, [].slice.call(arguments,1));
+		this._graphId = graphId;		
+		let client = (host instanceof redis.RedisClient) ? host : redis.createClient.apply(redis, [].slice.call(arguments,1)); 
 		this._sendCommand = util.promisify(client.send_command).bind(client);
 	}
-
+	
 	/**
 	 * Execute a Cypher query
 	 * 

@@ -1,4 +1,5 @@
 const assert = require('assert'),
+redis = require('redis'),
 Label = require('../src/statistics').Label,
 RedisGraphAPI = require('../src/redisGraph');
 
@@ -9,6 +10,10 @@ describe('RedisGraphAPI Test', () =>{
 		return api.deleteGraph();
 	});
 
+	it('test bring your client', () => {
+		return new RedisGraphAPI( "social", redis.createClient());
+	});
+	
 	it('test Create Node', () => {
 		// Create a node    	
 		return api.query("CREATE ({name:'roi',age:32})")
@@ -79,4 +84,4 @@ describe('RedisGraphAPI Test', () =>{
 			assert.equal( "32.000000", record.getString(0));
 		});
 	});
-}) 
+});
