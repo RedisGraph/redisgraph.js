@@ -29,10 +29,10 @@ graph
 	return graph.query("CREATE (:person{name:'amit',age:30})");
 })
 .then( () => {
-	return graph.query("MATCH (a:person), (b:person) WHERE (a.name = 'roi' AND b.name='amit') CREATE (a)-[knows]->(a)")
+	return graph.query("MATCH (a:person), (b:person) WHERE (a.name = 'roi' AND b.name='amit') CREATE (a)-[:knows]->(a)")
 })
 .then( () => {
-	return graph.query("MATCH (a:person)-[knows]->(:person) RETURN a")
+	return graph.query("MATCH (a:person)-[:knows]->(:person) RETURN a")
 })
 .then( (res) => {
 	while(res.hasNext()){
