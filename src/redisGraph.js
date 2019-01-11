@@ -1,6 +1,6 @@
-import redis from "redis";
-import util from "util";
-import ResultSet from "./ResultSet";
+const redis = require("redis");
+const util = require("util");
+const ResultSet = require("./ResultSet");
 
 /**
  * RedisGraph client
@@ -50,4 +50,4 @@ class RedisGraph {
 	}
 }
 
-export default RedisGraph;
+module.exports = RedisGraph;

@@ -1,4 +1,4 @@
-import Label from "./label";
+const Label = require("./label");
 
 class Statistics {
 	constructor(raw) {
@@ -59,4 +59,4 @@ class Statistics {
 	}
 }
 
-export default Statistics;
+module.exports = Statistics;

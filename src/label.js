@@ -1,7 +1,7 @@
 /**
  * Different Statistics labels
  */
-const Label = Object.freeze({
+var Label = Object.freeze({
 	LABELS_ADDED: "Labels added",
 	NODES_CREATED: "Nodes created",
 	NODES_DELETED: "Nodes deleted",
@@ -11,4 +11,4 @@ const Label = Object.freeze({
 	QUERY_INTERNAL_EXECUTION_TIME: "Query internal execution time"
 });
 
-export default Label;
+module.exports = Label;

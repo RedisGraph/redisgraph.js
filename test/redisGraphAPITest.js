@@ -1,8 +1,7 @@
-import { describe, before, it } from "mocha";
-import assert from "assert";
-import redis from "redis";
-import Label from "../src/label";
-import RedisGraph from "../src/redisGraph";
+const assert = require("assert");
+const redis = require("redis");
+const Label = require("../src/label");
+const RedisGraph = require("../src/redisGraph");
 
 describe("RedisGraph Test", () => {
 	const api = new RedisGraph("social");

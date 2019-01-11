@@ -1,5 +1,5 @@
-import Statistics from "./statistics";
-import Record from "./record";
+const Statistics = require("./statistics");
+const Record = require("./record");
 
 /**
  * Hold a query result
@@ -43,4 +43,4 @@ class ResultSet {
 	}
 }
 
-export default ResultSet;
+module.exports = ResultSet;
