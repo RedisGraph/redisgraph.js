@@ -5,11 +5,11 @@ import Statistics from "./statistics";
 import Label from "./label";
 
 const redisGraph = {
-  Record: Record,
-  RedisGraph: RedisGraph,
-  ResultSet: ResultSet,
-  Statistics: Statistics,
-  Label: Label
+	Record: Record,
+	RedisGraph: RedisGraph,
+	ResultSet: ResultSet,
+	Statistics: Statistics,
+	Label: Label
 };
 
 export default redisGraph;
