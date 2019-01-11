@@ -1,20 +1,24 @@
 {
-	"name": "redisgraph.js",
-	"version": "1.0.2",
-	"description": "Connect to RedisGraph 1.0.0 and up from JavaScript",
-	"author": "RedisLabs",
-	"license": "BSD 3",
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/redislabs/redisgraph.js.git"
-	},
-	"dependencies": {
-		"redis": "^2.8.0"
-	},
-	"devDependencies": {
-		"mocha": "^5.2.0"
-	},
-	"scripts": {
-		"test": "mocha"
-	}
+  "name": "redisgraph.js",
+  "version": "1.0.2",
+  "description": "Connect to RedisGraph 1.0.0 and up from JavaScript",
+  "author": "RedisLabs",
+  "license": "BSD 3",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/redislabs/redisgraph.js.git"
+  },
+  "dependencies": {
+    "redis": "^2.8.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-latest": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "mocha": "^5.2.0"
+  },
+  "scripts": {
+    "test": "mocha -R spec --require babel-core/register --exit"
+  },
+  "main": "./src/index.js"
 }
