@@ -5,11 +5,9 @@ RedisGraphAPI = require('../src/redisGraph');
 
 describe('RedisGraphAPI Test', () =>{
 	const api = new RedisGraphAPI("social");
-	// Dummy create to make sure first delete won't fail
-	api.query("CREATE ({name:'roi',age:32})");
 	
 	beforeEach( () => {
-		return api.deleteGraph();
+		return api.deleteGraph().catch(()=>{});
 	});
 
 	it('test bring your client', () => {
