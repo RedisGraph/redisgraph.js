@@ -10,7 +10,6 @@ jobs:
       
       - image: redislabs/redisgraph:edge
         port: 6379:6379
-        name: redisgraph
       
     working_directory: ~/repo
 
@@ -32,4 +31,4 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       # run tests!
-      - run: sleep 20 && npm test
+      - run: npm test
