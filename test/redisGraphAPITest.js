@@ -4,14 +4,14 @@ Label = require('../src/statistics').Label,
 RedisGraphAPI = require('../src/redisGraph');
 
 describe('RedisGraphAPI Test', () =>{
-	const api = new RedisGraphAPI("social", "localhost");
+	const api = new RedisGraphAPI("social");
 	
 	beforeEach( () => {
 		return api.deleteGraph();
 	});
 
 	it('test bring your client', () => {
-		return new RedisGraphAPI( "social", redis.createClient("localhost"));
+		return new RedisGraphAPI( "social", redis.createClient());
 	});
 	
 	it('test Create Node', () => {
