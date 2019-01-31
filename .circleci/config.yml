@@ -31,6 +31,5 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       # run tests!
-      - run: npm install -g istanbul codecov
       - run: istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec --exit 
       - run: codecov -t ${CODECOV_TOKEN}
