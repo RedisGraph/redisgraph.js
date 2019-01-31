@@ -82,6 +82,8 @@ describe('RedisGraphAPI Test', () =>{
 			assert.equal(0, resultSet.getStatistics().relationshipsDeleted());
 			assert.ok(resultSet.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME)); 
 
+			assert.deepStrictEqual( [ 'a.age', 'a.name' ], resultSet.getHeader());
+			
 			let record = resultSet.next();
 			assert.equal( "roi", record.getString(1));
 			assert.equal( "roi", record.getString("a.name"));
