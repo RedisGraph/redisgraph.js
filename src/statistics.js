@@ -44,6 +44,12 @@ module.exports ={
 				let value = this.getStringValue(label);
 				return value ? parseInt(value) : 0;
 			}
+			
+			getFLoatValue(label) {
+				let value = this.getStringValue(label);
+				return value ? parseFloat(value) : 0;
+			}
+
 
 			nodesCreated() {
 				return this.getIntValue(Label.NODES_CREATED);
@@ -70,7 +76,7 @@ module.exports ={
 			}
 			
 			queryExecutionTime() {
-				return this.getIntValue(Label.QUERY_INTERNAL_EXECUTION_TIME);
+				return this.getFLoatValue(Label.QUERY_INTERNAL_EXECUTION_TIME);
 			}
 
 		}

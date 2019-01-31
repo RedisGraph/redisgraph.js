@@ -24,7 +24,8 @@ describe('RedisGraphAPI Test', () =>{
 			assert.ifError(result.getStatistics().getStringValue(Label.RELATIONSHIPS_CREATED));
 			assert.ifError(result.getStatistics().getStringValue(Label.RELATIONSHIPS_DELETED));
 			assert.equal(2, result.getStatistics().propertiesSet());
-			assert.ok(result.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME));   
+			assert.ok( result.getStatistics().queryExecutionTime()); // not 0
+			assert.ok(result.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME)); // exsits   
 		});
 	});
 
@@ -74,6 +75,8 @@ describe('RedisGraphAPI Test', () =>{
 		.then( (resultSet) => {	
 			assert.ok(resultSet.hasNext());
 			assert.equal(0, resultSet.getStatistics().nodesCreated());
+			assert.equal(0, resultSet.getStatistics().nodesDeleted());
+			assert.equal(0, resultSet.getStatistics().labelsAdded());
 			assert.equal(0, resultSet.getStatistics().propertiesSet());
 			assert.equal(0, resultSet.getStatistics().relationshipsCreated());
 			assert.equal(0, resultSet.getStatistics().relationshipsDeleted());
