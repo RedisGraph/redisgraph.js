@@ -33,4 +33,5 @@ jobs:
       # run tests!
       - run:|
         npm install -g istanbul codecov
-        istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec --exit && codecov -t ${CODECOV_TOKEN}
+        istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec --exit 
+        codecov -t ${CODECOV_TOKEN}
