@@ -45,7 +45,7 @@ module.exports ={
 				return value ? parseInt(value) : 0;
 			}
 			
-			getFLoatValue(label) {
+			getFloatValue(label) {
 				let value = this.getStringValue(label);
 				return value ? parseFloat(value) : 0;
 			}
@@ -76,7 +76,7 @@ module.exports ={
 			}
 			
 			queryExecutionTime() {
-				return this.getFLoatValue(Label.QUERY_INTERNAL_EXECUTION_TIME);
+				return this.getFloatValue(Label.QUERY_INTERNAL_EXECUTION_TIME);
 			}
 
 		}
