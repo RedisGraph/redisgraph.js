@@ -1,16 +1,15 @@
 /**
  * Hold a query record
  */
-module.exports = class Record {
-	
-    constructor(header, values){
-    	this._header = header;
-    	this._values = values;
-    }
-    
+class Record {
+	constructor(header, values) {
+		this._header = header;
+		this._values = values;
+	}
+
 	getString(key) {
 		let index = key;
-		if(typeof key === "string"){
+		if (typeof key === "string") {
 			index = this._header.indexOf(key);
 		}
 		return this._values[index];
@@ -30,5 +29,7 @@ module.exports = class Record {
 
 	size() {
 		return this._header.length;
-	}	
+	}
 }
+
+module.exports = Record;
