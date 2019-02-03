@@ -1,0 +1,15 @@
+{
+	"name": "redisgraph-example",
+	"version": "1.0.0",
+	"description": "Example using redisgraph.js",
+	"author": "RedisLabs",
+	"license": "BSD 3",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/redislabs/redisgraph.js.git"
+	},
+	"dependencies": {
+		"redisgraph.js": "^1.1.0"
+	},
+	"main": "redisGraphExample.js"
+}

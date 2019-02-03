@@ -2,3 +2,5 @@
 /node_modules/
 .project
 package-lock.json
+yarn.lock
+/examples/node_modules
