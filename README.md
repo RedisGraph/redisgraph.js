@@ -26,6 +26,8 @@ npm install redisgraph.js
 # Example: Using the JavaScript Client
 
 ```javascript
+const RedisGraph = require("redisgraph.js").RedisGraph;
+
 let graph = new RedisGraph('social');
 graph
 .query("CREATE (:person{name:'roi',age:32})")
@@ -53,7 +55,7 @@ graph
 A simple test suite is provided, and can be run with:
 
 ```sh
-$ mocha
+$ npm test
 ```
 
 The tests expect a Redis server with the RedisGraph module loaded to be available at localhost:6379
