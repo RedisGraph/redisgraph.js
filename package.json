@@ -16,6 +16,6 @@
 	},
 	"scripts": {
 		"test": "mocha --exit"
-	}
+	},
 	"main": "./src/index.js"
 }
