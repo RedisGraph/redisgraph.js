@@ -1,6 +1,6 @@
 {
 	"name": "redisgraph.js",
-	"version": "1.0.4",
+	"version": "1.1.0",
 	"description": "Connect to RedisGraph 1.0.0 and up from JavaScript",
 	"author": "RedisLabs",
 	"license": "BSD 3",
@@ -17,5 +17,5 @@
 	"scripts": {
 		"test": "mocha --exit"
 	},
-	"main": "./src/index.js"
+	"main": "index.js"
 }

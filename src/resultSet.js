@@ -1,5 +1,5 @@
-const Statistics = require("./statistics");
-const Record = require("./record");
+const Statistics = require("./statistics"),
+	Record = require("./record");
 
 /**
  * Hold a query result

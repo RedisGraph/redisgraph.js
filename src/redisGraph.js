@@ -1,6 +1,6 @@
-const redis = require("redis");
-const util = require("util");
-const ResultSet = require("./ResultSet");
+const redis = require("redis"),
+	util = require("util"),
+	ResultSet = require("./resultSet");
 
 /**
  * RedisGraph client

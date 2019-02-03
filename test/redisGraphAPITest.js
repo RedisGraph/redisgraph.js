@@ -1,10 +1,10 @@
-const assert = require("assert");
-const redis = require("redis");
-const Label = require("../src/label");
-const RedisGraph = require("../src/redisGraph");
+const assert = require("assert"),
+	redis = require("redis"),
+	Label = require("../src/label"),
+	RedisGraph = require("../src/redisGraph");
 
 describe('RedisGraphAPI Test', () =>{
-	const api = new RedisGraphAPI("social");
+	const api = new RedisGraph("social");
 	
 	beforeEach( () => {
 		return api.deleteGraph().catch(()=>{});

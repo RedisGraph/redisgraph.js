@@ -1,4 +1,4 @@
-const RedisGraph = require("../src/redisGraph");
+const RedisGraph = require("redisgraph.js").RedisGraph;
 
 let graph = new RedisGraph("social");
 

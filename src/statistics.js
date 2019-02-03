@@ -61,7 +61,7 @@ class Statistics {
 	}
 
 	queryExecutionTime() {
-		return this.getIntValue(Label.QUERY_INTERNAL_EXECUTION_TIME);
+		return this.getFloatValue(Label.QUERY_INTERNAL_EXECUTION_TIME);
 	}
 }
 
