@@ -1,11 +1,13 @@
-const Label = require("./label");
+import { Label } from "./label";
 
-class Statistics {
-	constructor(raw) {
+export class Statistics {
+	private _raw: any
+	private _statistics: any
+	constructor(raw: any) {
 		this._raw = raw;
 	}
 
-	getStringValue(label) {
+	getStringValue(label: string) {
 		return this.getStatistics()[label];
 	}
 
@@ -25,13 +27,13 @@ class Statistics {
 		return this._statistics;
 	}
 
-	getIntValue(label) {
+	getIntValue(label: string) {
 		let value = this.getStringValue(label);
 		return value ? parseInt(value) : 0;
 	}
 
 
-	getFloatValue(label) {
+	getFloatValue(label: string) {
 		let value = this.getStringValue(label);
 		return value ? parseFloat(value) : 0;
 	}
@@ -64,5 +66,3 @@ class Statistics {
 		return this.getFloatValue(Label.QUERY_INTERNAL_EXECUTION_TIME);
 	}
 }
-
-module.exports = Statistics;

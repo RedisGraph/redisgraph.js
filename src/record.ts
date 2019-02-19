@@ -1,18 +1,25 @@
+type Header = string[]
+type Values = string[]
+
+
 /**
  * Hold a query record
  */
-class Record {
-	constructor(header, values) {
+export class Record {
+	private _header: Header;
+	private _values: Values;
+
+	constructor(header: Header, values: Values) {
 		this._header = header;
 		this._values = values;
 	}
 
-	getString(key) {
-		let index = key;
+	getString(key: string|number) {
+		let index: string|number = key;
 		if (typeof key === "string") {
 			index = this._header.indexOf(key);
 		}
-		return this._values[index];
+		return this._values[Number(index)];
 	}
 
 	keys() {
@@ -23,7 +30,7 @@ class Record {
 		return this._values;
 	}
 
-	containsKey(key) {
+	containsKey(key: string) {
 		return this._header.includes(key);
 	}
 
@@ -31,5 +38,3 @@ class Record {
 		return this._header.length;
 	}
 }
-
-module.exports = Record;
