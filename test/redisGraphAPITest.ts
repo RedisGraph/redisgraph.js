@@ -1,11 +1,11 @@
-const assert = require("assert"),
-	redis = require("redis"),
-	Label = require("../src/label"),
-	RedisGraph = require("../src/redisGraph");
+import assert from "assert";
+import redis from "redis";
+import { Label } from "../src/label";
+import { RedisGraph } from "../src/redisGraph";
 
 describe('RedisGraphAPI Test', () =>{
 	const api = new RedisGraph("social");
-	
+
 	beforeEach( () => {
 		return api.deleteGraph().catch(()=>{});
 	});
@@ -30,7 +30,7 @@ describe('RedisGraphAPI Test', () =>{
 			);
 			assert.equal(2, result.getStatistics().propertiesSet());
 			assert.ok( result.getStatistics().queryExecutionTime()); // not 0
-			assert.ok(result.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME)); // exsits   
+			assert.ok(result.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME)); // exsits
 		});
 	});
 
@@ -83,9 +83,9 @@ describe('RedisGraphAPI Test', () =>{
 	});
 
 	it('test Query', () => {
-		// Create both source and destination nodes    	
+		// Create both source and destination nodes
 		return api.query("CREATE (:qhuman{name:'roi',age:32})")
-		.then( (create1Result) => {	
+		.then( (create1Result) => {
 			return api.query("CREATE (:qhuman{name:'amit',age:30})");
 		})
 		.then( (create2Result) => {
@@ -96,7 +96,7 @@ describe('RedisGraphAPI Test', () =>{
 			// Query
 			return api.query("MATCH (a:qhuman)-[knows]->(:qhuman) RETURN a");
 		})
-		.then( (resultSet) => {	
+		.then( (resultSet) => {
 			assert.ok(resultSet.hasNext());
 			assert.equal(0, resultSet.getStatistics().nodesCreated());
 			assert.equal(0, resultSet.getStatistics().nodesDeleted());
@@ -104,15 +104,15 @@ describe('RedisGraphAPI Test', () =>{
 			assert.equal(0, resultSet.getStatistics().propertiesSet());
 			assert.equal(0, resultSet.getStatistics().relationshipsCreated());
 			assert.equal(0, resultSet.getStatistics().relationshipsDeleted());
-			assert.ok(resultSet.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME)); 
+			assert.ok(resultSet.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME));
 
 			assert.deepStrictEqual( [ 'a.age', 'a.name' ], resultSet.getHeader());
-			
+
 			let record = resultSet.next();
 			assert.equal( "roi", record.getString(1));
 			assert.equal( "roi", record.getString("a.name"));
 			assert.equal( "32.000000", record.getString(0));
-			
+
 			assert.deepStrictEqual( [ 'a.age', 'a.name' ], record.keys());
 			assert.deepStrictEqual( [ '32.000000', 'roi' ], record.values());
 			assert.equal( false, record.containsKey("aa"));

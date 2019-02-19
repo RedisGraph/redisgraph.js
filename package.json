@@ -12,10 +12,15 @@
 		"redis": "^2.8.0"
 	},
 	"devDependencies": {
-		"mocha": "^5.2.0"
+		"@types/mocha": "^5.2.6",
+		"@types/redis": "^2.8.10",
+		"mocha": "^5.2.0",
+		"ts-mocha": "^2.0.0",
+		"typescript": "^3.3.3"
 	},
 	"scripts": {
-		"test": "mocha --exit"
+		"test": "ts-mocha test/*.ts --exit"
 	},
-	"main": "index.js"
+	"main": "dist/index.js",
+	"types": "dist/index.d.js"
 }

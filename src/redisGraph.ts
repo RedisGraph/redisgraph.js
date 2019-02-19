@@ -1,11 +1,13 @@
-const redis = require("redis"),
-	util = require("util"),
-	ResultSet = require("./resultSet");
+import redis, { ClientOpts, RedisClient } from "redis";
+import util from "util";
+import { ResultSet } from "./resultSet";
 
 /**
  * RedisGraph client
  */
-class RedisGraph {
+export class RedisGraph {
+	private _graphId: string;
+	private _sendCommand: (arg1: string, options: any) => Promise<void>;
 	/**
 	 * Creates a client to a specific graph running on the specific host/post
 	 * See: node_redis for more options on createClient
@@ -15,12 +17,12 @@ class RedisGraph {
 	 * @param port Redis port
 	 * @param options node_redis options
 	 */
-	constructor(graphId, host, port, options) {
+	constructor(graphId: string, host?: string | RedisClient, port=6379, options?: ClientOpts) {
 		this._graphId = graphId;
 		let client =
 			host instanceof redis.RedisClient
 				? host
-				: redis.createClient.apply(redis, [].slice.call(arguments, 1));
+				: redis.createClient(port, host, options);
 		this._sendCommand = util.promisify(client.send_command).bind(client);
 	}
 
@@ -30,7 +32,7 @@ class RedisGraph {
 	 * @param query Cypher query
 	 * @return a result set
 	 */
-	query(query) {
+	query(query: string) {
 		return this._sendCommand("graph.QUERY", [this._graphId, query]).then(
 			res => {
 				return new ResultSet(res);
@@ -49,5 +51,3 @@ class RedisGraph {
 		});
 	}
 }
-
-module.exports = RedisGraph;
