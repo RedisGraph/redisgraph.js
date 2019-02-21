@@ -111,10 +111,11 @@ describe('RedisGraphAPI Test', () =>{
 			let record = resultSet.next();
 			assert.equal( "roi", record.getString(1));
 			assert.equal( "roi", record.getString("a.name"));
-			assert.equal( "32.000000", record.getString(0));
+			assert.equal( "32", record.getString(0));
+			assert.equal( 32, record.get(0));
 			
 			assert.deepStrictEqual( [ 'a.age', 'a.name' ], record.keys());
-			assert.deepStrictEqual( [ '32.000000', 'roi' ], record.values());
+			assert.deepStrictEqual( [ 32, 'roi' ], record.values());
 			assert.equal( false, record.containsKey("aa"));
 			assert.equal( true, record.containsKey("a.name"));
 			assert.equal( 2, record.size());

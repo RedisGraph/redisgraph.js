@@ -7,12 +7,20 @@ class Record {
 		this._values = values;
 	}
 
-	getString(key) {
+	get(key) {
 		let index = key;
 		if (typeof key === "string") {
 			index = this._header.indexOf(key);
 		}
 		return this._values[index];
+	}
+	
+	getString(key) {
+		let index = key;
+		if (typeof key === "string") {
+			index = this._header.indexOf(key);
+		}
+		return this._values[index].toString();
 	}
 
 	keys() {
