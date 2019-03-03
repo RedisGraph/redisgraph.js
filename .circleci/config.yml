@@ -34,3 +34,19 @@ jobs:
       - run: sudo npm install -g istanbul codecov
       - run: istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec --exit 
       - run: codecov -t ${CODECOV_TOKEN}
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - build
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build
