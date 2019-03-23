@@ -99,19 +99,47 @@ describe('RedisGraphAPI Test', () =>{
 			assert.equal(0, resultSet.getStatistics().relationshipsDeleted());
 			assert.ok(resultSet.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME)); 
 
-			assert.deepStrictEqual( [ 'r.age', 'r.name' ], resultSet.getHeader());
+			assert.deepStrictEqual([ 'r.age', 'r.name' ], resultSet.getHeader());
 			
 			let record = resultSet.next();
-			assert.equal( 34, record.get(0));
-			assert.equal( "34", record.getString(0));
-			assert.equal( "roi", record.getString(1));
-			assert.equal( "roi", record.getString("r.name"));			
+			assert.equal(34, record.get(0));
+			assert.equal("34", record.getString(0));
+			assert.equal("roi", record.getString(1));
+			assert.equal("roi", record.getString("r.name"));
 			
-			assert.deepStrictEqual( [ 'r.age', 'r.name' ], record.keys());
-			assert.deepStrictEqual( [ 34, 'roi' ], record.values());
-			assert.equal( false, record.containsKey("aa"));
-			assert.equal( true, record.containsKey("r.name"));
-			assert.equal( 2, record.size());
+			assert.deepStrictEqual([ 'r.age', 'r.name' ], record.keys());
+			assert.deepStrictEqual([ 34, 'roi' ], record.values());
+			assert.equal(false, record.containsKey("aa"));
+			assert.equal(true, record.containsKey("r.name"));
+			assert.equal(2, record.size());
+		});
+	});
+
+	it('test query full entity', () => {
+		// Create both source and destination nodes
+		return api.query("CREATE (r:human {name:'roi', age:34})")
+		.then( (createResult) => {
+			// Query
+			return api.query("MATCH (r:human) RETURN r");
+		})
+		.then( (resultSet) => {
+			assert.ok(resultSet.hasNext());
+			assert.equal(0, resultSet.getStatistics().nodesCreated());
+			assert.equal(0, resultSet.getStatistics().nodesDeleted());
+			assert.equal(0, resultSet.getStatistics().labelsAdded());
+			assert.equal(0, resultSet.getStatistics().propertiesSet());
+			assert.equal(0, resultSet.getStatistics().relationshipsCreated());
+			assert.equal(0, resultSet.getStatistics().relationshipsDeleted());
+			assert.ok(resultSet.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME));
+
+			assert.deepStrictEqual([ 'r' ], resultSet.getHeader());
+
+			let record = resultSet.next();
+			let n = record.get(0);
+			assert.equal(34, n.properties['age']);
+			assert.equal("roi", n.properties['name']);
+			assert.equal("human", n.label);
+			assert.equal(0, n.id);
 		});
 	});
 });

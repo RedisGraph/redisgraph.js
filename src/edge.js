@@ -2,12 +2,12 @@
  * An edge connecting two nodes.
  */
 class Edge {
-    constructor(src_node, relation, dest_node, edge_id, properties) {        
-        this.id = edge_id;
+    constructor(srcNode, relation, destNode, edgeId, properties) {        
+        this.id = edgeId;
         this.relation = relation;
         this.properties = properties;
-        this.src_node = src_node;
-        this.dest_node = dest_node;
+        this.srcNode = srcNode;
+        this.destNode = destNode;
     }
 
     toString() {
@@ -15,7 +15,6 @@ class Edge {
         let props = "";
 
         for(var i = 0; i < this.properties.length; i++) {
-            let prop = this.properties[i];
             for (var entry of map.entries()) {
                 let key = entry[0];
                 let value = entry[1];
