@@ -2,8 +2,8 @@
  * A node within the garph.
  */
 class Node {
-    constructor(node_id, alias, label, properties) {
-        this.id = node_id;
+    constructor(nodeId, alias, label, properties) {
+        this.id = nodeId;
         this.alias = alias;
         this.label = label;
         this.properties = properties;

@@ -3,13 +3,6 @@ const Statistics = require("./statistics"),
 	Node = require("./node");
 	Edge = require("./edge");
 
-const seasons = {
-    SUMMER: 'summer',
-    WINTER: 'winter',
-    SPRING: 'spring',
-    AUTUMN: 'autumn'
-}
-
 const ResultSetColumnTypes = {
     COLUMN_UNKNOWN: 0,
     COLUMN_SCALAR: 1,
@@ -133,10 +126,10 @@ class ResultSet {
         // dest node ID offset (integer),
         // [[name, value, value type] X N]
 
-        let edge_id = float(cell[0]);
+        let edge_id = Number(cell[0]);
         let relation = this._string_mapping[cell[1]];
-        let src_node_id = float(cell[2]);
-        let dest_node_id = float(cell[3]);
+        let src_node_id = Number(cell[2]);
+        let dest_node_id = Number(cell[3]);
         let properties = this.parseEntityProperties(cell[4]);
         return new Edge(src_node_id, relation, dest_node_id, edge_id, properties);
     }
@@ -171,7 +164,7 @@ class ResultSet {
         }
 
         else if (scalar_type == ResultSetScalarTypes.PROPERTY_DOUBLE) {
-            scalar = float(value);
+            scalar = Number(value);
         }
 
         else if (scalar_type == ResultSetScalarTypes.PROPERTY_UNKNOWN) {
