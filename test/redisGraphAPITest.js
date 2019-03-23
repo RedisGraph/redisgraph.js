@@ -16,7 +16,7 @@ describe('RedisGraphAPI Test', () =>{
 
 	it("test Create Node", () => {
 		// Create a node
-		return api.query("CREATE ({name:'roi',age:32})").then(result => {
+		return api.query("CREATE ({name:'roi', age:34})").then(result => {
 			assert.ok(!result.hasNext());
 			assert.equal(1, result.getStatistics().nodesCreated());
 			assert.ifError(
@@ -29,14 +29,14 @@ describe('RedisGraphAPI Test', () =>{
 				result.getStatistics().getStringValue(Label.RELATIONSHIPS_DELETED)
 			);
 			assert.equal(2, result.getStatistics().propertiesSet());
-			assert.ok( result.getStatistics().queryExecutionTime()); // not 0
+			assert.ok(result.getStatistics().queryExecutionTime()); // not 0
 			assert.ok(result.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME)); // exsits   
 		});
 	});
 
 	it("test Create Labeled Node", () => {
 		// Create a node with a label
-		return api.query("CREATE (:human{name:'danny',age:12})").then(result => {
+		return api.query("CREATE (:human {name:'danny', age:12})").then(result => {
 			assert.ok(!result.hasNext());
 			assert.equal(
 				"1",
@@ -56,13 +56,13 @@ describe('RedisGraphAPI Test', () =>{
 
 	it("test Connect Nodes", () => {
 		// Create both source and destination nodes
-		let createResult1 = api.query("CREATE (:person{name:'roi',age:32})");
-		let createResult2 = api.query("CREATE (:person{name:'amit',age:30})");
+		let createResult1 = api.query("CREATE (:person {name:'roi', age:34})");
+		let createResult2 = api.query("CREATE (:person {name:'amit', age:32})");
 
 		// Connect source and destination nodes.
 		return api
 			.query(
-				"MATCH (a:person), (b:person) WHERE (a.name = 'roi' AND b.name='amit') CREATE (a)-[:knows]->(a)"
+				"MATCH (a:person {name:'roi'}), (b:person {name:'amit'}) CREATE (a)-[:knows]->(b)"
 			)
 			.then(matchResult => {
 				assert.ok(!matchResult.hasNext());
@@ -84,17 +84,10 @@ describe('RedisGraphAPI Test', () =>{
 
 	it('test Query', () => {
 		// Create both source and destination nodes    	
-		return api.query("CREATE (:qhuman{name:'roi',age:32})")
-		.then( (create1Result) => {	
-			return api.query("CREATE (:qhuman{name:'amit',age:30})");
-		})
-		.then( (create2Result) => {
-			// Connect source and destination nodes.
-			return api.query("MATCH (a:qhuman), (b:qhuman) WHERE (a.name = 'roi' AND b.name='amit') CREATE (a)-[:knows]->(b)");
-		})
-		.then( (connectResult) => {
+		return api.query("CREATE (r:human {name:'roi', age:34}), (a:human {name:'amit', age:32}), (r)-[:knows]->(a)")
+		.then( (createResult) => {
 			// Query
-			return api.query("MATCH (a:qhuman)-[knows]->(:qhuman) RETURN a");
+			return api.query("MATCH (r:human)-[:knows]->(a:human) RETURN r.age, r.name");
 		})
 		.then( (resultSet) => {	
 			assert.ok(resultSet.hasNext());
@@ -106,20 +99,19 @@ describe('RedisGraphAPI Test', () =>{
 			assert.equal(0, resultSet.getStatistics().relationshipsDeleted());
 			assert.ok(resultSet.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME)); 
 
-			assert.deepStrictEqual( [ 'a.age', 'a.name' ], resultSet.getHeader());
+			assert.deepStrictEqual( [ 'r.age', 'r.name' ], resultSet.getHeader());
 			
 			let record = resultSet.next();
+			assert.equal( 34, record.get(0));
+			assert.equal( "34", record.getString(0));
 			assert.equal( "roi", record.getString(1));
-			assert.equal( "roi", record.getString("a.name"));
-			assert.equal( "32", record.getString(0));
-			assert.equal( 32, record.get(0));
+			assert.equal( "roi", record.getString("r.name"));			
 			
-			assert.deepStrictEqual( [ 'a.age', 'a.name' ], record.keys());
-			assert.deepStrictEqual( [ 32, 'roi' ], record.values());
+			assert.deepStrictEqual( [ 'r.age', 'r.name' ], record.keys());
+			assert.deepStrictEqual( [ 34, 'roi' ], record.values());
 			assert.equal( false, record.containsKey("aa"));
-			assert.equal( true, record.containsKey("a.name"));
+			assert.equal( true, record.containsKey("r.name"));
 			assert.equal( 2, record.size());
-
 		});
 	});
 });
