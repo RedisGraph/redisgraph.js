@@ -107,7 +107,7 @@ class ResultSet {
         // [label string offset (integer)],
         // [[name, value, value type] X N]
 
-        let nodeID  Number(cell[0]);
+        let nodeID = Number(cell[0]);
         let label = null;
         if (cell[1].length != 0) {
             label = this._stringMapping[cell[1][0]];
