@@ -172,13 +172,13 @@ class RedisGraph {
 				: redis.createClient.apply(redis, [].slice.call(arguments, 1));
 		this._sendCommand = util.promisify(client.send_command).bind(client);
 
-		this.nodes = [];
+		this.nodes = {};
 		this.edges = [];
 	}
 	/**
 	 * Add a node to the current graph
 	 * 
-	 * @param Node The node to be added to the graph
+	 * @param node The node to be added to the graph
 	 */
 	addNode (node) {
 
@@ -188,7 +188,20 @@ class RedisGraph {
 		if (node.getAlias() === null) {
 			node.setAlias(random_string());
 		}
-		this.nodes.push(node);
+		this.nodes[node.getAlias()] = node;
+	}
+	/**
+	 * Add an edge to the current graph
+	 * 
+	 * @param edge The ege to be added to the graph
+	 */
+	addEdge (edge) {
+
+		// Confirming that both ends of the edge exist
+		assert.notEqual(this.nodes[edge.srcNode.alias], null);
+		assert.notEqual(this.nodes[edge.destNode.alias], null);
+
+		this.edges.push(edge);
 	}
 
 	/**
