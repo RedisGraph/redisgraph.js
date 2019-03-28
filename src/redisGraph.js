@@ -8,7 +8,7 @@ const redis = require("redis"),
  * 
  *  @param length Length of the random string
  */
-random_string (length = 20) {
+randomString = function(length=20){
 	return crypto.randomBytes(length/2).toString('hex');
 }
 
