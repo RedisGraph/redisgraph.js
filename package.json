@@ -9,6 +9,7 @@
 		"url": "git://github.com/redislabs/redisgraph.js.git"
 	},
 	"dependencies": {
+		"assert": "^1.4.1",
 		"redis": "^2.8.0"
 	},
 	"devDependencies": {
