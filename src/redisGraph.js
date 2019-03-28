@@ -59,14 +59,14 @@ class Node {
 		  
 		  if (this.properties && this.properties !== {}){
 			// Formating properties to add to the string
-        let properties = JSON.stringify(this.properties);
+			let properties = JSON.stringify(this.properties);
 
-        // Removing the double quotes around the keys
-        properties = properties.replace(/\"(\w*)\":/g, "$1:");
+			// Removing the double quotes around the keys
+			properties = properties.replace(/\"(\w*)\":/g, "$1:");
 
-        // Adding the properties to the node string
-        // Giving the space = 2 by default
-        nodeString += ' ' + properties;
+			// Adding the properties to the node string
+			// Giving the space = 2 by default
+			nodeString += ' ' + properties;
 		  }
 
 		  nodeString += ')';
