@@ -219,6 +219,31 @@ class RedisGraph {
 	}
 
 	/**
+	 * To commit the graph
+	 * Create the graph with the added nodes and the edges
+	 */
+	commit() {
+		let query = 'CREATE ';
+
+		// Add nodes to the query
+		for (let node in self.nodes) {
+			query += self.nodes[node].toString() + ',';
+		}
+
+		// Add edges to the query
+		for (let edge of edges ) {
+			query += edge.toString() + ',';
+		}
+
+		// Removing if there is any dangling coma
+		if (query[query.length - 1] === ',') {
+			query = query.slice(0, query.length-1);
+		}
+
+		return self.query(query);
+	}
+
+	/**
 	 * Deletes the entire graph
 	 *
 	 * @return delete running time statistics
@@ -230,4 +255,8 @@ class RedisGraph {
 	}
 }
 
-module.exports = RedisGraph;
+module.exports = [
+	RedisGraph,
+	Node,
+	Edge
+]
