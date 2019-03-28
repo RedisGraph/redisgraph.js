@@ -15,7 +15,7 @@ class Node {
 	 * @param label The label associated with the node
 	 * @param properties The properties of the node
 	 */
-	constructor (nodeId = null, alias = null, label = null, properties = {}) {
+	constructor (nodeId = null, alias = null, label = null, properties = null) {
 	  this.id = nodeId;
 	  this.alias = alias;
 	  this.label = label;
@@ -57,16 +57,18 @@ class Node {
 			  nodeString += ':' + this.label;
 		  }
 		  
-		  // Formating properties to add to the string
-		  let properties = JSON.stringify(this.properties);
-  
-		  // Removing the double quotes around the keys
-		  properties = properties.replace(/\"(\w*)\":/g, "$1:");
-  
-		  // Adding the properties to the node string
-		  // Giving the space = 2 by default
-		  nodeString += ' ' + properties;
-		  
+		  if (this.properties && this.properties !== {}){
+			// Formating properties to add to the string
+        let properties = JSON.stringify(this.properties);
+
+        // Removing the double quotes around the keys
+        properties = properties.replace(/\"(\w*)\":/g, "$1:");
+
+        // Adding the properties to the node string
+        // Giving the space = 2 by default
+        nodeString += ' ' + properties;
+		  }
+
 		  nodeString += ')';
 	  
 		  return nodeString;
