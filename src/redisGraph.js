@@ -1,7 +1,16 @@
 const redis = require("redis"),
 	util = require("util"),
 	ResultSet = require("./resultSet"),
-	assert = require('assert');
+	assert = require('assert'),
+	crypto = require('crypto');
+/**
+ * Returns a random string
+ * 
+ *  @param length Length of the random string
+ */
+random_string (length = 20) {
+	return crypto.randomBytes(length/2).toString('hex');
+}
 
 /**
  * RedisGraph Node
@@ -162,6 +171,24 @@ class RedisGraph {
 				? host
 				: redis.createClient.apply(redis, [].slice.call(arguments, 1));
 		this._sendCommand = util.promisify(client.send_command).bind(client);
+
+		this.nodes = [];
+		this.edges = [];
+	}
+	/**
+	 * Add a node to the current graph
+	 * 
+	 * @param Node The node to be added to the graph
+	 */
+	addNode (node) {
+
+		/**
+		 * If alias is null, then alloting it a random alias
+		 */
+		if (node.getAlias() === null) {
+			node.setAlias(random_string());
+		}
+		this.nodes.push(node);
 	}
 
 	/**
