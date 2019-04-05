@@ -1,9 +1,12 @@
 const assert = require("assert"),
 	redis = require("redis"),
 	Label = require("../src/label"),
-	RedisGraph = require("../src/redisGraph");
+	RedisGraph = require("../src/redisGraph").RedisGraph,
+	RedisGraphNode = require("../src/redisGraph").Node,
+	RedisGraphEdge = require("../src/redisGraph").Edge;
 
 describe('RedisGraphAPI Test', () =>{
+	console.log(RedisGraph);
 	const api = new RedisGraph("social");
 	
 	beforeEach( () => {
@@ -30,7 +33,7 @@ describe('RedisGraphAPI Test', () =>{
 			);
 			assert.equal(2, result.getStatistics().propertiesSet());
 			assert.ok( result.getStatistics().queryExecutionTime()); // not 0
-			assert.ok(result.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME)); // exsits   
+			assert.ok(result.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME)); // exits   
 		});
 	});
 
@@ -121,5 +124,97 @@ describe('RedisGraphAPI Test', () =>{
 			assert.equal( 2, record.size());
 
 		});
+	});
+
+	//------------- Test cases with Node and Edge class -------------
+
+	it("test Create Node as Object", () => {
+		// Create a node
+		const node = new RedisGraphNode(null,null,null, properties={
+			name: 'roi',
+			age: 32
+		})
+
+		// Adding node to graph
+		api.addNode(node);
+
+		// Commiting the graph
+		return api.commit().then(result => {
+			assert.ok(!result.hasNext());
+			assert.equal(1, result.getStatistics().nodesCreated());
+			assert.ifError(
+				result.getStatistics().getStringValue(Label.NODES_DELETED)
+			);
+			assert.ifError(
+				result.getStatistics().getStringValue(Label.RELATIONSHIPS_CREATED)
+			);
+			assert.ifError(
+				result.getStatistics().getStringValue(Label.RELATIONSHIPS_DELETED)
+			);
+			assert.equal(2, result.getStatistics().propertiesSet());
+			assert.ok( result.getStatistics().queryExecutionTime()); // not 0
+			assert.ok(result.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME)); // exits   
+		});
+	});
+
+	it("test Create Labeled Node as Object", () => {
+		// Create a node with a label
+		const node = new RedisGraphNode(null,null,"human", properties={
+			name: 'danny',
+			age: 12
+		})
+
+		// Adding node to graph
+		api.addNode(node);
+
+		return api.commit().then(result => {
+			assert.ok(!result.hasNext());
+			assert.equal(
+				"1",
+				result.getStatistics().getStringValue(Label.NODES_CREATED)
+			);
+			assert.equal(
+				"2",
+				result.getStatistics().getStringValue(Label.PROPERTIES_SET)
+			);
+			assert.ok(
+				result
+					.getStatistics()
+					.getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME)
+			);
+		});
+	});
+
+	it("test Connect Node Objects", () => {
+		// Create both source and destination nodes
+		const node1 = new RedisGraphNode(null, "a", "person",properties={
+			name:'roi',
+			age:32}
+		);
+		// Adding node1 to the graph
+		api.addNode(node1);
+		const node2 = new RedisGraphNode(null, "b", "person",properties={
+			name:'amit',
+			age:30}
+		);
+		// Adding node2 to the graph
+		api.addNode(node2);
+
+		const edge = new RedisGraphEdge(node1, "knows", node2);
+		// Adding edge to the graph
+		api.addEdge(edge);
+		// Connect source and destination nodes.
+
+		return api.commit()
+			.then(matchResult => {
+				assert.ok(!matchResult.hasNext());
+				assert.equal(1, matchResult.getStatistics().relationshipsCreated());
+				assert.equal(0, matchResult.getStatistics().relationshipsDeleted());
+				assert.ok(
+					matchResult
+						.getStatistics()
+						.getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME)
+				);
+			});
 	});
 });
