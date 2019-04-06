@@ -211,7 +211,7 @@ class RedisGraph {
 	 * @return a result set
 	 */
 	query(query) {
-		return this._sendCommand("graph.QUERY", [this._graphId, query]).then(
+		return this._sendCommand("graph.QUERY", [this._graphId, query, "--compact"]).then(
 			res => {
 				return new ResultSet(res);
 			}
