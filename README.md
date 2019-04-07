@@ -29,7 +29,7 @@ npm install redisgraph.js
 ```javascript
 const RedisGraph = require("redisgraph.js").RedisGraph;
 
-let graph = new RedisGraph('social');
+let graph = new RedisGraph.RedisGraph('social');
 graph
 .query("CREATE (:person{name:'roi',age:32})")
 .then( () => {
@@ -38,6 +38,48 @@ graph
 .then( () => {
 	return graph.query("MATCH (a:person), (b:person) WHERE (a.name = 'roi' AND b.name='amit') CREATE (a)-[:knows]->(a)")
 })
+.then( () => {
+	return graph.query("MATCH (a:person)-[:knows]->(:person) RETURN a")
+})
+.then( (res) => {
+	while(res.hasNext()){
+		let record = res.next();
+		console.log(record.getString('a.name'));
+	}
+	console.log(res.getStatistics().queryExecutionTime());
+});
+
+```
+
+# Example2: Using the Node and Edge classes
+
+```javascript
+const RedisGraph = require("redisgraph.js").RedisGraph;
+const RedisGraphNode = RedisGraph.RedisGraphNode;
+const RedisGraphNode = RedisGraph.RedisGraphNode;
+
+
+let graph = new RedisGraph.RedisGraph('social');
+// Create both source and destination nodes
+const node1 = new RedisGraphNode(null, "a", "person",properties={
+	name:'roi',
+	age:32}
+);
+// Adding node1 to the graph
+graph.addNode(node1);
+const node2 = new RedisGraphNode(null, "b", "person",properties={
+	name:'amit',
+	age:30}
+);
+// Adding node2 to the graph
+graph.addNode(node2);
+
+const edge = new RedisGraphEdge(node1, "knows", node2);
+// Adding edge to the graph
+graph.addEdge(edge);
+// Connect source and destination nodes.
+graph
+.commit()
 .then( () => {
 	return graph.query("MATCH (a:person)-[:knows]->(:person) RETURN a")
 })
