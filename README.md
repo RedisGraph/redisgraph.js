@@ -29,7 +29,7 @@ npm install redisgraph.js
 ```javascript
 const RedisGraph = require("redisgraph.js").RedisGraph;
 
-let graph = new RedisGraph.RedisGraph('social');
+let graph = new RedisGraph('social');
 graph
 .query("CREATE (:person{name:'roi',age:32})")
 .then( () => {
@@ -55,8 +55,8 @@ graph
 
 ```javascript
 const RedisGraph = require("redisgraph.js").RedisGraph;
-const RedisGraphNode = RedisGraph.RedisGraphNode;
-const RedisGraphNode = RedisGraph.RedisGraphNode;
+const RedisGraphNode = require("redisgraph.js").Node;
+const RedisGraphEdge = require("redisgraph.js").Edge;
 
 
 let graph = new RedisGraph.RedisGraph('social');
