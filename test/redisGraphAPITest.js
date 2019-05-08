@@ -1,7 +1,7 @@
 const assert = require("assert"),
 	redis = require("redis"),
 	Label = require("../src/label"),
-	RedisGraph = require("../src/redisGraph");
+	RedisGraph = require("../src/graph");
 
 describe('RedisGraphAPI Test', () =>{
 	const api = new RedisGraph("social");
@@ -117,10 +117,17 @@ describe('RedisGraphAPI Test', () =>{
 
 	it('test query full entity', () => {
 		// Create both source and destination nodes
-		return api.query("CREATE (r:human {name:'roi', age:34})")
+		return api.query("CREATE (:person {name:'roi', age:34})").then(response=>{
+			api.query("CREATE (:person{name:'amit',age:30})")
+		})
+		.then(response2=>{
+			api.query("MATCH (a:person), (b:person) WHERE (a.name = 'roi' AND b.name='amit')  " +
+			"CREATE (a)-[:knows{place:'TLV', since:2000,doubleValue:3.14, boolValue:false, nullValue:null}]->(b)")
+		})
+		
 		.then( (createResult) => {
 			// Query
-			return api.query("MATCH (r:human) RETURN r");
+			return api.query("MATCH (a:person)-[r:knows]->(b:person) RETURN a,r");
 		})
 		.then( (resultSet) => {
 			assert.ok(resultSet.hasNext());
@@ -132,14 +139,25 @@ describe('RedisGraphAPI Test', () =>{
 			assert.equal(0, resultSet.getStatistics().relationshipsDeleted());
 			assert.ok(resultSet.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME));
 
-			assert.deepStrictEqual([ 'r' ], resultSet.getHeader());
+			assert.deepStrictEqual([ 'a','r' ], resultSet.getHeader());
 
 			let record = resultSet.next();
 			let n = record.get(0);
 			assert.equal(34, n.properties['age']);
 			assert.equal("roi", n.properties['name']);
-			assert.equal("human", n.label);
+			assert.equal("person", n.label);
 			assert.equal(0, n.id);
+
+			var r = record.get(1);
+			assert.equal("knows", r.relation);
+			assert.equal(0, r.id);
+			assert.equal(0, r.srcNode);
+			assert.equal(1, r.destNode);
+			assert.equal("TLV", r.properties['place']);
+			assert.equal(2000, r.properties["since"]);
+			assert.equal(3.14, r.properties["doubleValue"]);
+			assert.equal(false, r.properties["boolValue"]);
+			assert.equal(undefined, r.properties["nullValue"]);
 		});
 	});
 });
