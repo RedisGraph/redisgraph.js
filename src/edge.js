@@ -3,7 +3,7 @@
  */
 class Edge {
     constructor(srcNode, relation, destNode, properties) {
-        this.id = "";
+        this.id = undefined;
         this.relation = relation;
         this.srcNode = srcNode;
         this.destNode = destNode;

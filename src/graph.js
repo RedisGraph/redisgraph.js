@@ -36,11 +36,7 @@ class Graph {
 	_extractStrings(resultSet) {
 		var strings = [];
 		while (resultSet.hasNext()) {
-
-			var str = resultSet.next().get(0);
-			if(typeof(str) == "string"){
-				strings.push(str);
-			}
+			strings.push(resultSet.next().getString(0));
 		}
 		return strings;
 	}
@@ -83,8 +79,6 @@ class Graph {
 
 	/**
 	 * Retrieves all labels in graph.
-	 *
-	 * @return array of labels.
 	 */
 	async labels() {
 		var response = await this.callProcedure("db.labels");
@@ -93,8 +87,6 @@ class Graph {
 
 	/**
 	 * Retrieves all relationship types in graph.
-	 *
-	 * @return array of relationship types.
 	 */
 	async relationshipTypes() {
 		var response = await this.callProcedure("db.relationshipTypes")
@@ -103,8 +95,6 @@ class Graph {
 
 	/**
 	 * Retrieves all properties in graph.
-	 *
-	 * @return array of properties.
 	 */
 	async propertyKeys() {
 		var response = await this.callProcedure("db.propertyKeys");
@@ -138,7 +128,6 @@ class Graph {
 	 * @return String relationship type.
 	 */
 	getRelationship(id) {
-
 		return this._relationshipTypes[id];
 	}
 

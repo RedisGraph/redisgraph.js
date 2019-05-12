@@ -3,7 +3,7 @@
  */
 class Node {
     constructor(label, properties) {
-        this.id = "";
+        this.id = undefined;
         this.label = label;
         this.properties = properties;
     }

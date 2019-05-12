@@ -24,16 +24,11 @@ const ResultSetScalarTypes = {
  */
 class ResultSet {
     constructor(graph) {
-        //_graph is graph api
-        this._graph = graph;
-        //allowing iterator like behevior
-        this._position = 0;
-        //total number of records in this result set
-        this._resultsCount = 0;
-        //reponse schame columns labels
-        this._header = [];
-        //result recordsd
-        this._results = [];
+        this._graph = graph;            //_graph is graph api
+        this._position = 0;             //allowing iterator like behevior
+        this._resultsCount = 0;         //total number of records in this result set
+        this._header = [];              //reponse schema columns labels
+        this._results = [];             //result records
     }
 
     /**
