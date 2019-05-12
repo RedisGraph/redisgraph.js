@@ -1,7 +1,9 @@
 /.settings/
 /node_modules/
+.vscode/
 .project
 package-lock.json
 yarn.lock
 /examples/node_modules
 /coverage/
+.DS_Store

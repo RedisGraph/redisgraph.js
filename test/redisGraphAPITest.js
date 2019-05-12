@@ -147,7 +147,7 @@ describe('RedisGraphAPI Test', () =>{
 			assert.equal("roi", n.properties['name']);
 			assert.equal("person", n.label);
 			assert.equal(0, n.id);
-
+			console.log(n.toString());
 			var r = record.get(1);
 			assert.equal("knows", r.relation);
 			assert.equal(0, r.id);
@@ -158,6 +158,7 @@ describe('RedisGraphAPI Test', () =>{
 			assert.equal(3.14, r.properties["doubleValue"]);
 			assert.equal(false, r.properties["boolValue"]);
 			assert.equal(undefined, r.properties["nullValue"]);
+			console.log(r.toString());
 		});
 	});
 });

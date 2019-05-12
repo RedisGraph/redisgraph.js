@@ -29,32 +29,43 @@ class Graph {
 	}
 
 	/**
-	 * Execute a Cypher query
-	 *
-	 * @param query Cypher query
-	 * @return a result set
+	 * auxilary function to extract string(s) data from procedures such as:
+	 * db.labels, db.propertyKeys and db.relationshipTypes
+	 * @param  resultSet - a procedure result set
 	 */
-	query(query) {
-		return this._sendCommand("graph.QUERY", [this._graphId, query, "--compact"]).then(
-			res => {
-				var resultSet = new ResultSet(this);
+	_extractStrings(resultSet) {
+		var strings = [];
+		while (resultSet.hasNext()) {
 
-				return resultSet.parseResponse(res);
+			var str = resultSet.next().get(0);
+			if(typeof(str) == "string"){
+				strings.push(str);
 			}
-		);
+		}
+		return strings;
 	}
 
 	/**
-	 * Deletes the entire graph
+	 * Execute a Cypher query (async)
 	 *
-	 * @return delete running time statistics
+	 * @param query Cypher query
+	 * @return a promise contains a result set
 	 */
-	deleteGraph() {
-		return this._sendCommand("graph.DELETE", [this._graphId]).then(res => {
-			var resultSet = new ResultSet(this);
+	async query(query) {
+		var res = await this._sendCommand("graph.QUERY", [this._graphId, query, "--compact"]);
+		var resultSet = new ResultSet(this);
+		return resultSet.parseResponse(res);
+	}
 
-			return resultSet.parseResponse(res);
-		});
+	/**
+	 * Deletes the entire graph (async)
+	 *
+	 * @return a promise contains the delete operation running time statistics
+	 */
+	async deleteGraph() {
+		var res = await this._sendCommand("graph.DELETE", [this._graphId]);
+		var resultSet = new ResultSet(this);
+		return resultSet.parseResponse(res);
 	}
 
 	/**
@@ -62,8 +73,8 @@ class Graph {
 	*
 	* @param procedure Procedure to call
 	* @param args Arguments to pass
-	* @y Yield outputs
-	* @return a result set
+	* @param y Yield outputs
+	* @return a promise contains the procedure result set data
 	*/
 	callProcedure(procedure, args = new Array(), y = new Array()) {
 		let q = "CALL " + procedure + "(" + args.join(',') + ")" + y.join(' ');
@@ -77,8 +88,7 @@ class Graph {
 	 */
 	async labels() {
 		var response = await this.callProcedure("db.labels");
-		this._labels = this.extractStrings(response);
-
+		this._labels = this._extractStrings(response);
 	}
 
 	/**
@@ -88,7 +98,7 @@ class Graph {
 	 */
 	async relationshipTypes() {
 		var response = await this.callProcedure("db.relationshipTypes")
-		this._relationshipTypes = this.extractStrings(response);
+		this._relationshipTypes = this._extractStrings(response);
 	}
 
 	/**
@@ -98,16 +108,7 @@ class Graph {
 	 */
 	async propertyKeys() {
 		var response = await this.callProcedure("db.propertyKeys");
-		this._properties = this.extractStrings(response);
-	}
-
-	extractStrings(resultSet) {
-		var strings = [];
-		while (resultSet.hasNext()) {
-
-			strings.push(resultSet.next().get(0));
-		}
-		return strings;
+		this._properties = this._extractStrings(response);
 	}
 
 	/**
@@ -151,8 +152,6 @@ class Graph {
 		return this._relationshipTypes[id];
 	}
 
-
-
 	/**
 	 * Retrieves property name by ID.
 	 *
@@ -161,7 +160,6 @@ class Graph {
 	 */
 	getProperty(id) {
 		return this._properties[id];
-
 	}
 
 	/**
@@ -172,7 +170,6 @@ class Graph {
 	async fetchAndGetProperty(id) {
 		await this.propertyKeys();
 		return this._properties[id];
-
 	}
 }
 

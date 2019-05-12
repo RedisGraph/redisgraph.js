@@ -24,16 +24,23 @@ const ResultSetScalarTypes = {
  */
 class ResultSet {
     constructor(graph) {
+        //_graph is graph api
         this._graph = graph;
+        //allowing iterator like behevior
         this._position = 0;
+        //total number of records in this result set
         this._resultsCount = 0;
+        //reponse schame columns labels
         this._header = [];
+        //result recordsd
         this._results = [];
-
-
-
     }
 
+    /**
+     * 
+     * @param  resp  - raw response representation - the raw representation of response is at most 3 lists of objects.
+     *                    The last list is the statistics list.
+     */
     async parseResponse(resp) {
         if (Array.isArray(resp)) {
             if (resp.length < 3) {
@@ -47,32 +54,37 @@ class ResultSet {
         else {
             this._statistics = new Statistics(resp);
         }
-
         return this;
     }
 
     async parseResults(resp) {
-        this._header = this.parseHeader(resp);
+        this.parseHeader(resp[0]);
+        await this.parseRecords(resp);
+    }
 
+    /**
+     * A raw representation of a header (query response schema) is a list.
+     * Each entry in the list is a tuple (list of size 2).
+     * tuple[0] represents the type of the column, and tuple[1] represents the name of the column.
+     * @param  rawHeader 
+     */
+    parseHeader(rawHeader) {
+        // An array of column name/column type pairs.
+        this._header = rawHeader;
         // Discard header types.
         this._typelessHeader = new Array(this._header.length);
         for (var i = 0; i < this._header.length; i++) {
             this._typelessHeader[i] = this._header[i][1];
         }
-
-        await this.parseRecords(resp);
-
     }
 
-    parseHeader(rawResultSet) {
-        // An array of column name/column type pairs.
-        let header = rawResultSet[0];
-        return header;
-    }
-
+    /**
+     * The raw representation of response is at most 3 lists of objects. rawResultSet[1] contains the data records.
+     * Each entry in the record can be either a node, an edge or a scalar
+     * @param  rawResultSet 
+     */
     async parseRecords(rawResultSet) {
         let result_set = rawResultSet[1];
-        let records = new Array(result_set.length);
         this._results = new Array(result_set.length);
 
         for (var i = 0; i < result_set.length; i++) {
@@ -106,14 +118,14 @@ class ResultSet {
         for (var i = 0; i < props.length; i++) {
             let prop = props[i];
             var propIndex = prop[0];
-            let prop_name = this._graph.getProperty(prop[0]);
+            let prop_name = this._graph.getProperty(propIndex);
             if (prop_name == undefined) {
-                prop_name = await this._graph.fetchAndGetProperty(prop[0]);
+                console.error("fetching property labels");
+                prop_name = await this._graph.fetchAndGetProperty(propIndex);
             }
             let prop_value = this.parseScalar(prop.slice(1, prop.length));
             properties[prop_name] = prop_value;
         }
-
         return properties;
     }
 
@@ -122,19 +134,16 @@ class ResultSet {
         // [label string offset (integer)],
         // [[name, value, value type] X N]
 
-        let node_id = Number(cell[0]);
+        let node_id = cell[0];
         let label = this._graph.getLabel(cell[1][0]);
         if (label == undefined) {
+            console.error("fetching node labels")
             label = await this._graph.fetchAndGetLabel(cell[1][0]);
         }
-        // let label = null;
-        // if (cell[1].length != 0) {
-        //     this._graph.getLabel(cell[1][0]).then(result => {
-        //         label = result;
-        //     });
-        // }
         let properties = await this.parseEntityProperties(cell[2]);
-        return new Node(node_id, null, label, properties);
+        let node = new Node(label, properties);
+        node.setId(node_id);
+        return node;
     }
 
     async parseEdge(cell) {
@@ -144,21 +153,24 @@ class ResultSet {
         // dest node ID offset (integer),
         // [[name, value, value type] X N]
 
-        let edge_id = Number(cell[0]);
+        let edge_id = cell[0];
         let relation = this._graph.getRelationship(cell[1]);
         if (relation == undefined) {
+            console.error("fetching relationship types")
             relation = await this._graph.fetchAndGetRelationship(cell[1])
         }
-        let src_node_id = Number(cell[2]);
-        let dest_node_id = Number(cell[3]);
+        let src_node_id = cell[2];
+        let dest_node_id = cell[3];
         let properties = await this.parseEntityProperties(cell[4]);
-        return new Edge(src_node_id, relation, dest_node_id, edge_id, properties);
+        let edge = new Edge(src_node_id, relation, dest_node_id, properties);
+        edge.setId(edge_id);
+        return edge;
     }
 
     parseScalar(cell) {
         let scalar_type = cell[0];
         let value = cell[1];
-        let scalar;
+        let scalar = undefined;
 
         switch (scalar_type) {
             case ResultSetScalarTypes.PROPERTY_NULL:
@@ -184,7 +196,6 @@ class ResultSet {
                 console.log("Unknown scalar type\n");
                 break;
         }
-
         return scalar;
     }
 
