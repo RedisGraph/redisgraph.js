@@ -133,7 +133,7 @@ class Graph {
 
 	/**
 	 * Retrives al the relationshipe types from the graph, and returns the wanted type
-	* @param id internal ID of relationship type.
+	 * @param id internal ID of relationship type.
 	 * @return String relationship type.
 	 */
 	async fetchAndGetRelationship(id) {

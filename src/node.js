@@ -3,9 +3,9 @@
  */
 class Node {
     constructor(label, properties) {
-        this.id = undefined;
-        this.label = label;
-        this.properties = properties;
+        this.id = undefined;                //node's id - set by RedisGraph
+        this.label = label;                 //node's label
+        this.properties = properties;       //node's list of properties (list of Key:Value)
     }
 
     setId(id){
