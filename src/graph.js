@@ -21,6 +21,10 @@ class Graph {
 		this._relationshipTypes = []; 	// List of relation types.
 		this._properties = [];        	// List of properties.
 
+		this._labelsPromise = undefined;
+		this._propertyPromise = undefined;
+		this._relationshipPromise = undefined;
+
 		let client =
 			host instanceof redis.RedisClient
 				? host
@@ -60,6 +64,9 @@ class Graph {
 	 */
 	async deleteGraph() {
 		var res = await this._sendCommand("graph.DELETE", [this._graphId]);
+		this._labels = [];
+		this._relationshipTypes = [];
+		this._properties = [];
 		var resultSet = new ResultSet(this);
 		return resultSet.parseResponse(res);
 	}
@@ -81,24 +88,58 @@ class Graph {
 	 * Retrieves all labels in graph.
 	 */
 	async labels() {
-		var response = await this.callProcedure("db.labels");
-		this._labels = this._extractStrings(response);
+		if (this._labelsPromise == undefined) {
+			console.info("fetching node labels")
+			this._labelsPromise = this.callProcedure("db.labels").then(response => {
+				return this._extractStrings(response);
+			})
+			this._labels = await (this._labelsPromise);
+			this._labelsPromise = undefined;
+		}
+		else {
+			console.info("waiting for label promise");
+			await this._labelsPromise;
+		}
 	}
 
 	/**
 	 * Retrieves all relationship types in graph.
 	 */
 	async relationshipTypes() {
-		var response = await this.callProcedure("db.relationshipTypes")
-		this._relationshipTypes = this._extractStrings(response);
+		if (this._relationshipPromise == undefined) {
+			console.info("fetching relationship types");
+			this._relationshipPromise = this.callProcedure("db.relationshipTypes").then(response => {
+				return this._extractStrings(response);
+			});
+			this._relationshipTypes = await (this._relationshipPromise);
+			this._relationshipPromise = undefined;
+		}
+		else {
+			console.info("waiting for relationship promise");
+			await this._relationshipPromise;
+		}
+
+
 	}
 
 	/**
 	 * Retrieves all properties in graph.
 	 */
 	async propertyKeys() {
-		var response = await this.callProcedure("db.propertyKeys");
-		this._properties = this._extractStrings(response);
+		if (this._propertyPromise == undefined) {
+			console.info("fetching property names");
+			this._propertyPromise = this.callProcedure("db.propertyKeys").then(response => {
+				return this._extractStrings(response);
+			})
+			this._properties = await this._propertyPromise;
+			this._propertyPromise = undefined;
+		}
+		else{
+			console.info("waiting for property promise");
+			await this._propertyPromise;
+		}
+
+
 	}
 
 	/**

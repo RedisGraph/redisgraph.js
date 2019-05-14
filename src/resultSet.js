@@ -114,8 +114,7 @@ class ResultSet {
             let prop = props[i];
             var propIndex = prop[0];
             let prop_name = this._graph.getProperty(propIndex);
-            if (prop_name == undefined) {
-                console.error("fetching property labels");
+            while (prop_name == undefined) {
                 prop_name = await this._graph.fetchAndGetProperty(propIndex);
             }
             let prop_value = this.parseScalar(prop.slice(1, prop.length));
@@ -131,8 +130,7 @@ class ResultSet {
 
         let node_id = cell[0];
         let label = this._graph.getLabel(cell[1][0]);
-        if (label == undefined) {
-            console.error("fetching node labels")
+        while (label == undefined) {
             label = await this._graph.fetchAndGetLabel(cell[1][0]);
         }
         let properties = await this.parseEntityProperties(cell[2]);
@@ -150,8 +148,7 @@ class ResultSet {
 
         let edge_id = cell[0];
         let relation = this._graph.getRelationship(cell[1]);
-        if (relation == undefined) {
-            console.error("fetching relationship types")
+        while (relation == undefined) {
             relation = await this._graph.fetchAndGetRelationship(cell[1])
         }
         let src_node_id = cell[2];

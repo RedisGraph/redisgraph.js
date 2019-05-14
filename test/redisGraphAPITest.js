@@ -3,11 +3,11 @@ const assert = require("assert"),
 	Label = require("../src/label"),
 	RedisGraph = require("../src/graph");
 
-describe('RedisGraphAPI Test', () =>{
+describe('RedisGraphAPI Test', () => {
 	const api = new RedisGraph("social");
-	
-	beforeEach( () => {
-		return api.deleteGraph().catch(()=>{});
+
+	beforeEach(() => {
+		return api.deleteGraph().catch(() => { });
 	});
 
 	it("test bring your client", () => {
@@ -85,80 +85,100 @@ describe('RedisGraphAPI Test', () =>{
 	it('test Query', () => {
 		// Create both source and destination nodes    	
 		return api.query("CREATE (r:human {name:'roi', age:34}), (a:human {name:'amit', age:32}), (r)-[:knows]->(a)")
-		.then( (createResult) => {
-			// Query
-			return api.query("MATCH (r:human)-[:knows]->(a:human) RETURN r.age, r.name");
-		})
-		.then( (resultSet) => {	
-			assert.ok(resultSet.hasNext());
-			assert.equal(0, resultSet.getStatistics().nodesCreated());
-			assert.equal(0, resultSet.getStatistics().nodesDeleted());
-			assert.equal(0, resultSet.getStatistics().labelsAdded());
-			assert.equal(0, resultSet.getStatistics().propertiesSet());
-			assert.equal(0, resultSet.getStatistics().relationshipsCreated());
-			assert.equal(0, resultSet.getStatistics().relationshipsDeleted());
-			assert.ok(resultSet.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME)); 
+			.then((createResult) => {
+				// Query
+				return api.query("MATCH (r:human)-[:knows]->(a:human) RETURN r.age, r.name");
+			})
+			.then((resultSet) => {
+				assert.ok(resultSet.hasNext());
+				assert.equal(0, resultSet.getStatistics().nodesCreated());
+				assert.equal(0, resultSet.getStatistics().nodesDeleted());
+				assert.equal(0, resultSet.getStatistics().labelsAdded());
+				assert.equal(0, resultSet.getStatistics().propertiesSet());
+				assert.equal(0, resultSet.getStatistics().relationshipsCreated());
+				assert.equal(0, resultSet.getStatistics().relationshipsDeleted());
+				assert.ok(resultSet.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME));
 
-			assert.deepStrictEqual([ 'r.age', 'r.name' ], resultSet.getHeader());
-			
-			let record = resultSet.next();
-			assert.equal(34, record.get(0));
-			assert.equal("34", record.getString(0));
-			assert.equal("roi", record.getString(1));
-			assert.equal("roi", record.getString("r.name"));
-			
-			assert.deepStrictEqual([ 'r.age', 'r.name' ], record.keys());
-			assert.deepStrictEqual([ 34, 'roi' ], record.values());
-			assert.equal(false, record.containsKey("aa"));
-			assert.equal(true, record.containsKey("r.name"));
-			assert.equal(2, record.size());
-		});
+				assert.deepStrictEqual(['r.age', 'r.name'], resultSet.getHeader());
+
+				let record = resultSet.next();
+				assert.equal(34, record.get(0));
+				assert.equal("34", record.getString(0));
+				assert.equal("roi", record.getString(1));
+				assert.equal("roi", record.getString("r.name"));
+
+				assert.deepStrictEqual(['r.age', 'r.name'], record.keys());
+				assert.deepStrictEqual([34, 'roi'], record.values());
+				assert.equal(false, record.containsKey("aa"));
+				assert.equal(true, record.containsKey("r.name"));
+				assert.equal(2, record.size());
+			});
 	});
 
 	it('test query full entity', () => {
 		// Create both source and destination nodes
-		return api.query("CREATE (:person {name:'roi', age:34})").then(response=>{
+		return api.query("CREATE (:person {name:'roi', age:34})").then(response => {
 			api.query("CREATE (:person{name:'amit',age:30})")
 		})
-		.then(response2=>{
-			api.query("MATCH (a:person), (b:person) WHERE (a.name = 'roi' AND b.name='amit')  " +
-			"CREATE (a)-[:knows{place:'TLV', since:2000,doubleValue:3.14, boolValue:false, nullValue:null}]->(b)")
-		})
-		
-		.then( (createResult) => {
-			// Query
-			return api.query("MATCH (a:person)-[r:knows]->(b:person) RETURN a,r");
-		})
-		.then( (resultSet) => {
-			assert.ok(resultSet.hasNext());
-			assert.equal(0, resultSet.getStatistics().nodesCreated());
-			assert.equal(0, resultSet.getStatistics().nodesDeleted());
-			assert.equal(0, resultSet.getStatistics().labelsAdded());
-			assert.equal(0, resultSet.getStatistics().propertiesSet());
-			assert.equal(0, resultSet.getStatistics().relationshipsCreated());
-			assert.equal(0, resultSet.getStatistics().relationshipsDeleted());
-			assert.ok(resultSet.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME));
+			.then(response2 => {
+				api.query("MATCH (a:person), (b:person) WHERE (a.name = 'roi' AND b.name='amit')  " +
+					"CREATE (a)-[:knows{place:'TLV', since:2000,doubleValue:3.14, boolValue:false, nullValue:null}]->(b)")
+			})
 
-			assert.deepStrictEqual([ 'a','r' ], resultSet.getHeader());
+			.then((createResult) => {
+				// Query
+				return api.query("MATCH (a:person)-[r:knows]->(b:person) RETURN a,r");
+			})
+			.then((resultSet) => {
+				assert.ok(resultSet.hasNext());
+				assert.equal(0, resultSet.getStatistics().nodesCreated());
+				assert.equal(0, resultSet.getStatistics().nodesDeleted());
+				assert.equal(0, resultSet.getStatistics().labelsAdded());
+				assert.equal(0, resultSet.getStatistics().propertiesSet());
+				assert.equal(0, resultSet.getStatistics().relationshipsCreated());
+				assert.equal(0, resultSet.getStatistics().relationshipsDeleted());
+				assert.ok(resultSet.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME));
 
-			let record = resultSet.next();
-			let n = record.get(0);
-			assert.equal(34, n.properties['age']);
-			assert.equal("roi", n.properties['name']);
-			assert.equal("person", n.label);
-			assert.equal(0, n.id);
-			console.log(n.toString());
-			var r = record.get(1);
-			assert.equal("knows", r.relation);
-			assert.equal(0, r.id);
-			assert.equal(0, r.srcNode);
-			assert.equal(1, r.destNode);
-			assert.equal("TLV", r.properties['place']);
-			assert.equal(2000, r.properties["since"]);
-			assert.equal(3.14, r.properties["doubleValue"]);
-			assert.equal(false, r.properties["boolValue"]);
-			assert.equal(undefined, r.properties["nullValue"]);
-			console.log(r.toString());
-		});
+				assert.deepStrictEqual(['a', 'r'], resultSet.getHeader());
+
+				let record = resultSet.next();
+				let n = record.get(0);
+				assert.equal(34, n.properties['age']);
+				assert.equal("roi", n.properties['name']);
+				assert.equal("person", n.label);
+				assert.equal(0, n.id);
+				console.log(n.toString());
+				var r = record.get(1);
+				assert.equal("knows", r.relation);
+				assert.equal(0, r.id);
+				assert.equal(0, r.srcNode);
+				assert.equal(1, r.destNode);
+				assert.equal("TLV", r.properties['place']);
+				assert.equal(2000, r.properties["since"]);
+				assert.equal(3.14, r.properties["doubleValue"]);
+				assert.equal(false, r.properties["boolValue"]);
+				assert.equal(undefined, r.properties["nullValue"]);
+				console.log(r.toString());
+			});
 	});
+
+	it('test multi thread', () => {
+		api.query("CREATE (:person {name:'roi', age:34})").then(response => {
+			var promises = []
+			for (var i = 0; i < 10; i++) {
+				promises.push(api.query("MATCH (a:person {name:'roi'}) RETURN a"));
+			}
+			Promise.all(promises).then(values => {
+				for (var resultSet of values) {
+					let record = resultSet.next();
+					let n = record.get(0);
+					assert.equal(34, n.properties['age']);
+					assert.equal("roi", n.properties['name']);
+					assert.equal("person", n.label);
+					assert.equal(0, n.id);
+					console.log("ok")
+				}
+			});
+		})
+	})
 });
