@@ -16,14 +16,14 @@ class Graph {
 	 * @param options node_redis options
 	 */
 	constructor(graphId, host, port, options) {
-		this._graphId = graphId;		// Graph ID
-		this._labels = [];            	// List of node labels.
-		this._relationshipTypes = []; 	// List of relation types.
-		this._properties = [];        	// List of properties.
+		this._graphId = graphId;				// Graph ID
+		this._labels = [];            			// List of node labels.
+		this._relationshipTypes = []; 			// List of relation types.
+		this._properties = [];        			// List of properties.
 
-		this._labelsPromise = undefined;
-		this._propertyPromise = undefined;
-		this._relationshipPromise = undefined;
+		this._labelsPromise = undefined;		// used as a synchronization mechanizom for labels retrival
+		this._propertyPromise = undefined;		// used as a synchronization mechanizom for property names retrival
+		this._relationshipPromise = undefined;	// used as a synchronization mechanizom for relationship types retrival
 
 		let client =
 			host instanceof redis.RedisClient

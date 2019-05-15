@@ -176,7 +176,7 @@ describe('RedisGraphAPI Test', () => {
 					assert.equal("roi", n.properties['name']);
 					assert.equal("person", n.label);
 					assert.equal(0, n.id);
-					console.log("ok")
+					console.info("ok")
 				}
 			});
 		})
