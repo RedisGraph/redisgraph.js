@@ -114,14 +114,14 @@ class ResultSet {
             let prop = props[i];
             var propIndex = prop[0];
             let prop_name = this._graph.getProperty(propIndex);
-            //will try to get the right property for at most 10 times
+            // will try to get the right property for at most 10 times
             var tries = 0;
             while (prop_name == undefined && tries <10) {
                 prop_name = await this._graph.fetchAndGetProperty(propIndex);
                 tries++;
             }
             if (prop_name == undefined) {
-                console.log("unable to retrive property name value for propety index " + propIndex);
+                console.warn("unable to retrive property name value for propety index " + propIndex);
             }
             let prop_value = this.parseScalar(prop.slice(1, prop.length));
             properties[prop_name] = prop_value;
@@ -136,14 +136,14 @@ class ResultSet {
 
         let node_id = cell[0];
         let label = this._graph.getLabel(cell[1][0]);
-        //will try to get the right label for at most 10 times
+        // will try to get the right label for at most 10 times
         var tries = 0;
         while (label == undefined && tries < 10) {
-            tries = await this._graph.fetchAndGetLabel(cell[1][0]);
-            x++;
+            label = await this._graph.fetchAndGetLabel(cell[1][0]);
+            tries++;
         }
         if (label == undefined) {
-            console.log("unable to retrive label value for label index " + cell[1][0]);
+            console.warn("unable to retrive label value for label index " + cell[1][0]);
         }
         let properties = await this.parseEntityProperties(cell[2]);
         let node = new Node(label, properties);
@@ -160,14 +160,14 @@ class ResultSet {
 
         let edge_id = cell[0];
         let relation = this._graph.getRelationship(cell[1]);
-        //will try to get the right relationship type for at most 10 times
+        // will try to get the right relationship type for at most 10 times
         var tries = 0;
         while (relation == undefined && tries < 10) {
             relation = await this._graph.fetchAndGetRelationship(cell[1])
             tries++;
         }
         if (relation == undefined) {
-            console.log("unable to retrive relationship type value for relationship index " + cell[1]);
+            console.warn("unable to retrive relationship type value for relationship index " + cell[1]);
         }
         let src_node_id = cell[2];
         let dest_node_id = cell[3];
