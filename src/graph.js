@@ -64,6 +64,7 @@ class Graph {
 	 */
 	async deleteGraph() {
 		var res = await this._sendCommand("graph.DELETE", [this._graphId]);
+		//clear internal graph state
 		this._labels = [];
 		this._relationshipTypes = [];
 		this._properties = [];
@@ -89,7 +90,6 @@ class Graph {
 	 */
 	async labels() {
 		if (this._labelsPromise == undefined) {
-			console.info("fetching node labels")
 			this._labelsPromise = this.callProcedure("db.labels").then(response => {
 				return this._extractStrings(response);
 			})
@@ -97,7 +97,6 @@ class Graph {
 			this._labelsPromise = undefined;
 		}
 		else {
-			console.info("waiting for label promise");
 			await this._labelsPromise;
 		}
 	}
@@ -107,7 +106,6 @@ class Graph {
 	 */
 	async relationshipTypes() {
 		if (this._relationshipPromise == undefined) {
-			console.info("fetching relationship types");
 			this._relationshipPromise = this.callProcedure("db.relationshipTypes").then(response => {
 				return this._extractStrings(response);
 			});
@@ -115,11 +113,8 @@ class Graph {
 			this._relationshipPromise = undefined;
 		}
 		else {
-			console.info("waiting for relationship promise");
 			await this._relationshipPromise;
 		}
-
-
 	}
 
 	/**
@@ -127,7 +122,6 @@ class Graph {
 	 */
 	async propertyKeys() {
 		if (this._propertyPromise == undefined) {
-			console.info("fetching property names");
 			this._propertyPromise = this.callProcedure("db.propertyKeys").then(response => {
 				return this._extractStrings(response);
 			})
@@ -135,7 +129,6 @@ class Graph {
 			this._propertyPromise = undefined;
 		}
 		else{
-			console.info("waiting for property promise");
 			await this._propertyPromise;
 		}
 

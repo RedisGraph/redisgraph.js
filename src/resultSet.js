@@ -114,10 +114,11 @@ class ResultSet {
             let prop = props[i];
             var propIndex = prop[0];
             let prop_name = this._graph.getProperty(propIndex);
-            var x = 0;
-            while (prop_name == undefined && x <10) {
+            //will try to get the right property for at most 10 times
+            var tries = 0;
+            while (prop_name == undefined && tries <10) {
                 prop_name = await this._graph.fetchAndGetProperty(propIndex);
-                x++;
+                tries++;
             }
             if (prop_name == undefined) {
                 console.log("unable to retrive property name value for propety index " + propIndex);
@@ -135,9 +136,10 @@ class ResultSet {
 
         let node_id = cell[0];
         let label = this._graph.getLabel(cell[1][0]);
-        var x = 0;
-        while (label == undefined && x < 10) {
-            label = await this._graph.fetchAndGetLabel(cell[1][0]);
+        //will try to get the right label for at most 10 times
+        var tries = 0;
+        while (label == undefined && tries < 10) {
+            tries = await this._graph.fetchAndGetLabel(cell[1][0]);
             x++;
         }
         if (label == undefined) {
@@ -158,10 +160,11 @@ class ResultSet {
 
         let edge_id = cell[0];
         let relation = this._graph.getRelationship(cell[1]);
-        var x = 0;
-        while (relation == undefined && x < 10) {
+        //will try to get the right relationship type for at most 10 times
+        var tries = 0;
+        while (relation == undefined && tries < 10) {
             relation = await this._graph.fetchAndGetRelationship(cell[1])
-            x++;
+            tries++;
         }
         if (relation == undefined) {
             console.log("unable to retrive relationship type value for relationship index " + cell[1]);
