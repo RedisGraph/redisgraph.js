@@ -25,7 +25,7 @@ class Record {
 			return this._values[index].toString();
 		}
 		
-		return '';
+		return null;
 		
 		
 	}
