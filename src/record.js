@@ -20,20 +20,8 @@ class Record {
         if (typeof key === "string") {
             index = this._header.indexOf(key);
         }
-
-        if (this._values[index]) {
-            return this._values[index].toString();
-        }
-
-        return null;
-    }
-
-    getString(key) {
-        let index = key;
-        if (typeof key === "string") {
-            index = this._header.indexOf(key);
-        }
-        return this._values[index] ? this._values[index].toString() : null;
+        let value = this._values[index]
+        return value ? value.toString() : null;
     }
 
     keys() {
