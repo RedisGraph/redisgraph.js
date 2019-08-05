@@ -1,12 +1,12 @@
 const Record = require("./src/record"),
-	RedisGraph = require("./src/redisGraph"),
+	Graph = require("./src/graph"),
 	ResultSet = require("./src/resultSet"),
 	Statistics = require("./src/statistics"),
 	Label = require("./src/label");
 
 module.exports = {
 	Record: Record,
-	RedisGraph: RedisGraph,
+	Graph: Graph,
 	ResultSet: ResultSet,
 	Statistics: Statistics,
 	Label: Label
