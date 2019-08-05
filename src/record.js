@@ -26,8 +26,6 @@ class Record {
 		}
 		
 		return null;
-		
-		
 	}
 
 	keys() {
