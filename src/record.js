@@ -20,7 +20,12 @@ class Record {
 		if (typeof key === "string") {
 			index = this._header.indexOf(key);
 		}
-		return this._values[index].toString();
+		
+		if (this._values[index]) {
+			return this._values[index].toString();
+		}
+		
+		return null;
 	}
 
 	keys() {
