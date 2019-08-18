@@ -10,6 +10,7 @@ const ResultSetColumnTypes = {
     COLUMN_RELATION: 3
 }
 
+/* deprecated */
 const ResultSetScalarTypes = {
     PROPERTY_UNKNOWN: 0,
     PROPERTY_NULL: 1,
@@ -17,6 +18,18 @@ const ResultSetScalarTypes = {
     PROPERTY_INTEGER: 3,
     PROPERTY_BOOLEAN: 4,
     PROPERTY_DOUBLE: 5
+}
+
+const ResultSetValueTypes = {
+    VALUE_UNKNOWN: 0,
+    VALUE_NULL: 1,
+    VALUE_STRING: 2,
+    VALUE_INTEGER: 3,
+    VALUE_BOOLEAN: 4,
+    VALUE_DOUBLE: 5,
+    VALUE_ARRAY: 6,
+    VALUE_EDGE: 7,
+    VALUE_NODE: 8
 }
 
 /**
@@ -90,7 +103,7 @@ class ResultSet {
                 let cellType = this._header[j][0];
                 switch (cellType) {
                     case ResultSetColumnTypes.COLUMN_SCALAR:
-                        record[j] = this.parseScalar(cell);
+                        record[j] = await this.parseScalar(cell);
                         break;
                     case ResultSetColumnTypes.COLUMN_NODE:
                         record[j] = await this.parseNode(cell);
@@ -116,14 +129,14 @@ class ResultSet {
             let prop_name = this._graph.getProperty(propIndex);
             // will try to get the right property for at most 10 times
             var tries = 0;
-            while (prop_name == undefined && tries <10) {
+            while (prop_name == undefined && tries < 10) {
                 prop_name = await this._graph.fetchAndGetProperty(propIndex);
                 tries++;
             }
             if (prop_name == undefined) {
                 console.warn("unable to retrive property name value for propety index " + propIndex);
             }
-            let prop_value = this.parseScalar(prop.slice(1, prop.length));
+            let prop_value = await this.parseScalar(prop.slice(1, prop.length));
             properties[prop_name] = prop_value;
         }
         return properties;
@@ -177,23 +190,31 @@ class ResultSet {
         return edge;
     }
 
-    parseScalar(cell) {
+    async parseArray(rawArray) {
+        let res = [];
+        for (var i = 0; i < rawArray.length; i++) {
+            res.push(await this.parseScalar(rawArray[i]));
+        }
+        return res;
+    }
+
+    async parseScalar(cell) {
         let scalar_type = cell[0];
         let value = cell[1];
         let scalar = undefined;
 
         switch (scalar_type) {
-            case ResultSetScalarTypes.PROPERTY_NULL:
+            case ResultSetValueTypes.VALUE_NULL:
                 scalar = null;
                 break;
-            case ResultSetScalarTypes.PROPERTY_STRING:
+            case ResultSetValueTypes.VALUE_STRING:
                 scalar = String(value);
                 break;
-            case ResultSetScalarTypes.PROPERTY_INTEGER:
-            case ResultSetScalarTypes.PROPERTY_DOUBLE:
+            case ResultSetValueTypes.VALUE_INTEGER:
+            case ResultSetValueTypes.VALUE_DOUBLE:
                 scalar = Number(value);
                 break;
-            case ResultSetScalarTypes.PROPERTY_BOOLEAN:
+            case ResultSetValueTypes.VALUE_BOOLEAN:
                 if (value === "true") {
                     scalar = true;
                 } else if (value === "false") {
@@ -202,7 +223,16 @@ class ResultSet {
                     console.log("Unknown boolean type\n");
                 }
                 break;
-            case ResultSetScalarTypes.PROPERTY_UNKNOWN:
+            case ResultSetValueTypes.VALUE_ARRAY:
+                scalar = this.parseArray(value);
+                break;
+            case ResultSetValueTypes.VALUE_NODE:
+                scalar = await this.parseNode(value);
+                break;
+            case ResultSetValueTypes.VALUE_EDGE:
+                scalar = await this.parseEdge(value);
+                break;
+            case ResultSetValueTypes.VALUE_UNKNOWN:
                 console.log("Unknown scalar type\n");
                 break;
         }
