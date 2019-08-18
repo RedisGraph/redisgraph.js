@@ -119,8 +119,6 @@ describe('RedisGraphAPI Test', function () {
                         assert.equal(true, record.containsKey("r.name"));
                         assert.equal(2, record.size());
                         done()
-                    }).catch(error => {
-                        console.log(error);
                     })
             }).catch(error => {
                 console.log(error);
@@ -167,14 +165,8 @@ describe('RedisGraphAPI Test', function () {
                                 assert.equal(false, r.properties["boolValue"]);
                                 assert.equal(undefined, r.properties["nullValue"]);
                                 done();
-                            }).catch(error => {
-                                console.log(error);
                             })
-                    }).catch(error => {
-                        console.log(error);
                     })
-            }).catch(error => {
-                console.log(error);
             })
         }).catch(error => {
             console.log(error);
@@ -189,8 +181,6 @@ describe('RedisGraphAPI Test', function () {
                 assert.equal(undefined, record.get(0));
                 assert.equal(null, record.getString(0))
                 done();
-            }).catch(error => {
-                console.log(error);
             })
         }).catch(error => {
             console.log(error);
@@ -216,14 +206,8 @@ describe('RedisGraphAPI Test', function () {
                                         assert.equal(0, resultSet.getStatistics().relationshipsDeleted());
                                         assert.ok(resultSet.getStatistics().getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME));
                                         done();
-                                    }).catch(error => {
-                                        console.log(error);
                                     })
-                            }).catch(error => {
-                                console.log(error);
                             })
-                    }).catch(error => {
-                        console.log(error);
                     })
             }).catch(error => {
                 console.log(error);
@@ -250,14 +234,8 @@ describe('RedisGraphAPI Test', function () {
                         let record = newResultSet.next();
                         assert.deepStrictEqual([nodeA, nodeB], record.get(0));
                         done();
-                    }).catch(error => {
-                        console.log(error);
                     })
-                }).catch(error => {
-                    console.log(error);
                 })
-            }).catch(error => {
-                console.log(error);
             })
         }).catch(error => {
             console.log(error);
@@ -280,9 +258,7 @@ describe('RedisGraphAPI Test', function () {
                     assert.equal(0, n.id);
                 }
                 done();
-            }).catch(error => {
-                console.log(error);
-            });
+            })
         }).catch(error => {
             console.log(error);
         })
