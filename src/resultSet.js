@@ -16,7 +16,8 @@ const ResultSetScalarTypes = {
     PROPERTY_STRING: 2,
     PROPERTY_INTEGER: 3,
     PROPERTY_BOOLEAN: 4,
-    PROPERTY_DOUBLE: 5
+    PROPERTY_DOUBLE: 5,
+    PROPERTY_ERROR: 6
 }
 
 /**
@@ -201,6 +202,9 @@ class ResultSet {
                 } else {
                     console.log("Unknown boolean type\n");
                 }
+                break;
+            case ResultSetScalarTypes.PROPERTY_ERROR:
+                throw value;
                 break;
             case ResultSetScalarTypes.PROPERTY_UNKNOWN:
                 console.log("Unknown scalar type\n");

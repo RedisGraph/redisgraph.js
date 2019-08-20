@@ -179,6 +179,13 @@ describe('RedisGraphAPI Test', () => {
 					console.info("ok")
 				}
 			});
-		})
-	})
+		});
+	});
+
+	it('test error reporting', () => {
+		api.query("RETURN abs('q')")
+		.then(values => { assert.fail("Expecting an error"); })
+		.catch( e => { });
+	});
+
 });
