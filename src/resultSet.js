@@ -10,16 +10,6 @@ const ResultSetColumnTypes = {
     COLUMN_RELATION: 3
 }
 
-/* deprecated */
-const ResultSetScalarTypes = {
-    PROPERTY_UNKNOWN: 0,
-    PROPERTY_NULL: 1,
-    PROPERTY_STRING: 2,
-    PROPERTY_INTEGER: 3,
-    PROPERTY_BOOLEAN: 4,
-    PROPERTY_DOUBLE: 5
-}
-
 const ResultSetValueTypes = {
     VALUE_UNKNOWN: 0,
     VALUE_NULL: 1,
@@ -191,11 +181,10 @@ class ResultSet {
     }
 
     async parseArray(rawArray) {
-        let res = [];
         for (var i = 0; i < rawArray.length; i++) {
-            res.push(await this.parseScalar(rawArray[i]));
+            rawArray[i] = await this.parseScalar(rawArray[i]);
         }
-        return res;
+        return rawArray;
     }
 
     async parseScalar(cell) {
