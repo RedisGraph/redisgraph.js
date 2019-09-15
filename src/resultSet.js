@@ -42,10 +42,11 @@ class ResultSet {
      */
     async parseResponse(resp) {
         if(Array.isArray(resp)) {
-            var len = resp.length 
-            if(resp[len - 1] instanceof ReplyError ) throw resp[len-1];
-            if(len < 3) {
-                this._statistics = new Statistics(resp[len - 1]);
+            let responseLen = resp.length;
+            let statisticsIdx = responseLen - 1;
+            if(resp[statisticsIdx] instanceof ReplyError ) throw resp[statisticsIdx];
+            if(responseLen < 3) {
+                this._statistics = new Statistics(resp[statisticsIdx]);
             } else {
                 await this.parseResults(resp);
                 this._resultsCount = this._results.length;
