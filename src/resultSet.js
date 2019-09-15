@@ -1,7 +1,8 @@
 const Statistics = require("./statistics"),
     Record = require("./record");
-Node = require("./node");
-Edge = require("./edge");
+    Node = require("./node");
+    Edge = require("./edge");
+    ReplyError = require("redis").ReplyError
 
 const ResultSetColumnTypes = {
     COLUMN_UNKNOWN: 0,
@@ -40,9 +41,11 @@ class ResultSet {
      *                    The last list is the statistics list.
      */
     async parseResponse(resp) {
-        if (Array.isArray(resp)) {
-            if (resp.length < 3) {
-                this._statistics = new Statistics(resp[resp.length - 1]);
+        if(Array.isArray(resp)) {
+            let statistics = resp[resp.length - 1];
+            if(statistics instanceof ReplyError) throw statistics;
+            if(resp.length < 3) {
+                this._statistics = new Statistics(statistics);
             } else {
                 await this.parseResults(resp);
                 this._resultsCount = this._results.length;

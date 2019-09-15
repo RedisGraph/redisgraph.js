@@ -263,4 +263,29 @@ describe('RedisGraphAPI Test', function () {
             console.log(error);
         })
     })
+
+    it('testCompileTimeException', (done) => {
+        api.query("CREATE ()").then(response => {
+            api.query("RETURN toUpper(5)").then(response => assert(false)).catch (err => {
+                assert(err instanceof redis.ReplyError);
+                assert.equal(err.message, "Type mismatch: expected String but was Integer");
+                done();
+            })
+        }).catch(error => {
+            console.log(error);
+        })
+    })
+
+    it('testRuntimeException', (done) => {
+        api.query("CREATE ({val:5})").then(response => {
+            api.query("MATCH (n) RETURN toUpper(n.val)").then(response => assert(false)).catch (err => {
+                assert(err instanceof redis.ReplyError);
+                assert.equal(err.message, "Type mismatch: expected String but was Integer");
+                done();
+            })
+        }).catch(error => {
+            console.log(error);
+        })
+    })
+
 });
