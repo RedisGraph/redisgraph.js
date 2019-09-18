@@ -15,8 +15,15 @@
 Installation is done using the
 [`npm install` command](https://docs.npmjs.com/getting-started/installing-npm-packages-locally):
 
+### Install official release
 ```bash
 npm install redisgraph.js
+```
+
+### Install latest version (Alligned with RedisGraph master branch)
+
+```bash
+npm install git+https://github.com/RedisGraph/redisgraph.js.git
 ```
 
 ## Overview
