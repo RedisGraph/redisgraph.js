@@ -4,11 +4,11 @@ class Path {
         this.edges = edges;
     }
 
-    getNodes(){
+    get Nodes(){
         return this.nodes;
     }
 
-    getEdges(){
+    get Edges(){
         return this.edges;
     }
 
@@ -20,19 +20,19 @@ class Path {
         return this.edges[index];
     }
 
-    firstNode(){
+    get firstNode(){
         return this.nodes[0];
     }
 
-    lastNode(){
+    get lastNode(){
         return this.nodes[this.nodes.length -1];
     }
 
-    nodeCount(){
+    get nodeCount(){
         return this.nodes.length;
     }
 
-    edgeCount(){
+    get edgeCount(){
         return this.edges.length;
     }
 

@@ -20,8 +20,15 @@ graph
 			let record = res.next();
 			console.log(record.getString("a.name"));
 		}
-		console.log(res.getStatistics().queryExecutionTime());
-	})
+        console.log(res.getStatistics().queryExecutionTime());
+        return graph.query("MATCH p = (a:person)-[:knows]->(:person) RETURN p");
+	}).then(res => {
+        while (res.hasNext()) {
+            let record = res.next();
+            // Check path.js for more path API
+			console.log(record.get(p).nodesCount);
+		}
+    })
 	.catch(err => {
 		console.log(err);
 	});

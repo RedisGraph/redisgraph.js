@@ -1,6 +1,6 @@
-Node = require("../src/node");
-Edge = require("../src/edge");
-Path = require("../src/path");
+const Node = require("../src/node"),
+    Edge = require("../src/edge"),
+    Path = require("../src/path");
 
 class PathBuilder {
     constructor(nodeCount){

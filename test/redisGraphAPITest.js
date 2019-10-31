@@ -1,8 +1,8 @@
 const assert = require("assert"),
     redis = require("redis"),
     Label = require("../src/label"),
-    RedisGraph = require("../src/graph");
-    PathBuilder = require("./pathBuilder");
+    RedisGraph = require("../src/graph"),
+    PathBuilder = require("./pathBuilder"),
     deepEqual = require('deep-equal');
 
 describe('RedisGraphAPI Test', function () {
@@ -288,6 +288,29 @@ describe('RedisGraphAPI Test', function () {
         }).catch(error => {
             console.log(error);
         })
+    })
+
+    it('unitTestPath', ()=>{
+        let node0 = new Node("L1", {});
+        node0.setId(0);
+        let node1 = new Node("L1", {});
+        node1.setId(1);
+
+        let edge01 = new Edge(0, "R1", 1, {});
+        edge01.setId(0);
+ 
+        let path01 = new PathBuilder().append(node0).append(edge01).append(node1).build();
+
+        assert.equal(1, path01.edgeCount);
+        assert.equal(2, path01.nodeCount);
+        assert.deepEqual(node0, path01.firstNode);
+        assert.deepEqual(node0, path01.getNode(0));
+        assert.deepEqual(node1, path01.lastNode);
+        assert.deepEqual(node1, path01.getNode(1));
+        assert.deepEqual(edge01, path01.getEdge(0));
+        assert.deepEqual([node0, node1], path01.nodes);
+        assert.deepEqual([edge01], path01.edges);
+
     })
 
     it('testPath', (done)=>{
