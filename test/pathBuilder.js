@@ -1,3 +1,4 @@
+"use strict";
 const Node = require("../src/node"),
     Edge = require("../src/edge"),
     Path = require("../src/path");

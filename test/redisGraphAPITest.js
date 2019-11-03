@@ -1,7 +1,11 @@
+"use strict";
 const assert = require("assert"),
     redis = require("redis"),
     Label = require("../src/label"),
     RedisGraph = require("../src/graph"),
+    Node = require("../src/node"),
+    Edge = require("../src/edge"),
+    Path = require("../src/path"),
     PathBuilder = require("./pathBuilder"),
     deepEqual = require('deep-equal');
 
@@ -336,7 +340,8 @@ describe('RedisGraphAPI Test', function () {
                     let p = response.next().get("p");
                     let pInPaths = false;
                     let path = null;
-                    for( pathsIterator = paths.values(); path = pathsIterator.next().value;){
+                    let pathsIterator = paths.values();
+                    for( pathsIterator; path = pathsIterator.next().value;){
                         if(deepEqual(p ,path)){
                             pInPaths = true;
                             break;

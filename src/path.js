@@ -1,3 +1,4 @@
+"use strict";
 class Path {
     constructor(nodes, edges){
         this.nodes = nodes;

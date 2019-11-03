@@ -1,3 +1,4 @@
+"use strict";
 const redis = require("redis"),
 	util = require("util"),
 	ResultSet = require("./resultSet");

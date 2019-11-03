@@ -1,9 +1,10 @@
+"use strict";
 const Statistics = require("./statistics"),
-    Record = require("./record");
-    Node = require("./node");
-    Edge = require("./edge");
-    Path = require("./path");
-    ReplyError = require("redis").ReplyError
+    Record = require("./record"),
+    Node = require("./node"),
+    Edge = require("./edge"),
+    Path = require("./path"),
+    ReplyError = require("redis").ReplyError;
 
 const ResultSetColumnTypes = {
     COLUMN_UNKNOWN: 0,

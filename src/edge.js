@@ -1,3 +1,4 @@
+"use strict";
 /**
  * An edge connecting two nodes.
  */
