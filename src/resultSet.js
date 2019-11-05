@@ -1,8 +1,10 @@
+"use strict";
 const Statistics = require("./statistics"),
-    Record = require("./record");
-    Node = require("./node");
-    Edge = require("./edge");
-    ReplyError = require("redis").ReplyError
+    Record = require("./record"),
+    Node = require("./node"),
+    Edge = require("./edge"),
+    Path = require("./path"),
+    ReplyError = require("redis").ReplyError;
 
 const ResultSetColumnTypes = {
     COLUMN_UNKNOWN: 0,
@@ -20,7 +22,8 @@ const ResultSetValueTypes = {
     VALUE_DOUBLE: 5,
     VALUE_ARRAY: 6,
     VALUE_EDGE: 7,
-    VALUE_NODE: 8
+    VALUE_NODE: 8,
+    VALUE_PATH: 9
 }
 
 /**
@@ -190,6 +193,12 @@ class ResultSet {
         return rawArray;
     }
 
+    async parsePath(rawPath) {
+        let nodes = await this.parseScalar(rawPath[0]);
+        let edges = await this.parseScalar(rawPath[1]);
+        return new Path(nodes, edges);
+    }
+
     async parseScalar(cell) {
         let scalar_type = cell[0];
         let value = cell[1];
@@ -223,6 +232,9 @@ class ResultSet {
                 break;
             case ResultSetValueTypes.VALUE_EDGE:
                 scalar = await this.parseEdge(value);
+                break;
+            case ResultSetValueTypes.VALUE_PATH:
+                scalar = await this.parsePath(value);
                 break;
             case ResultSetValueTypes.VALUE_UNKNOWN:
                 console.log("Unknown scalar type\n");

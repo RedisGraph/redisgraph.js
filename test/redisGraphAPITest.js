@@ -1,7 +1,13 @@
+"use strict";
 const assert = require("assert"),
     redis = require("redis"),
     Label = require("../src/label"),
-    RedisGraph = require("../src/graph");
+    RedisGraph = require("../src/graph"),
+    Node = require("../src/node"),
+    Edge = require("../src/edge"),
+    Path = require("../src/path"),
+    PathBuilder = require("./pathBuilder"),
+    deepEqual = require('deep-equal');
 
 describe('RedisGraphAPI Test', function () {
     const api = new RedisGraph("social");
@@ -281,6 +287,70 @@ describe('RedisGraphAPI Test', function () {
             api.query("MATCH (n) RETURN toUpper(n.val)").then(response => assert(false)).catch (err => {
                 assert(err instanceof redis.ReplyError);
                 assert.equal(err.message, "Type mismatch: expected String but was Integer");
+                done();
+            })
+        }).catch(error => {
+            console.log(error);
+        })
+    })
+
+    it('unitTestPath', ()=>{
+        let node0 = new Node("L1", {});
+        node0.setId(0);
+        let node1 = new Node("L1", {});
+        node1.setId(1);
+
+        let edge01 = new Edge(0, "R1", 1, {});
+        edge01.setId(0);
+ 
+        let path01 = new PathBuilder().append(node0).append(edge01).append(node1).build();
+
+        assert.equal(1, path01.edgeCount);
+        assert.equal(2, path01.nodeCount);
+        assert.deepEqual(node0, path01.firstNode);
+        assert.deepEqual(node0, path01.getNode(0));
+        assert.deepEqual(node1, path01.lastNode);
+        assert.deepEqual(node1, path01.getNode(1));
+        assert.deepEqual(edge01, path01.getEdge(0));
+        assert.deepEqual([node0, node1], path01.nodes);
+        assert.deepEqual([edge01], path01.edges);
+
+    })
+
+    it('testPath', (done)=>{
+        api.query("CREATE (:L1)-[:R1]->(:L1)-[:R1]->(:L1)").then(response => {
+            api.query("MATCH p = (:L1)-[:R1*]->(:L1) RETURN p").then(response =>{
+                let node0 = new Node("L1", {});
+                node0.setId(0);
+                let node1 = new Node("L1", {});
+                node1.setId(1);
+                let node2 = new Node("L1", {});
+                node2.setId(2);
+                let edge01 = new Edge(0, "R1", 1, {});
+                edge01.setId(0);
+                let edge12 = new Edge(1, "R1", 2, {});
+                edge12.setId(1);
+
+                let path01 = new PathBuilder().append(node0).append(edge01).append(node1).build();
+                let path12 = new PathBuilder().append(node1).append(edge12).append(node2).build();
+                let path02 = new PathBuilder().append(node0).append(edge01).append(node1).append(edge12).append(node2).build();
+
+                let paths = new Set([path01, path12, path02]);
+                while(response.hasNext()){
+                    let p = response.next().get("p");
+                    let pInPaths = false;
+                    let path = null;
+                    let pathsIterator = paths.values();
+                    for( pathsIterator; path = pathsIterator.next().value;){
+                        if(deepEqual(p ,path)){
+                            pInPaths = true;
+                            break;
+                        }
+                    }
+                   assert(pInPaths);
+                   paths.delete(path);
+                }
+                assert.equal(0, paths.size);
                 done();
             })
         }).catch(error => {

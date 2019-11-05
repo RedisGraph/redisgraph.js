@@ -1,3 +1,4 @@
+"use strict";
 /**
  * A node within the garph.
  */
