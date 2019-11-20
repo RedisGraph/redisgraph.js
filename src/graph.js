@@ -44,15 +44,50 @@ class Graph {
 			strings.push(resultSet.next().getString(0));
 		}
 		return strings;
-	}
+    }
+    
+    paramToString(paramValue) {
+        let paramType = typeof(paramValue);
+        if(paramType == "string") {
+            let strValue = "";
+            if (paramValue[0] != "\"")
+                strValue += "\"";
+            strValue += paramValue;
+            if(paramValue[paramValue.length-1] != "\"")
+                strValue += "\"";
+            return strValue;
+        }
+        if(Array.isArray(paramValue))
+            return "[" + paramValue.toString() + "]";
+        return paramValue;
+    }
+
+    /**
+     * Extracts parameters from dictionary into cypher parameters string.
+     * 
+     * @param params parameters dictionary.
+     * @return a cypher parameters string.
+     */
+    buildParamsHeader(params) {
+        let paramsHeader = "CYPHER ";
+        for (var key in params) {
+            let value = this.paramToString(params[key]);
+            paramsHeader += `${key}=${value} `;
+        }
+        return paramsHeader;
+    }
 
 	/**
 	 * Execute a Cypher query (async)
 	 *
 	 * @param query Cypher query
+     * @param params Parameters map
 	 * @return a promise contains a result set
 	 */
-	async query(query) {
+	async query(query, params) {
+        if(params){
+            query =  this.buildParamsHeader(params) + query;
+        }
 		var res = await this._sendCommand("graph.QUERY", [this._graphId, query, "--compact"]);
 		var resultSet = new ResultSet(this);
 		return resultSet.parseResponse(res);
