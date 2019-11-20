@@ -359,7 +359,7 @@ describe('RedisGraphAPI Test', function () {
     })
 
     it('testParam', (done) => {
-        let params = [1, 2.3, true, false, null, "str", [1,2,3]];
+        let params = [1, 2.3, true, false, null, "str", [1,2,3], null];
         let promises =[];
         for (var i =0; i < params.length; i++){
             let param = {'param':params[i]};
@@ -376,6 +376,5 @@ describe('RedisGraphAPI Test', function () {
         }).catch(error => {
             console.log(error);
         })
-
     })
 });

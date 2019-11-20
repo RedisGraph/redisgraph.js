@@ -47,6 +47,8 @@ class Graph {
     }
     
     paramToString(paramValue) {
+        if(paramValue == null)
+            return "null"
         let paramType = typeof(paramValue);
         if(paramType == "string") {
             let strValue = "";
