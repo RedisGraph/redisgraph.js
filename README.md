@@ -43,14 +43,21 @@ graph.query("CREATE (:person{name:'roi',age:32})").then(() => {
                         console.log(record.get("a.name"));
                     }
                     console.log(res.getStatistics().queryExecutionTime());
-                    graph.query("MATCH p = (a:person)-[:knows]->(:person) RETURN p").then(res=>{
+                    let param = {'age': 30};
+                    graph.query("MATCH (a {age: $age}) return a.name", param).then(res=>{
                         while (res.hasNext()) {
                             let record = res.next();
-                            // See path.js for more path API.
-                            console.log(record.get("p").nodeCount);
-                            graph.deleteGraph();
-                            process.exit();
+                            console.log(record.get("a.name"));
                         }
+                        graph.query("MATCH p = (a:person)-[:knows]->(:person) RETURN p").then(res=>{
+                            while (res.hasNext()) {
+                                let record = res.next();
+                                // See path.js for more path API.
+                                console.log(record.get("p").nodeCount);
+                                graph.deleteGraph();
+                                process.exit();
+                            }
+                        })
                     })
                 })
             })
