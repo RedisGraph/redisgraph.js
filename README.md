@@ -7,6 +7,7 @@
 
 [![Mailing List](https://img.shields.io/badge/Mailing%20List-RedisGraph-blue)](https://groups.google.com/forum/#!forum/redisgraph)
 [![Gitter](https://badges.gitter.im/RedisLabs/RedisGraph.svg)](https://gitter.im/RedisLabs/RedisGraph?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FRedisGraph%2Fredisgraph.js.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FRedisGraph%2Fredisgraph.js?ref=badge_shield)
 
 # redisgraph.js
 
@@ -79,3 +80,6 @@ redisgraph.js is distributed under the BSD3 license - see [LICENSE](LICENSE)
 
 [npm-image]: https://img.shields.io/npm/v/express.svg
 [npm-url]: https://npmjs.org/package/redisgraph.js
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FRedisGraph%2Fredisgraph.js.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FRedisGraph%2Fredisgraph.js?ref=badge_large)
