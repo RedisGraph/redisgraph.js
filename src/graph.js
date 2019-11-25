@@ -59,8 +59,13 @@ class Graph {
                 strValue += "\"";
             return strValue;
         }
-        if(Array.isArray(paramValue))
-            return "[" + paramValue.toString() + "]";
+        if(Array.isArray(paramValue)) {
+            let stringsArr = new Array(paramValue.length);
+            for(var i = 0; i < paramValue.length; i++) {
+                stringsArr[i] = this.paramToString(paramValue[i]);
+            }
+            return "[" + stringsArr.join(", ") + "]";
+        }
         return paramValue;
     }
 
