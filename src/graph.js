@@ -71,12 +71,14 @@ class Graph {
      * @return a cypher parameters string.
      */
     buildParamsHeader(params) {
-        let paramsHeader = "CYPHER ";
+        let paramsArray = ["CYPHER"]
+
         for (var key in params) {
             let value = this.paramToString(params[key]);
-            paramsHeader += `${key}=${value} `;
+            paramsArray.push(`${key}=${value}`);
         }
-        return paramsHeader;
+        paramsArray.push(' ');
+        return paramsArray.join(' ');
     }
 
 	/**
