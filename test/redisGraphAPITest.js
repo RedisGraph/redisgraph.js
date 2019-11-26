@@ -358,4 +358,38 @@ describe('RedisGraphAPI Test', function () {
         })
     })
 
+    it('testParam', (done) => {
+        let params = [1, 2.3, true, false, null, "str", [1,2,3], ["1", "2", "3"], null];
+        let promises =[];
+        for (var i =0; i < params.length; i++){
+            let param = {'param':params[i]};
+            promises.push(api.query("RETURN $param", param));
+        }
+        Promise.all(promises).then(values => {
+            for (var i =0; i < values.length; i++) {
+                let resultSet = values[i];
+                let record = resultSet.next();
+                let param = record.get(0);
+                assert.deepEqual(param, params[i]);
+            }
+            done();
+        }).catch(error => {
+            console.log(error);
+        })
+    })
+    it('testMissingParameter', (done)=> {
+        api.query("RETURN $param").then(response => assert(false)).catch (err => {
+            assert(err instanceof redis.ReplyError);
+            assert.equal(err.message, "Missing parameters");
+            api.query("RETURN $param", null).then(response => assert(false)).catch (err => {
+                assert(err instanceof redis.ReplyError);
+                assert.equal(err.message, "Missing parameters");
+                api.query("RETURN $param", {}).then(response => assert(false)).catch (err => {
+                    assert(err instanceof redis.ReplyError);
+                    assert.equal(err.message, "Missing parameters");
+                    done();
+                })
+            })
+        })
+    })
 });
