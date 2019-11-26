@@ -64,7 +64,7 @@ class Graph {
             for(var i = 0; i < paramValue.length; i++) {
                 stringsArr[i] = this.paramToString(paramValue[i]);
             }
-            return "[" + stringsArr.join(", ") + "]";
+            return ["[", stringsArr.join(", "),"]"].join("");
         }
         return paramValue;
     }
