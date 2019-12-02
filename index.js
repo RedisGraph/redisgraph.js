@@ -5,9 +5,9 @@ const Record = require("./src/record"),
 	Label = require("./src/label");
 
 module.exports = {
-	Record: Record,
-	Graph: Graph,
-	ResultSet: ResultSet,
-	Statistics: Statistics,
-	Label: Label
+	Record,
+	Graph,
+	ResultSet,
+	Statistics,
+	Label
 };
