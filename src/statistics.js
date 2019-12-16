@@ -59,7 +59,15 @@ class Statistics {
 
 	propertiesSet() {
 		return this.getIntValue(Label.PROPERTIES_SET);
-	}
+    }
+    
+    indicesCreated(){
+        return this.getIntValue(Label.INDICES_CREATED);
+    }
+
+    indicesDeleted(){
+        return this.getIntValue(Label.INDICES_DELETED);
+    }
 
 	queryExecutionTime() {
 		return this.getFloatValue(Label.QUERY_INTERNAL_EXECUTION_TIME);

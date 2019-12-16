@@ -392,4 +392,20 @@ describe('RedisGraphAPI Test', function () {
             })
         })
     })
+    it('testIndexResponse', (done)=>{
+        api.query("CREATE INDEX ON :person(age)").then(response=>{
+            assert.equal(1, response.getStatistics().indicesCreated())
+            api.query("CREATE INDEX ON :person(age)").then(response=>{
+                assert.equal(0, response.getStatistics().indicesCreated())
+                api.query("DROP INDEX ON :person(age)").then(response=>{
+                    assert.equal(1, response.getStatistics().indicesDeleted())
+                    api.query("DROP INDEX ON :person(age)").then(response=>{assert(false)}).catch(err =>{
+                    assert(err instanceof redis.ReplyError);
+                    assert.equal(err.message, "ERR Unable to drop index on :person(age): no such index.")
+                    done();
+                    })
+                })
+            })
+        })
+    })
 });
