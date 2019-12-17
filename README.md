@@ -22,6 +22,12 @@ Installation is done using the
 npm install redisgraph.js
 ```
 
+For installing the latest snapshot use
+```bash
+npm install github:RedisGraph/redisgraph.js.git
+```
+
+
 ## Overview
 
 ### Official Releases
