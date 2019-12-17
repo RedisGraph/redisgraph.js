@@ -9,7 +9,7 @@
 		"url": "git://github.com/redislabs/redisgraph.js.git"
 	},
 	"dependencies": {
-		"redisgraph.js": "^1.2.0"
+		"redisgraph.js": "github:RedisGraph/redisgraph.js"
 	},
 	"main": "redisGraphExample.js"
 }

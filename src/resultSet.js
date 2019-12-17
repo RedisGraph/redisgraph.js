@@ -118,7 +118,7 @@ class ResultSet {
 
     async parseEntityProperties(props) {
         // [[name, value, value type] X N]
-        let properties = {}
+        let properties = {};
         for (var i = 0; i < props.length; i++) {
             let prop = props[i];
             var propIndex = prop[0];
@@ -172,7 +172,7 @@ class ResultSet {
         // will try to get the right relationship type for at most 10 times
         var tries = 0;
         while (relation == undefined && tries < 10) {
-            relation = await this._graph.fetchAndGetRelationship(cell[1])
+            relation = await this._graph.fetchAndGetRelationship(cell[1]);
             tries++;
         }
         if (relation == undefined) {
