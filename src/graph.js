@@ -17,14 +17,14 @@ class Graph {
 	 * @param options node_redis options
 	 */
 	constructor(graphId, host, port, options) {
-		this._graphId = graphId;				// Graph ID
-		this._labels = [];            			// List of node labels.
-		this._relationshipTypes = []; 			// List of relation types.
-		this._properties = [];        			// List of properties.
+		this._graphId = graphId;        // Graph ID
+		this._labels = [];              // List of node labels.
+		this._relationshipTypes = [];   // List of relation types.
+		this._properties = [];          // List of properties.
 
-		this._labelsPromise = undefined;		// used as a synchronization mechanizom for labels retrival
-		this._propertyPromise = undefined;		// used as a synchronization mechanizom for property names retrival
-		this._relationshipPromise = undefined;	// used as a synchronization mechanizom for relationship types retrival
+		this._labelsPromise = undefined;        // used as a synchronization mechanizom for labels retrival
+		this._propertyPromise = undefined;      // used as a synchronization mechanizom for property names retrival
+		this._relationshipPromise = undefined;  // used as a synchronization mechanizom for relationship types retrival
 
 		let client =
 			host instanceof redis.RedisClient
@@ -44,60 +44,61 @@ class Graph {
 			strings.push(resultSet.next().getString(0));
 		}
 		return strings;
-    }
-    
-    paramToString(paramValue) {
-        if(paramValue == null)
-            return "null";
-        let paramType = typeof(paramValue);
-        if(paramType == "string") {
-            let strValue = "";
-            if (paramValue[0] != "\"")
-                strValue += "\"";
-            strValue += paramValue;
-            if(paramValue[paramValue.length-1] != "\"")
-                strValue += "\"";
-            return strValue;
-        }
-        if(Array.isArray(paramValue)) {
-            let stringsArr = new Array(paramValue.length);
-            for(var i = 0; i < paramValue.length; i++) {
-                stringsArr[i] = this.paramToString(paramValue[i]);
-            }
-            return ["[", stringsArr.join(", "),"]"].join("");
-        }
-        return paramValue;
-    }
+	}
 
-    /**
-     * Extracts parameters from dictionary into cypher parameters string.
-     * 
-     * @param params parameters dictionary.
-     * @return a cypher parameters string.
-     */
-    buildParamsHeader(params) {
-        let paramsArray = ["CYPHER"]
+	paramToString(paramValue) {
+		if (paramValue == null) return "null";
+		let paramType = typeof paramValue;
+		if (paramType == "string") {
+			let strValue = "";
+			if (paramValue[0] != '"') strValue += '"';
+			strValue += paramValue;
+			if (paramValue[paramValue.length - 1] != '"') strValue += '"';
+			return strValue;
+		}
+		if (Array.isArray(paramValue)) {
+			let stringsArr = new Array(paramValue.length);
+			for (var i = 0; i < paramValue.length; i++) {
+				stringsArr[i] = this.paramToString(paramValue[i]);
+			}
+			return ["[", stringsArr.join(", "), "]"].join("");
+		}
+		return paramValue;
+	}
 
-        for (var key in params) {
-            let value = this.paramToString(params[key]);
-            paramsArray.push(`${key}=${value}`);
-        }
-        paramsArray.push(' ');
-        return paramsArray.join(' ');
-    }
+	/**
+	 * Extracts parameters from dictionary into cypher parameters string.
+	 *
+	 * @param params parameters dictionary.
+	 * @return a cypher parameters string.
+	 */
+	buildParamsHeader(params) {
+		let paramsArray = ["CYPHER"];
+
+		for (var key in params) {
+			let value = this.paramToString(params[key]);
+			paramsArray.push(`${key}=${value}`);
+		}
+		paramsArray.push(" ");
+		return paramsArray.join(" ");
+	}
 
 	/**
 	 * Execute a Cypher query (async)
 	 *
 	 * @param query Cypher query
-     * @param params Parameters map
+	 * @param params Parameters map
 	 * @return a promise contains a result set
 	 */
 	async query(query, params) {
-        if(params){
-            query =  this.buildParamsHeader(params) + query;
-        }
-		var res = await this._sendCommand("graph.QUERY", [this._graphId, query, "--compact"]);
+		if (params) {
+			query = this.buildParamsHeader(params) + query;
+		}
+		var res = await this._sendCommand("graph.QUERY", [
+			this._graphId,
+			query,
+			"--compact"
+		]);
 		var resultSet = new ResultSet(this);
 		return resultSet.parseResponse(res);
 	}
@@ -118,15 +119,15 @@ class Graph {
 	}
 
 	/**
-	* Calls procedure
-	*
-	* @param procedure Procedure to call
-	* @param args Arguments to pass
-	* @param y Yield outputs
-	* @return a promise contains the procedure result set data
-	*/
+	 * Calls procedure
+	 *
+	 * @param procedure Procedure to call
+	 * @param args Arguments to pass
+	 * @param y Yield outputs
+	 * @return a promise contains the procedure result set data
+	 */
 	callProcedure(procedure, args = new Array(), y = new Array()) {
-		let q = "CALL " + procedure + "(" + args.join(',') + ")" + y.join(' ');
+		let q = "CALL " + procedure + "(" + args.join(",") + ")" + y.join(" ");
 		return this.query(q);
 	}
 
@@ -135,13 +136,14 @@ class Graph {
 	 */
 	async labels() {
 		if (this._labelsPromise == undefined) {
-			this._labelsPromise = this.callProcedure("db.labels").then(response => {
-				return this._extractStrings(response);
-			})
-			this._labels = await (this._labelsPromise);
+			this._labelsPromise = this.callProcedure("db.labels").then(
+				response => {
+					return this._extractStrings(response);
+				}
+			);
+			this._labels = await this._labelsPromise;
 			this._labelsPromise = undefined;
-		}
-		else {
+		} else {
 			await this._labelsPromise;
 		}
 	}
@@ -151,13 +153,14 @@ class Graph {
 	 */
 	async relationshipTypes() {
 		if (this._relationshipPromise == undefined) {
-			this._relationshipPromise = this.callProcedure("db.relationshipTypes").then(response => {
+			this._relationshipPromise = this.callProcedure(
+				"db.relationshipTypes"
+			).then(response => {
 				return this._extractStrings(response);
 			});
-			this._relationshipTypes = await (this._relationshipPromise);
+			this._relationshipTypes = await this._relationshipPromise;
 			this._relationshipPromise = undefined;
-		}
-		else {
+		} else {
 			await this._relationshipPromise;
 		}
 	}
@@ -167,17 +170,16 @@ class Graph {
 	 */
 	async propertyKeys() {
 		if (this._propertyPromise == undefined) {
-			this._propertyPromise = this.callProcedure("db.propertyKeys").then(response => {
-				return this._extractStrings(response);
-			})
+			this._propertyPromise = this.callProcedure("db.propertyKeys").then(
+				response => {
+					return this._extractStrings(response);
+				}
+			);
 			this._properties = await this._propertyPromise;
 			this._propertyPromise = undefined;
-		}
-		else{
+		} else {
 			await this._propertyPromise;
 		}
-
-
 	}
 
 	/**

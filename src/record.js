@@ -15,17 +15,17 @@ class Record {
 		}
 		return this._values[index];
 	}
-	
+
 	getString(key) {
 		let index = key;
 		if (typeof key === "string") {
 			index = this._header.indexOf(key);
 		}
-		
+
 		if (this._values[index]) {
 			return this._values[index].toString();
 		}
-		
+
 		return null;
 	}
 
