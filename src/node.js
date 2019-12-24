@@ -3,6 +3,12 @@
  * A node within the garph.
  */
 class Node {
+    /**
+     * Builds a node object.
+     * @constructor
+     * @param {string} label - node label.
+     * @param {Map} properties - properties map.
+     */
 	constructor(label, properties) {
 		this.id = undefined;            //node's id - set by RedisGraph
 		this.label = label;             //node's label
