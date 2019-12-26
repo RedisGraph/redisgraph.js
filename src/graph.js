@@ -12,9 +12,9 @@ class Graph {
 	 * See: node_redis for more options on createClient
 	 *
 	 * @param {string} graphId the graph id
-	 * @param {*} host Redis host or node_redis client
-	 * @param {*} port Redis port
-	 * @param {*} options node_redis options
+	 * @param {string | RedisClient} [host] Redis host or node_redis client
+	 * @param {string} [port] Redis port
+	 * @param {ClientOpts} [options] node_redis options
 	 */
 	constructor(graphId, host, port, options) {
 		this._graphId = graphId;        // Graph ID
@@ -37,6 +37,7 @@ class Graph {
 	 * Auxiliary function to extract string(s) data from procedures such as:
 	 * db.labels, db.propertyKeys and db.relationshipTypes
 	 * @param {ResultSet} resultSet - a procedure result set
+     * @returns {string[]} strings array.
 	 */
 	_extractStrings(resultSet) {
 		var strings = [];
@@ -48,7 +49,8 @@ class Graph {
 
     /**
      * Transforms a parameter value to string.
-     * @param {*} paramValue 
+     * @param {object} paramValue 
+     * @returns {string} the string representation of paramValue.
      */
 	paramToString(paramValue) {
 		if (paramValue == null) return "null";
@@ -73,7 +75,7 @@ class Graph {
 	/**
 	 * Extracts parameters from dictionary into cypher parameters string.
 	 * @param {Map} params parameters dictionary.
-	 * @return a cypher parameters string.
+	 * @return {string} a cypher parameters string.
 	 */
 	buildParamsHeader(params) {
 		let paramsArray = ["CYPHER"];
@@ -87,10 +89,11 @@ class Graph {
 	}
 
 	/**
-	 * Execute a Cypher query (async)
-	 * @param query Cypher query
-	 * @param params Parameters map
-	 * @return a promise contains a result set
+	 * Execute a Cypher query
+     * @async
+	 * @param {string} query Cypher query
+	 * @param {Map} [params] Parameters map
+	 * @returns {ResultSet} a promise contains a result set
 	 */
 	async query(query, params) {
 		if (params) {
@@ -106,8 +109,9 @@ class Graph {
 	}
 
 	/**
-	 * Deletes the entire graph (async)
-	 * @return a promise contains the delete operation running time statistics
+	 * Deletes the entire graph
+     * @async
+	 * @returns {ResultSet} a promise contains the delete operation running time statistics
 	 */
 	async deleteGraph() {
 		var res = await this._sendCommand("graph.DELETE", [this._graphId]);
@@ -121,10 +125,10 @@ class Graph {
 
 	/**
 	 * Calls procedure
-	 * @param procedure Procedure to call
-	 * @param args Arguments to pass
-	 * @param y Yield outputs
-	 * @return a promise contains the procedure result set data
+	 * @param {string} procedure Procedure to call
+	 * @param {string[]} [args] Arguments to pass
+	 * @param {string[]} [y] Yield outputs
+	 * @returns {ResultSet} a promise contains the procedure result set data
 	 */
 	callProcedure(procedure, args = new Array(), y = new Array()) {
 		let q = "CALL " + procedure + "(" + args.join(",") + ")" + y.join(" ");
@@ -132,7 +136,8 @@ class Graph {
 	}
 
 	/**
-	 * Retrieves all labels in graph (async).
+	 * Retrieves all labels in graph.
+     * @async
 	 */
 	async labels() {
 		if (this._labelsPromise == undefined) {
@@ -149,7 +154,8 @@ class Graph {
 	}
 
 	/**
-	 * Retrieves all relationship types in graph (async).
+	 * Retrieves all relationship types in graph.
+     * @async
 	 */
 	async relationshipTypes() {
 		if (this._relationshipPromise == undefined) {
@@ -166,7 +172,8 @@ class Graph {
 	}
 
 	/**
-	 * Retrieves all properties in graph (async).
+	 * Retrieves all properties in graph.
+     * @async
 	 */
 	async propertyKeys() {
 		if (this._propertyPromise == undefined) {
@@ -184,17 +191,18 @@ class Graph {
 
 	/**
 	 * Retrieves label by ID.
-	 * @param id internal ID of label.
-	 * @return String label.
+	 * @param {int} id internal ID of label.
+	 * @returns {string} String label.
 	 */
 	getLabel(id) {
 		return this._labels[id];
 	}
 
 	/**
-	 * Retrive all the labels from the graph and returns the wanted label
-	 * @param id internal ID of label.
-	 * @return String label.
+	 * Retrieve all the labels from the graph and returns the wanted label
+     * @async
+	 * @param {int} id internal ID of label.
+	 * @returns {string} String label.
 	 */
 	async fetchAndGetLabel(id) {
 		await this.labels();
@@ -203,7 +211,7 @@ class Graph {
 
 	/**
 	 * Retrieves relationship type by ID.
-	 * @param id internal ID of relationship type.
+	 * @param {int} id internal ID of relationship type.
 	 * @return String relationship type.
 	 */
 	getRelationship(id) {
@@ -211,9 +219,10 @@ class Graph {
 	}
 
 	/**
-	 * Retrives al the relationshipe types from the graph, and returns the wanted type
-	 * @param id internal ID of relationship type.
-	 * @return String relationship type.
+	 * Retrieves al the relationships types from the graph, and returns the wanted type
+     * @async
+	 * @param {int} id internal ID of relationship type.
+	 * @returns {string} String relationship type.
 	 */
 	async fetchAndGetRelationship(id) {
 		await this.relationshipTypes();
@@ -222,17 +231,18 @@ class Graph {
 
 	/**
 	 * Retrieves property name by ID.
-	 * @param id internal ID of property.
-	 * @return String property.
+	 * @param {int} id internal ID of property.
+	 * @returns {string} String property.
 	 */
 	getProperty(id) {
 		return this._properties[id];
 	}
 
 	/**
-	 * Retrives al the properties from the graph, and returns the wanted property
-	 * @param id internal ID of property.
-	 * @return String property.
+	 * Retrieves al the properties from the graph, and returns the wanted property
+     * @async
+	 * @param {int} id internal ID of property.
+	 * @returns {string} String property.
 	 */
 	async fetchAndGetProperty(id) {
 		await this.propertyKeys();

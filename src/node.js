@@ -15,10 +15,17 @@ class Node {
 		this.properties = properties;   //node's list of properties (list of Key:Value)
 	}
 
+    /**
+     * Sets the node id.
+     * @param {int} id 
+     */
 	setId(id) {
 		this.id = id;
 	}
 
+    /**
+     * @returns {string} The string representation of the node.
+     */
 	toString() {
 		return JSON.stringify(this);
 	}

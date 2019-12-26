@@ -35,6 +35,31 @@ jobs:
       - run: istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec --exit 
       - run: codecov -t ${CODECOV_TOKEN}
 
+  docs:
+    docker:
+        - image: circleci/node:10.15
+  
+    working_directory: ~/repo
+    
+    steps:
+      - checkout
+      - run:
+        name: Install and configure dependencies
+        command: |
+            npm install -g --silent gh-pages@2.0.1
+            npm install -g --silent jsdoc
+            git config user.email "ci-build@redisgraph.io"
+            git config user.name "ci-build"
+      - add_ssh_keys:
+        fingerprints:
+          - "76:ad:7c:fa:32:41:29:d0:cc:f6:63:06:62:b6:54:9c"
+      - run:
+        name: Create docs with jsdoc
+        command: jsdoc ./src -r -d ./docs -R ./README.md
+      - run:
+        name: Deploy docs to gh-pages branch
+        command: gh-pages --dist ./docs --branch master --dest ./docs
+
 workflows:
   version: 2
   commit:
@@ -50,3 +75,4 @@ workflows:
                 - master
     jobs:
       - build
+      - docs

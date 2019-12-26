@@ -15,13 +15,21 @@ class Edge {
 		this.id = undefined;            //edge's id - set by RedisGraph
 		this.relation = relation;       //edge's relationship type
 		this.srcNode = srcNode;         //edge's source node
-		this.destNode = destNode;       //edge's destinatio node
+		this.destNode = destNode;       //edge's destination node
 		this.properties = properties;   //edge's list of properties (list of Key:Value)
 	}
 
+    /**
+     * Sets the edge ID.
+     * @param {int} id 
+     */
 	setId(id) {
 		this.id = id;
-	}
+    }
+    
+    /**
+     * @returns The string representation of the edge.
+     */
 	toString() {
 		return JSON.stringify(this);
 	}

@@ -6,8 +6,8 @@ class Record {
     /**
      * Builds a Record object
      * @constructor
-     * @param {*} header 
-     * @param {*} values 
+     * @param {string[]} header 
+     * @param {object[]} values 
      */
 	constructor(header, values) {
 		this._header = header;
@@ -17,7 +17,7 @@ class Record {
     /**
      * Returns a value of the given schema key or in the given position.
      * @param {string | int} key
-     * @returns Requested value.
+     * @returns {object} Requested value.
      */
 	get(key) {
 		let index = key;
@@ -30,7 +30,7 @@ class Record {
     /**
      * Returns a string representation for the value of the given schema key or in the given position.
      * @param {string | int} key
-     * @returns Requested string representation of the value.
+     * @returns {string} Requested string representation of the value.
      */
 	getString(key) {
 		let index = key;
@@ -46,14 +46,14 @@ class Record {
 	}
 
     /**
-     * @returns The record header - List of strings.
+     * @returns {string[]} The record header - List of strings.
      */
 	keys() {
 		return this._header;
 	}
 
     /**
-     * @returns The record values - List of values.
+     * @returns {object[]} The record values - List of values.
      */
 	values() {
 		return this._values;
@@ -62,14 +62,14 @@ class Record {
     /**
      * Returns if the header contains a given key.
      * @param {string} key 
-     * @returns true if header contains key.
+     * @returns {boolean} true if header contains key.
      */
 	containsKey(key) {
 		return this._header.includes(key);
 	}
 
     /**
-     * @returns The amount of values in the record.
+     * @returns {int} The amount of values in the record.
      */
 	size() {
 		return this._header.length;

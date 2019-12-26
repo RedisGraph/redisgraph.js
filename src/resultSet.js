@@ -45,7 +45,8 @@ class ResultSet {
 
 	/**
 	 * Parse raw response data to ResultSet object.
-	 * @param  resp  - raw response representation - the raw representation of response is at most 3 lists of objects.
+     * @async
+	 * @param {object[]} resp  - raw response representation - the raw representation of response is at most 3 lists of objects.
 	 *                    The last list is the statistics list.
 	 */
 	async parseResponse(resp) {
@@ -67,7 +68,8 @@ class ResultSet {
 
     /**
      * Parse a raw response body into header an records.
-     * @param {*} resp 
+     * @async
+     * @param {object[]} resp raw response
      */
 	async parseResults(resp) {
 		this.parseHeader(resp[0]);
@@ -78,7 +80,7 @@ class ResultSet {
 	 * A raw representation of a header (query response schema) is a list.
 	 * Each entry in the list is a tuple (list of size 2).
 	 * tuple[0] represents the type of the column, and tuple[1] represents the name of the column.
-	 * @param  rawHeader
+	 * @param {object[]} rawHeader raw header
 	 */
 	parseHeader(rawHeader) {
 		// An array of column name/column type pairs.
@@ -93,7 +95,8 @@ class ResultSet {
 	/**
 	 * The raw representation of response is at most 3 lists of objects. rawResultSet[1] contains the data records.
 	 * Each entry in the record can be either a node, an edge or a scalar
-	 * @param  rawResultSet
+     * @async
+	 * @param {object[]} rawResultSet raw result set representation
 	 */
 	async parseRecords(rawResultSet) {
 		let result_set = rawResultSet[1];
@@ -126,8 +129,9 @@ class ResultSet {
 
     /**
      * Parse raw entity properties representation into a Map
-     * @param {*} props
-     * @returns Map with the parsed properties. 
+     * @async
+     * @param {object[]} props raw properties representation
+     * @returns {Map} Map with the parsed properties. 
      */
 	async parseEntityProperties(props) {
 		// [[name, value, value type] X N]
@@ -156,8 +160,9 @@ class ResultSet {
 
     /**
      * Parse raw node representation into a Node object.
-     * @param {*} cell
-     * @returns Node object.
+     * @async
+     * @param {object[]} cell raw node representation.
+     * @returns {Node} Node object.
      */
 	async parseNode(cell) {
 		// Node ID (integer),
@@ -185,8 +190,9 @@ class ResultSet {
 
     /**
      * Parse a raw edge representation into an Edge object.
-     * @param {*} cell 
-     * @returns Edge object.
+     * @async
+     * @param {object[]} cell raw edge representation
+     * @returns {Edge} Edge object.
      */
 	async parseEdge(cell) {
 		// Edge ID (integer),
@@ -219,8 +225,9 @@ class ResultSet {
 
     /**
      * Parse and in-place replace raw array into an array of values or objects.
-     * @param {*} rawArray 
-     * @returns Parsed array.
+     * @async
+     * @param {object[]} rawArray raw array representation
+     * @returns {object[]} Parsed array.
      */
 	async parseArray(rawArray) {
 		for (var i = 0; i < rawArray.length; i++) {
@@ -231,8 +238,9 @@ class ResultSet {
 
     /**
      * Parse a raw path representation into Path object.
-     * @param {*} rawPath
-     * @returns Path object.
+     * @async
+     * @param {object[]} rawPath raw path representation
+     * @returns {Path} Path object.
      */
 	async parsePath(rawPath) {
 		let nodes = await this.parseScalar(rawPath[0]);
@@ -242,8 +250,9 @@ class ResultSet {
 
     /**
      * Parse a raw value into its actual value.
-     * @param {*} cell 
-     * @returns Actual value - scalar, array, Node, Edge, Path
+     * @async
+     * @param {object[]} cell raw value representation 
+     * @returns {object} Actual value - scalar, array, Node, Edge, Path
      */
 	async parseScalar(cell) {
 		let scalar_type = cell[0];
@@ -290,28 +299,28 @@ class ResultSet {
 	}
 
     /**
-     * @returns ResultSet's header.
+     * @returns {string[] }ResultSet's header.
      */
 	getHeader() {
 		return this._typelessHeader;
 	}
 
     /**
-     * @returns If the ResultSet object can return additional records.
+     * @returns {boolean} If the ResultSet object can return additional records.
      */
 	hasNext() {
 		return this._position < this._resultsCount;
 	}
 
     /**
-     * @returns The current record.
+     * @returns {Record} The current record.
      */
 	next() {
 		return this._results[this._position++];
 	}
 
     /**
-     * @returns ResultsSet's statistics.
+     * @returns {Statistics} ResultsSet's statistics.
      */
 	getStatistics() {
 		return this._statistics;

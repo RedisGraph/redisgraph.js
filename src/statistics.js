@@ -5,7 +5,7 @@ class Statistics {
     /**
      * Builds a query statistics object out of raw data.
      * @constructor
-     * @param {*} raw - raw data.
+     * @param {object[]} raw - raw data.
      */
 	constructor(raw) {
 		this._raw = raw;
@@ -21,7 +21,7 @@ class Statistics {
 
 	/**
 	 * Return the query statistics
-	 * @return statistics object
+	 * @return {Statistics} statistics object
 	 */
 	getStatistics() {
 		if (!this._statistics) {
@@ -37,7 +37,7 @@ class Statistics {
     /**
      * Returns the integer value of a requested label.
      * @param {Label} label 
-     * @returns The actual value if exists, 0 otherwise.
+     * @returns {int} The actual value if exists, 0 otherwise.
      */
 	getIntValue(label) {
 		let value = this.getStringValue(label);
@@ -47,7 +47,7 @@ class Statistics {
      /**
      * Returns the float value of a requested label.
      * @param {Label} label 
-     * @returns The actual value if exists, 0 otherwise.
+     * @returns {float} The actual value if exists, 0 otherwise.
      */
 	getFloatValue(label) {
 		let value = this.getStringValue(label);
@@ -55,63 +55,63 @@ class Statistics {
 	}
 
     /**
-     * @returns The amount of nodes created by th query.
+     * @returns {int} The amount of nodes created by th query.
      */
 	nodesCreated() {
 		return this.getIntValue(Label.NODES_CREATED);
 	}
 
     /**
-     * @returns The amount of nodes deleted by the query.
+     * @returns {int} The amount of nodes deleted by the query.
      */
 	nodesDeleted() {
 		return this.getIntValue(Label.NODES_DELETED);
 	}
 
     /**
-     * @returns The amount of labels created by the query.
+     * @returns {int} The amount of labels created by the query.
      */
 	labelsAdded() {
 		return this.getIntValue(Label.LABELS_ADDED);
 	}
 
     /**
-     * @returns The amount of relationships deleted by the query.
+     * @returns {int} The amount of relationships deleted by the query.
      */
 	relationshipsDeleted() {
 		return this.getIntValue(Label.RELATIONSHIPS_DELETED);
 	}
 
     /**
-     * @returns The amount of relationships created by the query.
+     * @returns {int} The amount of relationships created by the query.
      */
 	relationshipsCreated() {
 		return this.getIntValue(Label.RELATIONSHIPS_CREATED);
 	}
 
     /**
-     * @returns The amount of properties set by the query.
+     * @returns {int} The amount of properties set by the query.
      */
 	propertiesSet() {
 		return this.getIntValue(Label.PROPERTIES_SET);
 	}
 
     /**
-     * @returns The amount of indices created by the query.
+     * @returns {int} The amount of indices created by the query.
      */
 	indicesCreated() {
 		return this.getIntValue(Label.INDICES_CREATED);
 	}
 
     /**
-     * @returns The amount of indices deleted by the query.
+     * @returns {int} The amount of indices deleted by the query.
      */
 	indicesDeleted() {
 		return this.getIntValue(Label.INDICES_DELETED);
 	}
 
     /**
-     * @returns The query execution time in ms.
+     * @returns {float} The query execution time in ms.
      */
 	queryExecutionTime() {
 		return this.getFloatValue(Label.QUERY_INTERNAL_EXECUTION_TIME);
