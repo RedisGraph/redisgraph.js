@@ -65,6 +65,13 @@ workflows:
   commit:
     jobs:
       - build
+      - docs:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+
   nightly:
     triggers:
       - schedule:
@@ -75,4 +82,3 @@ workflows:
                 - master
     jobs:
       - build
-      - docs
