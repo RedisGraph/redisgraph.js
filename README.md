@@ -5,11 +5,10 @@
 [![GitHub issues](https://img.shields.io/github/release/RedisGraph/redisgraph.js.svg)](https://github.com/RedisGraph/redisgraph.js/releases/latest)
 [![Codecov](https://codecov.io/gh/RedisGraph/redisgraph.js/branch/master/graph/badge.svg)](https://codecov.io/gh/RedisGraph/redisgraph.js)
 
-# redisgraph.js
-
-
 [![Mailing List](https://img.shields.io/badge/Mailing%20List-RedisGraph-blue)](https://groups.google.com/forum/#!forum/redisgraph)
 [![Gitter](https://badges.gitter.im/RedisLabs/RedisGraph.svg)](https://gitter.im/RedisLabs/RedisGraph?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
+# redisgraph.js
 
 [RedisGraph](https://github.com/RedisLabsModules/redis-graph/) JavaScript Client - [API Docs](https://redisgraph.github.io/redisgraph.js/)
 
