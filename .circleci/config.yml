@@ -44,8 +44,8 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Install and configure dependencies
-        command: |
+          name: Install and configure dependencies
+          command: |
             npm install -g --silent gh-pages@2.0.1
             npm install -g --silent jsdoc
             git config user.email "ci-build@redisgraph.io"
@@ -54,11 +54,11 @@ jobs:
         fingerprints:
           - "76:ad:7c:fa:32:41:29:d0:cc:f6:63:06:62:b6:54:9c"
       - run:
-        name: Create docs with jsdoc
-        command: jsdoc ./src -r -d ./docs -R ./README.md
+          name: Create docs with jsdoc
+          command: jsdoc ./src -r -d ./docs -R ./README.md
       - run:
-        name: Deploy docs to gh-pages branch
-        command: gh-pages --dist ./docs --branch master --dest ./docs
+          name: Deploy docs to gh-pages branch
+          command: gh-pages --dist ./docs --branch master --dest ./docs
 
 workflows:
   version: 2
