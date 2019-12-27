@@ -51,8 +51,8 @@ jobs:
           command: |
             npm install -g --silent gh-pages@2.0.1
             npm install -g --silent jsdoc
-            git config user.email "ci-build@redisgraph.io"
-            git config user.name "ci-build"
+       #     git config user.email "ci-build@redisgraph.io"
+       #     git config user.name "ci-build"
       - run:
           name: Create docs with jsdoc
           command: jsdoc ./src -r -d ./docs -R ./README.md
