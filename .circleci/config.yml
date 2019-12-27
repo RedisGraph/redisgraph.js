@@ -43,6 +43,9 @@ jobs:
     
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "76:ad:7c:fa:32:41:29:d0:cc:f6:63:06:62:b6:54:9c"     
       - run:
           name: Install and configure dependencies
           command: |
@@ -50,9 +53,6 @@ jobs:
             npm install -g --silent jsdoc
             git config user.email "ci-build@redisgraph.io"
             git config user.name "ci-build"
-      - add_ssh_keys:
-          fingerprints:
-            - "76:ad:7c:fa:32:41:29:d0:cc:f6:63:06:62:b6:54:9c"
       - run:
           name: Create docs with jsdoc
           command: jsdoc ./src -r -d ./docs -R ./README.md
