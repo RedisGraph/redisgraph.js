@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: graph.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: graph.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+const redis = require("redis"),
+	util = require("util"),
+	ResultSet = require("./resultSet");
+
+/**
+ * RedisGraph client
+ */
+class Graph {
+	/**
+	 * Creates a client to a specific graph running on the specific host/post
+	 * See: node_redis for more options on createClient
+	 *
+	 * @param {string} graphId the graph id
+	 * @param {string | RedisClient} [host] Redis host or node_redis client
+	 * @param {string} [port] Redis port
+	 * @param {ClientOpts} [options] node_redis options
+	 */
+	constructor(graphId, host, port, options) {
+		this._graphId = graphId;        // Graph ID
+		this._labels = [];              // List of node labels.
+		this._relationshipTypes = [];   // List of relation types.
+		this._properties = [];          // List of properties.
+
+		this._labelsPromise = undefined;        // used as a synchronization mechanizom for labels retrival
+		this._propertyPromise = undefined;      // used as a synchronization mechanizom for property names retrival
+		this._relationshipPromise = undefined;  // used as a synchronization mechanizom for relationship types retrival
+
+		let client =
+			host instanceof redis.RedisClient
+				? host
+				: redis.createClient.apply(redis, [].slice.call(arguments, 1));
+		this._sendCommand = util.promisify(client.send_command).bind(client);
+	}
+
+	/**
+	 * Auxiliary function to extract string(s) data from procedures such as:
+	 * db.labels, db.propertyKeys and db.relationshipTypes
+	 * @param {ResultSet} resultSet - a procedure result set
+     * @returns {string[]} strings array.
+	 */
+	_extractStrings(resultSet) {
+		var strings = [];
+		while (resultSet.hasNext()) {
+			strings.push(resultSet.next().getString(0));
+		}
+		return strings;
+	}
+
+    /**
+     * Transforms a parameter value to string.
+     * @param {object} paramValue 
+     * @returns {string} the string representation of paramValue.
+     */
+	paramToString(paramValue) {
+		if (paramValue == null) return "null";
+		let paramType = typeof paramValue;
+		if (paramType == "string") {
+			let strValue = "";
+			if (paramValue[0] != '"') strValue += '"';
+			strValue += paramValue;
+			if (paramValue[paramValue.length - 1] != '"') strValue += '"';
+			return strValue;
+		}
+		if (Array.isArray(paramValue)) {
+			let stringsArr = new Array(paramValue.length);
+			for (var i = 0; i &lt; paramValue.length; i++) {
+				stringsArr[i] = this.paramToString(paramValue[i]);
+			}
+			return ["[", stringsArr.join(", "), "]"].join("");
+		}
+		return paramValue;
+	}
+
+	/**
+	 * Extracts parameters from dictionary into cypher parameters string.
+	 * @param {Map} params parameters dictionary.
+	 * @return {string} a cypher parameters string.
+	 */
+	buildParamsHeader(params) {
+		let paramsArray = ["CYPHER"];
+
+		for (var key in params) {
+			let value = this.paramToString(params[key]);
+			paramsArray.push(`${key}=${value}`);
+		}
+		paramsArray.push(" ");
+		return paramsArray.join(" ");
+	}
+
+	/**
+	 * Execute a Cypher query
+     * @async
+	 * @param {string} query Cypher query
+	 * @param {Map} [params] Parameters map
+	 * @returns {ResultSet} a promise contains a result set
+	 */
+	async query(query, params) {
+		if (params) {
+			query = this.buildParamsHeader(params) + query;
+		}
+		var res = await this._sendCommand("graph.QUERY", [
+			this._graphId,
+			query,
+			"--compact"
+		]);
+		var resultSet = new ResultSet(this);
+		return resultSet.parseResponse(res);
+	}
+
+	/**
+	 * Deletes the entire graph
+     * @async
+	 * @returns {ResultSet} a promise contains the delete operation running time statistics
+	 */
+	async deleteGraph() {
+		var res = await this._sendCommand("graph.DELETE", [this._graphId]);
+		//clear internal graph state
+		this._labels = [];
+		this._relationshipTypes = [];
+		this._properties = [];
+		var resultSet = new ResultSet(this);
+		return resultSet.parseResponse(res);
+	}
+
+	/**
+	 * Calls procedure
+	 * @param {string} procedure Procedure to call
+	 * @param {string[]} [args] Arguments to pass
+	 * @param {string[]} [y] Yield outputs
+	 * @returns {ResultSet} a promise contains the procedure result set data
+	 */
+	callProcedure(procedure, args = new Array(), y = new Array()) {
+		let q = "CALL " + procedure + "(" + args.join(",") + ")" + y.join(" ");
+		return this.query(q);
+	}
+
+	/**
+	 * Retrieves all labels in graph.
+     * @async
+	 */
+	async labels() {
+		if (this._labelsPromise == undefined) {
+			this._labelsPromise = this.callProcedure("db.labels").then(
+				response => {
+					return this._extractStrings(response);
+				}
+			);
+			this._labels = await this._labelsPromise;
+			this._labelsPromise = undefined;
+		} else {
+			await this._labelsPromise;
+		}
+	}
+
+	/**
+	 * Retrieves all relationship types in graph.
+     * @async
+	 */
+	async relationshipTypes() {
+		if (this._relationshipPromise == undefined) {
+			this._relationshipPromise = this.callProcedure(
+				"db.relationshipTypes"
+			).then(response => {
+				return this._extractStrings(response);
+			});
+			this._relationshipTypes = await this._relationshipPromise;
+			this._relationshipPromise = undefined;
+		} else {
+			await this._relationshipPromise;
+		}
+	}
+
+	/**
+	 * Retrieves all properties in graph.
+     * @async
+	 */
+	async propertyKeys() {
+		if (this._propertyPromise == undefined) {
+			this._propertyPromise = this.callProcedure("db.propertyKeys").then(
+				response => {
+					return this._extractStrings(response);
+				}
+			);
+			this._properties = await this._propertyPromise;
+			this._propertyPromise = undefined;
+		} else {
+			await this._propertyPromise;
+		}
+	}
+
+	/**
+	 * Retrieves label by ID.
+	 * @param {int} id internal ID of label.
+	 * @returns {string} String label.
+	 */
+	getLabel(id) {
+		return this._labels[id];
+	}
+
+	/**
+	 * Retrieve all the labels from the graph and returns the wanted label
+     * @async
+	 * @param {int} id internal ID of label.
+	 * @returns {string} String label.
+	 */
+	async fetchAndGetLabel(id) {
+		await this.labels();
+		return this._labels[id];
+	}
+
+	/**
+	 * Retrieves relationship type by ID.
+	 * @param {int} id internal ID of relationship type.
+	 * @return String relationship type.
+	 */
+	getRelationship(id) {
+		return this._relationshipTypes[id];
+	}
+
+	/**
+	 * Retrieves al the relationships types from the graph, and returns the wanted type
+     * @async
+	 * @param {int} id internal ID of relationship type.
+	 * @returns {string} String relationship type.
+	 */
+	async fetchAndGetRelationship(id) {
+		await this.relationshipTypes();
+		return this._relationshipTypes[id];
+	}
+
+	/**
+	 * Retrieves property name by ID.
+	 * @param {int} id internal ID of property.
+	 * @returns {string} String property.
+	 */
+	getProperty(id) {
+		return this._properties[id];
+	}
+
+	/**
+	 * Retrieves al the properties from the graph, and returns the wanted property
+     * @async
+	 * @param {int} id internal ID of property.
+	 * @returns {string} String property.
+	 */
+	async fetchAndGetProperty(id) {
+		await this.propertyKeys();
+		return this._properties[id];
+	}
+}
+
+module.exports = Graph;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Edge.html">Edge</a></li><li><a href="Graph.html">Graph</a></li><li><a href="Node.html">Node</a></li><li><a href="Path.html">Path</a></li><li><a href="Record.html">Record</a></li><li><a href="ResultSet.html">ResultSet</a></li><li><a href="Statistics.html">Statistics</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Label">Label</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Fri Dec 27 2019 15:56:52 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
