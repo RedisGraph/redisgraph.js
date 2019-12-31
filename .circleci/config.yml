@@ -58,8 +58,8 @@ jobs:
           command: jsdoc ./src -r -d ./docs -R ./README.md
       - run:
           name: Deploy docs to gh-pages branch
-          command: gh-pages --dist ./docs --branch master --dest ./docs
-
+          command: gh-pages --dist ./docs --branch master --dest ./docs --message “[skip ci] Updates”
+￼
 workflows:
   version: 2
   commit:
