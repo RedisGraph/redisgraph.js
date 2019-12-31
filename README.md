@@ -30,10 +30,7 @@ npm install github:RedisGraph/redisgraph.js.git
 
 ## Overview
 
-### Official Releases
-
-
-# Example: Using the JavaScript Client
+### Example: Using the JavaScript Client
 
 ```javascript
 const RedisGraph = require("redisgraph.js").Graph;
@@ -75,7 +72,7 @@ let graph = new RedisGraph("social");
 
 ```
 
-## Running tests
+### Running tests
 
 A simple test suite is provided, and can be run with:
 
