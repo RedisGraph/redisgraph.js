@@ -1,7 +1,7 @@
 {
 	"name": "redisgraph.js",
-	"version": "2.0.0",
-	"description": "Connect to RedisGraph 1.0.0 and up from JavaScript",
+	"version": "2.0.1",
+	"description": "Connect to RedisGraph 2.x and up from JavaScript",
 	"author": "RedisLabs",
 	"license": "BSD 3",
 	"repository": {
