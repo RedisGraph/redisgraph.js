@@ -2,18 +2,31 @@
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
-version: 2
+version: 2.1
+commands:
+  early_return_for_automated_recursive_build:
+    description: >-
+      If this build is done since automation has committed new files to the master branch, stop executing the current job and return success.
+    steps:
+      - run:
+          name: Early return if this build is from automated commit
+          command: |
+            if [${CIRCLE_USERNAME} == "ci-build"]; then
+              echo "Nothing to do for automated commit, so marking this step successful"
+              circleci step halt
+            fi
+
 jobs:
   build:
     docker:
       - image: circleci/node:10.15
       
       - image: redislabs/redisgraph:edge
-        port: 6379:6379
       
     working_directory: ~/repo
 
     steps:
+      - early_return_for_automated_recursive_build
       - checkout
 
       # Download and cache dependencies
