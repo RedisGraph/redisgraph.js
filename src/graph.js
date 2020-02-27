@@ -7,16 +7,18 @@ const redis = require("redis"),
  * RedisGraph client
  */
 class Graph {
-	/**
-	 * Creates a client to a specific graph running on the specific host/post
-	 * See: node_redis for more options on createClient
-	 *
-	 * @param {string} graphId the graph id
-	 * @param {string | RedisClient} [host] Redis host or node_redis client
-	 * @param {string} [port] Redis port
-	 * @param {ClientOpts} [options] node_redis options
-	 */
-	constructor(graphId, host, port, options) {
+     /**
+      * Creates a client to a specific graph running on the specific host/post
+      * See: node_redis for more options on createClient 
+      * 
+      * @param {string} graphId the graph id
+      * @param {object} [configuration] - a map of:    
+      * @param {string | RedisClient} [configuration.host] Redis host or node_redis client
+      * @param {string | int} [configuration.port] Redis port
+      * @param {ClientOpts} [configuration.options] node_redis options
+      */
+	constructor(graphId, {host, port, options} ={}) {
+        console.log("host = " + host + " port = " + port + " options = "+ options);
 		this._graphId = graphId;        // Graph ID
 		this._labels = [];              // List of node labels.
 		this._relationshipTypes = [];   // List of relation types.
@@ -29,7 +31,7 @@ class Graph {
 		let client =
 			host instanceof redis.RedisClient
 				? host
-				: redis.createClient.apply(redis, [].slice.call(arguments, 1));
+				: redis.createClient(port, host, options);
 		this._sendCommand = util.promisify(client.send_command).bind(client);
 	}
 
