@@ -13,7 +13,7 @@ let options = {
     password:1234
 };
 let rc = redis.createClient(options)
-let graph = new RedisGraph("social", {host:rc});
+let graph = new RedisGraph("social", rc);
 
 try {
 	(async () => {

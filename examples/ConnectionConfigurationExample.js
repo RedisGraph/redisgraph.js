@@ -6,7 +6,7 @@ CONFIG SET requirepass "1234"
 */
 
 const RedisGraph = require("redisgraph.js").Graph;
-let graph = new RedisGraph("social", {port:8080, options:{password:1234}});
+let graph = new RedisGraph("social", "127.0.0.1", 8080, {password:1234});
 
 try {
 	(async () => {
