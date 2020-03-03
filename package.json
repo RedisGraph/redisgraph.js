@@ -9,11 +9,11 @@
 		"url": "git://github.com/redislabs/redisgraph.js.git"
 	},
 	"dependencies": {
-		"deep-equal": "^1.1.0",
-		"redis": "^2.8.0"
+		"deep-equal": "^2.0.1",
+		"redis": "^3.0.2"
 	},
 	"devDependencies": {
-		"mocha": "^5.2.0"
+		"mocha": "^7.0.1"
 	},
 	"scripts": {
 		"test": "mocha --exit"
