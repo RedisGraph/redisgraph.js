@@ -16,8 +16,21 @@ describe("RedisGraphAPI Test", () => {
 		return api.deleteGraph().catch(() => {});
 	});
 
-	it("test bring your client", () => {
-		return new RedisGraph("social", redis.createClient());
+    it("test connection from post and host", async () => {
+        // Assuming this test is running against localhost:6379 with no password.
+        let graph = new RedisGraph("social", "127.0.0.1", 6379, {password:undefined});
+        let result = await graph.query("CREATE ({name:'roi', age:34})");
+		assert.ok(!result.hasNext());
+        assert.equal(1, result.getStatistics().nodesCreated());
+        graph.deleteGraph();
+    }) 
+
+	it("test connection from client", async () => {
+        let graph = new RedisGraph("social", redis.createClient());
+        let result = await graph.query("CREATE ({name:'roi', age:34})");
+		assert.ok(!result.hasNext());
+        assert.equal(1, result.getStatistics().nodesCreated());
+        graph.deleteGraph();
 	});
 
 	it("test Create Node", async () => {
