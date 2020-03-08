@@ -10,14 +10,15 @@ const assert = require("assert"),
 	deepEqual = require("deep-equal");
 
 describe("RedisGraphAPI Test", () => {
+    // Assuming this test is running against redis server at: localhost:6379 with no password.
 	const api = new RedisGraph("social");
 
 	beforeEach(() => {
 		return api.deleteGraph().catch(() => {});
 	});
 
-    it("test connection from post and host", async () => {
-        // Assuming this test is running against localhost:6379 with no password.
+    it("test connection from port and host", async () => {
+        // Assuming this test is running against redis server at: localhost:6379 with no password.
         let graph = new RedisGraph("social", "127.0.0.1", 6379, {password:undefined});
         let result = await graph.query("CREATE ({name:'roi', age:34})");
 		assert.ok(!result.hasNext());
@@ -26,6 +27,7 @@ describe("RedisGraphAPI Test", () => {
     }) 
 
 	it("test connection from client", async () => {
+        // Assuming this test is running against redis server at: localhost:6379 with no password.
         let graph = new RedisGraph("social", redis.createClient());
         let result = await graph.query("CREATE ({name:'roi', age:34})");
 		assert.ok(!result.hasNext());
