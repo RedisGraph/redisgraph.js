@@ -3,6 +3,7 @@
 [![GitHub issues](https://img.shields.io/github/release/RedisGraph/redisgraph.js.svg)](https://github.com/RedisGraph/redisgraph.js/releases/latest)
 [![npm version](https://badge.fury.io/js/redisgraph.js.svg)](https://badge.fury.io/js/redisgraph.js)
 [![Codecov](https://codecov.io/gh/RedisGraph/redisgraph.js/branch/master/graph/badge.svg)](https://codecov.io/gh/RedisGraph/redisgraph.js)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/RedisGraph/redisgraph.js.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RedisGraph/redisgraph.js/context:javascript)
 [![Known Vulnerabilities](https://snyk.io/test/github/RedisGraph/redisgraph.js/badge.svg?targetFile=package.json)](https://snyk.io/test/github/RedisGraph/redisgraph.js?targetFile=package.json)
 
 [![Mailing List](https://img.shields.io/badge/Mailing%20List-RedisGraph-blue)](https://groups.google.com/forum/#!forum/redisgraph)
