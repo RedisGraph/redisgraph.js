@@ -65,9 +65,9 @@ let graph = new RedisGraph("social");
             let record = res.next();
             // See path.js for more path API.
             console.log(record.get("p").nodeCount);
-            graph.deleteGraph();
-            process.exit();
         }
+        graph.deleteGraph();
+        graph.close();
     
     })();
 

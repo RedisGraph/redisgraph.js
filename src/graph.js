@@ -26,12 +26,18 @@ class Graph {
 		this._propertyPromise = undefined;      // used as a synchronization mechanizom for property names retrival
 		this._relationshipPromise = undefined;  // used as a synchronization mechanizom for relationship types retrival
 
-		let client =
+		this._client =
 			host instanceof redis.RedisClient
 				? host
 				: redis.createClient(port, host, options);
-		this._sendCommand = util.promisify(client.send_command).bind(client);
-	}
+		this._sendCommand = util.promisify(this._client.send_command).bind(this._client);
+    }
+    /**
+     * Closes the client.
+     */
+    close() {
+        this._client.quit();
+    }
 
 	/**
 	 * Auxiliary function to extract string(s) data from procedures such as:

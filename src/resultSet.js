@@ -324,7 +324,14 @@ class ResultSet {
      */
 	getStatistics() {
 		return this._statistics;
-	}
+    }
+    
+    /**
+     * @returns {int} Result set size.
+     */
+    size() {
+        return this._resultsCount;
+    }
 }
 
 module.exports = ResultSet;
