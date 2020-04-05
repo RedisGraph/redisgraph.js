@@ -158,6 +158,14 @@ class ResultSet {
 		return properties;
 	}
 
+	_isNullScalar(cell) {
+		return (
+			cell.length == 2 &&
+			cell[0] == ResultSetValueTypes.VALUE_NULL &&
+			cell[1] == null
+		);
+	}
+
 	/**
 	 * Parse raw node representation into a Node object.
 	 * @async
@@ -166,7 +174,7 @@ class ResultSet {
 	 */
 	async parseNode(cell) {
 		// In case of optional match returned a null node.
-		if (cell.length == 2) return null;
+		if (this._isNullScalar(cell)) return null;
 
 		// Node ID (integer),
 		// [label string offset (integer)],
@@ -199,7 +207,7 @@ class ResultSet {
 	 */
 	async parseEdge(cell) {
 		// In case of optional match returned a null edge.
-		if (cell.length == 2) return null;
+		if (this._isNullScalar(cell)) return null;
 
 		// Edge ID (integer),
 		// reltype string offset (integer),
