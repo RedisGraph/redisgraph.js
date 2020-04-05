@@ -21,23 +21,28 @@ describe("RedisGraphAPI Test", () => {
         // Assuming this test is running against redis server at: localhost:6379 with no password.
         let graph = new RedisGraph("social", "127.0.0.1", 6379, {password:undefined});
         let result = await graph.query("CREATE ({name:'roi', age:34})");
+        assert.equal(result.size(), 0);
 		assert.ok(!result.hasNext());
         assert.equal(1, result.getStatistics().nodesCreated());
         graph.deleteGraph();
+        graph.close();
     }) 
 
 	it("test connection from client", async () => {
         // Assuming this test is running against redis server at: localhost:6379 with no password.
         let graph = new RedisGraph("social", redis.createClient());
         let result = await graph.query("CREATE ({name:'roi', age:34})");
+        assert.equal(result.size(), 0);
 		assert.ok(!result.hasNext());
         assert.equal(1, result.getStatistics().nodesCreated());
         graph.deleteGraph();
+        graph.close();
 	});
 
 	it("test Create Node", async () => {
 		// Create a node
-		let result = await api.query("CREATE ({name:'roi', age:34})");
+        let result = await api.query("CREATE ({name:'roi', age:34})");
+        assert.equal(result.size(), 0);
 		assert.ok(!result.hasNext());
 		assert.equal(1, result.getStatistics().nodesCreated());
 		assert.ifError(
@@ -70,7 +75,8 @@ describe("RedisGraphAPI Test", () => {
 
 	it("test Create Labeled Node", async () => {
 		// Create a node with a label
-		let result = await api.query("CREATE (:human {name:'danny', age:12})");
+        let result = await api.query("CREATE (:human {name:'danny', age:12})");
+        assert.equal(result.size(), 0);
 		assert.ok(!result.hasNext());
 		assert.equal(
 			"1",
@@ -96,7 +102,8 @@ describe("RedisGraphAPI Test", () => {
 		let matchResult = await api.query(
 			"MATCH (a:person {name:'roi'}), \
         (b:person {name:'amit'}) CREATE (a)-[:knows]->(b)"
-		);
+        );
+        assert.equal(matchResult.size(), 0);
 		assert.ok(!matchResult.hasNext());
 		assert.ifError(
 			matchResult.getStatistics().getStringValue(Label.NODES_CREATED)
@@ -121,7 +128,8 @@ describe("RedisGraphAPI Test", () => {
 		// Query
 		let resultSet = await api.query(
 			"MATCH (r:human)-[:knows]->(a:human) RETURN r.age, r.name"
-		);
+        );
+        assert.equal(resultSet.size(), 1);
 		assert.ok(resultSet.hasNext());
 		assert.equal(0, resultSet.getStatistics().nodesCreated());
 		assert.equal(0, resultSet.getStatistics().nodesDeleted());
@@ -162,7 +170,7 @@ describe("RedisGraphAPI Test", () => {
 		let resultSet = await api.query(
 			"MATCH (a:person)-[r:knows]->(b:person) RETURN a,r"
 		);
-
+        assert.equal(resultSet.size(), 1);
 		assert.ok(resultSet.hasNext());
 		assert.equal(0, resultSet.getStatistics().nodesCreated());
 		assert.equal(0, resultSet.getStatistics().nodesDeleted());
@@ -198,7 +206,8 @@ describe("RedisGraphAPI Test", () => {
 
 	it("test null value to string", async () => {
 		await api.query("CREATE ( {nullValue:null} )");
-		let resultSet = await api.query("MATCH (n) RETURN n.nullValue");
+        let resultSet = await api.query("MATCH (n) RETURN n.nullValue");
+        assert.equal(resultSet.size(), 1);
 		assert.ok(resultSet.hasNext());
 		let record = resultSet.next();
 		assert.equal(undefined, record.get(0));
@@ -215,8 +224,9 @@ describe("RedisGraphAPI Test", () => {
 
 		let resultSet = await api.query(
 			"MATCH (a:person)-[:knows]->(:person) RETURN a"
-		);
-
+        );
+        
+        assert.equal(resultSet.size(), 0);
 		assert.ok(!resultSet.hasNext());
 		assert.equal(resultSet.getHeader()[0], "a");
 		assert.equal(0, resultSet.getStatistics().nodesCreated());
@@ -235,14 +245,17 @@ describe("RedisGraphAPI Test", () => {
 	it("test array", async () => {
 		await api.query("CREATE (:person{name:'a',age:32,array:[0,1,2]})");
 		await api.query("CREATE (:person{name:'b',age:30,array:[3,4,5]})");
-		let resultSet = await api.query("WITH [0,1,2] as x return x");
+        let resultSet = await api.query("WITH [0,1,2] as x return x");
+        
+        assert.equal(resultSet.size(), 1);
 		assert.ok(resultSet.hasNext());
 		assert.deepStrictEqual(["x"], resultSet.getHeader());
 		let record = resultSet.next();
 		assert.deepStrictEqual([0, 1, 2], record.get(0));
 		assert.ok(!resultSet.hasNext());
 
-		let newResultSet = await api.query("MATCH(n) return collect(n) as x");
+        let newResultSet = await api.query("MATCH(n) return collect(n) as x");
+        assert.equal(newResultSet.size(), 1);
 		assert.ok(newResultSet.hasNext());
 		var nodeA = new Node("person", {
 			name: "a",
@@ -269,6 +282,7 @@ describe("RedisGraphAPI Test", () => {
 		}
 		let values = await Promise.all(promises);
 		for (var resultSet of values) {
+            assert.equal(resultSet.size(), 1);
 			let record = resultSet.next();
 			let n = record.get(0);
 			assert.equal(34, n.properties["age"]);
@@ -366,7 +380,8 @@ describe("RedisGraphAPI Test", () => {
 			.append(node2)
 			.build();
 
-		let paths = new Set([path01, path12, path02]);
+        let paths = new Set([path01, path12, path02]);
+        assert.equal(response.size(), 3);
 		while (response.hasNext()) {
 			let p = response.next().get("p");
 			let pInPaths = false;
