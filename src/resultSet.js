@@ -165,9 +165,13 @@ class ResultSet {
      * @returns {Node} Node object.
      */
 	async parseNode(cell) {
-		// Node ID (integer),
+        // In case of optional match returned a null node.
+        if(cell.length == 2) return null;
+        
+        // Node ID (integer),
 		// [label string offset (integer)],
-		// [[name, value, value type] X N]
+        // [[name, value, value type] X N]
+        
 
 		let node_id = cell[0];
 		let label = this._graph.getLabel(cell[1][0]);
@@ -195,6 +199,9 @@ class ResultSet {
      * @returns {Edge} Edge object.
      */
 	async parseEdge(cell) {
+        // In case of optional match returned a null edge.
+        if(cell.length == 2) return null;
+
 		// Edge ID (integer),
 		// reltype string offset (integer),
 		// src node ID offset (integer),

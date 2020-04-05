@@ -454,5 +454,14 @@ describe("RedisGraphAPI Test", () => {
 				"ERR Unable to drop index on :person(age): no such index."
 			);
 		}
-	});
+    });
+    
+    it("testOptionalMatch", async() => {
+        await api.query("CREATE (:L)-[:E]->(:L2)");
+        let resultSet = await api.query("OPTIONAL MATCH (a:NONEXISTENT)-[e]->(b) RETURN a, e, b");
+        assert.ok(resultSet.hasNext());
+        let record = resultSet.next();
+        assert.ok(!resultSet.hasNext());
+        assert.deepEqual(record.values(), [null, null, null]);
+    });
 });
