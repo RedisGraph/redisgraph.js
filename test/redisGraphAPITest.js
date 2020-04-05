@@ -465,22 +465,34 @@ describe("RedisGraphAPI Test", () => {
 		assert.ok(resultSet.hasNext());
 		let record = resultSet.next();
 		assert.ok(!resultSet.hasNext());
-        assert.deepEqual(record.values(), [null, null, null]);
-        
+		assert.deepEqual(record.values(), [null, null, null]);
+
 		// Test a query that produces 2 records, with 2 null values in the second.
-		resultSet = api.query(
+		resultSet = await api.query(
 			"MATCH (a) OPTIONAL MATCH (a)-[e]->(b) RETURN a, e, b ORDER BY ID(a)"
 		);
 		assert.equal(resultSet.size(), 2);
 		record = resultSet.next();
-		assert.notEqual(record.size(), 3);
+		assert.equal(record.size(), 3);
 		assert.notEqual(record.get(0), null);
 		assert.notEqual(record.get(1), null);
 		assert.notEqual(record.get(2), null);
 		record = resultSet.next();
-		assert.notEqual(record.size(), 3);
+		assert.equal(record.size(), 3);
 		assert.notEqual(record.get(0), null);
 		assert.equal(record.get(1), null);
 		assert.equal(record.get(2), null);
+
+		// Test a query that produces 2 records, the first containing a path and the second containing a null value
+		resultSet = await api.query(
+			"MATCH (a) OPTIONAL MATCH p = (a)-[e]->(b) RETURN p"
+		);
+		assert.equal(resultSet.size(), 2);
+		record = resultSet.next();
+		assert.equal(record.size(), 1);
+		assert.notEqual(record.get(0), null);
+		record = resultSet.next();
+		assert.equal(record.size(), 1);
+		assert.equal(record.get(0), null);
 	});
 });
