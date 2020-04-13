@@ -38,7 +38,7 @@ const ResultSetColumnTypes = {
 	COLUMN_UNKNOWN: 0,
 	COLUMN_SCALAR: 1,
 	COLUMN_NODE: 2,
-	COLUMN_RELATION: 3
+	COLUMN_RELATION: 3,
 };
 
 const ResultSetValueTypes = {
@@ -51,29 +51,29 @@ const ResultSetValueTypes = {
 	VALUE_ARRAY: 6,
 	VALUE_EDGE: 7,
 	VALUE_NODE: 8,
-	VALUE_PATH: 9
+	VALUE_PATH: 9,
 };
 
 /**
  * Hold a query result
  */
 class ResultSet {
-    /**
-     * Builds an empty ResultSet object.
-     * @constructor
-     * @param {Graph} graph 
-     */
+	/**
+	 * Builds an empty ResultSet object.
+	 * @constructor
+	 * @param {Graph} graph
+	 */
 	constructor(graph) {
-		this._graph = graph;    //_graph is graph api
-		this._position = 0;     //allowing iterator like behevior
+		this._graph = graph; //_graph is graph api
+		this._position = 0; //allowing iterator like behevior
 		this._resultsCount = 0; //total number of records in this result set
-		this._header = [];      //reponse schema columns labels
-		this._results = [];     //result records
+		this._header = []; //reponse schema columns labels
+		this._results = []; //result records
 	}
 
 	/**
 	 * Parse raw response data to ResultSet object.
-     * @async
+	 * @async
 	 * @param {object[]} resp  - raw response representation - the raw representation of response is at most 3 lists of objects.
 	 *                    The last list is the statistics list.
 	 */
@@ -94,11 +94,11 @@ class ResultSet {
 		return this;
 	}
 
-    /**
-     * Parse a raw response body into header an records.
-     * @async
-     * @param {object[]} resp raw response
-     */
+	/**
+	 * Parse a raw response body into header an records.
+	 * @async
+	 * @param {object[]} resp raw response
+	 */
 	async parseResults(resp) {
 		this.parseHeader(resp[0]);
 		await this.parseRecords(resp);
@@ -123,7 +123,7 @@ class ResultSet {
 	/**
 	 * The raw representation of response is at most 3 lists of objects. rawResultSet[1] contains the data records.
 	 * Each entry in the record can be either a node, an edge or a scalar
-     * @async
+	 * @async
 	 * @param {object[]} rawResultSet raw result set representation
 	 */
 	async parseRecords(rawResultSet) {
@@ -155,12 +155,12 @@ class ResultSet {
 		}
 	}
 
-    /**
-     * Parse raw entity properties representation into a Map
-     * @async
-     * @param {object[]} props raw properties representation
-     * @returns {Map} Map with the parsed properties. 
-     */
+	/**
+	 * Parse raw entity properties representation into a Map
+	 * @async
+	 * @param {object[]} props raw properties representation
+	 * @returns {Map} Map with the parsed properties.
+	 */
 	async parseEntityProperties(props) {
 		// [[name, value, value type] X N]
 		let properties = {};
@@ -186,12 +186,12 @@ class ResultSet {
 		return properties;
 	}
 
-    /**
-     * Parse raw node representation into a Node object.
-     * @async
-     * @param {object[]} cell raw node representation.
-     * @returns {Node} Node object.
-     */
+	/**
+	 * Parse raw node representation into a Node object.
+	 * @async
+	 * @param {object[]} cell raw node representation.
+	 * @returns {Node} Node object.
+	 */
 	async parseNode(cell) {
 		// Node ID (integer),
 		// [label string offset (integer)],
@@ -216,12 +216,12 @@ class ResultSet {
 		return node;
 	}
 
-    /**
-     * Parse a raw edge representation into an Edge object.
-     * @async
-     * @param {object[]} cell raw edge representation
-     * @returns {Edge} Edge object.
-     */
+	/**
+	 * Parse a raw edge representation into an Edge object.
+	 * @async
+	 * @param {object[]} cell raw edge representation
+	 * @returns {Edge} Edge object.
+	 */
 	async parseEdge(cell) {
 		// Edge ID (integer),
 		// reltype string offset (integer),
@@ -251,12 +251,12 @@ class ResultSet {
 		return edge;
 	}
 
-    /**
-     * Parse and in-place replace raw array into an array of values or objects.
-     * @async
-     * @param {object[]} rawArray raw array representation
-     * @returns {object[]} Parsed array.
-     */
+	/**
+	 * Parse and in-place replace raw array into an array of values or objects.
+	 * @async
+	 * @param {object[]} rawArray raw array representation
+	 * @returns {object[]} Parsed array.
+	 */
 	async parseArray(rawArray) {
 		for (var i = 0; i &lt; rawArray.length; i++) {
 			rawArray[i] = await this.parseScalar(rawArray[i]);
@@ -264,24 +264,24 @@ class ResultSet {
 		return rawArray;
 	}
 
-    /**
-     * Parse a raw path representation into Path object.
-     * @async
-     * @param {object[]} rawPath raw path representation
-     * @returns {Path} Path object.
-     */
+	/**
+	 * Parse a raw path representation into Path object.
+	 * @async
+	 * @param {object[]} rawPath raw path representation
+	 * @returns {Path} Path object.
+	 */
 	async parsePath(rawPath) {
 		let nodes = await this.parseScalar(rawPath[0]);
 		let edges = await this.parseScalar(rawPath[1]);
 		return new Path(nodes, edges);
 	}
 
-    /**
-     * Parse a raw value into its actual value.
-     * @async
-     * @param {object[]} cell raw value representation 
-     * @returns {object} Actual value - scalar, array, Node, Edge, Path
-     */
+	/**
+	 * Parse a raw value into its actual value.
+	 * @async
+	 * @param {object[]} cell raw value representation
+	 * @returns {object} Actual value - scalar, array, Node, Edge, Path
+	 */
 	async parseScalar(cell) {
 		let scalar_type = cell[0];
 		let value = cell[1];
@@ -326,40 +326,40 @@ class ResultSet {
 		return scalar;
 	}
 
-    /**
-     * @returns {string[] }ResultSet's header.
-     */
+	/**
+	 * @returns {string[] }ResultSet's header.
+	 */
 	getHeader() {
 		return this._typelessHeader;
 	}
 
-    /**
-     * @returns {boolean} If the ResultSet object can return additional records.
-     */
+	/**
+	 * @returns {boolean} If the ResultSet object can return additional records.
+	 */
 	hasNext() {
 		return this._position &lt; this._resultsCount;
 	}
 
-    /**
-     * @returns {Record} The current record.
-     */
+	/**
+	 * @returns {Record} The current record.
+	 */
 	next() {
 		return this._results[this._position++];
 	}
 
-    /**
-     * @returns {Statistics} ResultsSet's statistics.
-     */
+	/**
+	 * @returns {Statistics} ResultsSet's statistics.
+	 */
 	getStatistics() {
 		return this._statistics;
-    }
-    
-    /**
-     * @returns {int} Result set size.
-     */
-    size() {
-        return this._resultsCount;
-    }
+	}
+
+	/**
+	 * @returns {int} Result set size.
+	 */
+	size() {
+		return this._resultsCount;
+	}
 }
 
 module.exports = ResultSet;
@@ -379,7 +379,7 @@ module.exports = ResultSet;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Apr 05 2020 11:54:35 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Mon Apr 13 2020 12:32:01 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
