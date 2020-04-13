@@ -455,4 +455,57 @@ describe("RedisGraphAPI Test", () => {
 			);
 		}
 	});
+
+	it("testOptionalMatch", async () => {
+		await api.query("CREATE (:L {val:1})-[:E {val:2}]->(:L2 {val: 3})");
+		let resultSet = await api.query(
+			"OPTIONAL MATCH (a:NONEXISTENT)-[e]->(b) RETURN a.val, e.val, b.val"
+		);
+		assert.equal(resultSet.size(), 1);
+		assert.ok(resultSet.hasNext());
+		let record = resultSet.next();
+		assert.ok(!resultSet.hasNext());
+		assert.deepEqual(record.values(), [null, null, null]);
+
+		// Test a query that produces 2 records, with 2 null values in the second.
+		resultSet = await api.query(
+			"MATCH (a) OPTIONAL MATCH (a)-[e]->(b) RETURN a.val, e.val, b.val ORDER BY ID(a)"
+		);
+		assert.equal(resultSet.size(), 2);
+		record = resultSet.next();
+		assert.equal(record.size(), 3);
+		assert.equal(record.get(0), 1);
+		assert.equal(record.get(1), 2);
+		assert.equal(record.get(2), 3);
+		record = resultSet.next();
+		assert.equal(record.size(), 3);
+		assert.equal(record.get(0), 3);
+		assert.equal(record.get(1), null);
+		assert.equal(record.get(2), null);
+
+        // Test a query that produces 2 records, the first containing a path and the second containing a null value
+        let node0 = new Node("L", {val:1});
+		node0.setId(0);
+		let node1 = new Node("L2", {val:3});
+		node1.setId(1);
+		let edge01 = new Edge(0, "E", 1, {val:2});
+		edge01.setId(0);
+        let expectedPath = new PathBuilder()
+			.append(node0)
+			.append(edge01)
+			.append(node1)
+            .build();
+            
+		resultSet = await api.query(
+			"MATCH (a) OPTIONAL MATCH p = (a)-[e]->(b) RETURN p"
+        );
+        
+		assert.equal(resultSet.size(), 2);
+		record = resultSet.next();
+		assert.equal(record.size(), 1);
+		assert.deepEqual(record.get(0), expectedPath);
+		record = resultSet.next();
+		assert.equal(record.size(), 1);
+		assert.equal(record.get(0), null);
+	});
 });
