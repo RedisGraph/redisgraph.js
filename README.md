@@ -6,10 +6,9 @@
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/RedisGraph/redisgraph.js.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RedisGraph/redisgraph.js/context:javascript)
 [![Known Vulnerabilities](https://snyk.io/test/github/RedisGraph/redisgraph.js/badge.svg?targetFile=package.json)](https://snyk.io/test/github/RedisGraph/redisgraph.js?targetFile=package.json)
 
-[![Mailing List](https://img.shields.io/badge/Mailing%20List-RedisGraph-blue)](https://groups.google.com/forum/#!forum/redisgraph)
-[![Gitter](https://badges.gitter.im/RedisLabs/RedisGraph.svg)](https://gitter.im/RedisLabs/RedisGraph?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
 # redisgraph.js
+[![Forum](https://img.shields.io/badge/Forum-RedisGraph-blue)](https://forum.redislabs.com/c/modules/redisgraph)
+[![Gitter](https://badges.gitter.im/RedisLabs/RedisGraph.svg)](https://gitter.im/RedisLabs/RedisGraph?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 [RedisGraph](https://github.com/RedisLabsModules/redis-graph/) JavaScript Client - [API Docs](https://redisgraph.github.io/redisgraph.js/)
 
