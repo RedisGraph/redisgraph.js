@@ -411,8 +411,8 @@ describe("RedisGraphAPI Test", () => {
 			"str",
 			[1, 2, 3],
 			["1", "2", "3"],
-            null,
-            'test"abc'
+			null,
+			'test"abc'
 		];
 		let promises = [];
 		for (var i = 0; i < params.length; i++) {
