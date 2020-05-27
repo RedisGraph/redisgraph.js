@@ -62,7 +62,8 @@ class Graph {
 		if (paramValue == null) return "null";
 		let paramType = typeof paramValue;
 		if (paramType == "string") {
-			let strValue = "";
+            let strValue = "";
+            paramValue = paramValue.replace(/[\\"']/g, '\\$&');
 			if (paramValue[0] != '"') strValue += '"';
 			strValue += paramValue;
 			if (paramValue[paramValue.length - 1] != '"') strValue += '"';
