@@ -412,6 +412,7 @@ describe("RedisGraphAPI Test", () => {
 			[1, 2, 3],
 			["1", "2", "3"],
 			null,
+			'test"abc'
 		];
 		let promises = [];
 		for (var i = 0; i < params.length; i++) {
