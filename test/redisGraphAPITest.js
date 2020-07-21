@@ -323,7 +323,7 @@ describe("RedisGraphAPI Test", () => {
 	});
 
 	it("unitTestPath", () => {
-		let nodcachedExecutione0 = new Node("L1", {});
+		let node0 = new Node("L1", {});
 		node0.setId(0);
 		let node1 = new Node("L1", {});
 		node1.setId(1);
