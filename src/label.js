@@ -10,7 +10,8 @@ var Label = Object.freeze({
 	PROPERTIES_SET: "Properties set",
 	RELATIONSHIPS_CREATED: "Relationships created",
 	INDICES_CREATED: "Indices created",
-	INDICES_DELETED: "Indices deleted",
+    INDICES_DELETED: "Indices deleted",
+    CACHED_EXECUTION: "Cached execution",
 	QUERY_INTERNAL_EXECUTION_TIME: "Query internal execution time"
 });
 
