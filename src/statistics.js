@@ -108,7 +108,14 @@ class Statistics {
      */
 	indicesDeleted() {
 		return this.getIntValue(Label.INDICES_DELETED);
-	}
+    }
+
+    /**
+     * @returns {boolean} The execution plan was cached on RedisGraph.
+     */
+    cachedExecution() {
+        return  this.getIntValue(Label.CACHED_EXECUTION) == 1;
+    }
 
     /**
      * @returns {float} The query execution time in ms.

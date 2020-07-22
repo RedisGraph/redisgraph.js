@@ -508,5 +508,33 @@ describe("RedisGraphAPI Test", () => {
 		record = resultSet.next();
 		assert.equal(record.size(), 1);
 		assert.equal(record.get(0), null);
-	});
+    });
+    
+    it("testCachedExecution", async () => {
+        await api.query("CREATE (:N {val:1}), (:N {val:2})");
+	    
+        // First time should not be loaded from execution cache
+        let resultSet = await api.query(
+	        "MATCH (n:N {val:$val}) RETURN n.val ", {'val':1}
+        );
+        assert.equal(resultSet.size(), 1)
+        assert.equal(false, resultSet.getStatistics().cachedExecution())
+
+        let record = resultSet.next();
+        assert.equal(record.size(), 1);
+        assert.equal(record.get(0), 1);
+        
+	// Run in loop many times to make sure the query will be loaded
+	// from cache at least once
+        for (var i = 0; i < 64; i++) {
+            resultSet = await api.query(
+                "MATCH (n:N {val:$val}) RETURN n.val ", {'val':1}
+            );
+        }	
+        assert.equal(resultSet.size(), 1)
+        record = resultSet.next();
+        assert.equal(record.size(), 1);
+        assert.equal(record.get(0), 1);
+        assert.equal(true, resultSet.getStatistics().cachedExecution())
+    });
 });
