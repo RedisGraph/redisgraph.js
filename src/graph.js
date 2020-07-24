@@ -63,10 +63,10 @@ class Graph {
 		let paramType = typeof paramValue;
 		if (paramType == "string") {
 			let strValue = "";
-            		paramValue = paramValue.replace(/[\\"']/g, '\\$&');
+            paramValue = paramValue.replace(/[\\"']/g, '\\$&');  
 			if (paramValue[0] != '"') strValue += '"';
 			strValue += paramValue;
-			if (paramValue[paramValue.length - 1] != '"') strValue += '"';
+			if ((paramValue[paramValue.length - 1] != '"') || ((paramValue[paramValue.length - 1] == '"') && (paramValue[paramValue.length - 2] == '\\'))) strValue += '"';
 			return strValue;
 		}
 		if (Array.isArray(paramValue)) {

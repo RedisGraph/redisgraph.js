@@ -412,11 +412,14 @@ describe("RedisGraphAPI Test", () => {
 			[1, 2, 3],
 			["1", "2", "3"],
 			null,
-			'test"abc'
+            'test"abc',
+            "test\"abc2",
+            "\"testabc3",
+            "testabc4\""
 		];
 		let promises = [];
 		for (var i = 0; i < params.length; i++) {
-			let param = { param: params[i] };
+            let param = { param: params[i] };
 			promises.push(api.query("RETURN $param", param));
 		}
 		let values = await Promise.all(promises);
