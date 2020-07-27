@@ -66,7 +66,7 @@ class Graph {
             paramValue = paramValue.replace(/[\\"']/g, '\\$&');  
 			if (paramValue[0] != '"') strValue += '"';
 			strValue += paramValue;
-			if ((paramValue[paramValue.length - 1] != '"') || ((paramValue[paramValue.length - 1] == '"') && (paramValue[paramValue.length - 2] == '\\'))) strValue += '"';
+			if (!paramValue.endsWith('"') || paramValue.endsWith("\\\"")) strValue += '"';
 			return strValue;
 		}
 		if (Array.isArray(paramValue)) {
