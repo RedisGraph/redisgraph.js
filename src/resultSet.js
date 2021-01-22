@@ -24,6 +24,7 @@ const ResultSetValueTypes = {
 	VALUE_EDGE: 7,
 	VALUE_NODE: 8,
 	VALUE_PATH: 9,
+	VALUE_MAP: 10,
 };
 
 /**
@@ -249,6 +250,22 @@ class ResultSet {
 	}
 
 	/**
+	 * Parse a raw map representation into Map object.
+	 * @async
+	 * @param {object[]} rawMap raw map representation
+	 * @returns {Map} Map object.
+	 */
+	async parseMap(rawMap) {
+		let m = {};
+		for (var i = 0; i < rawMap.length; i+=2) {
+			var key = rawMap[i];
+			m[key] = await this.parseScalar(rawMap[i+1]);
+		}
+
+		return m;
+	}
+
+	/**
 	 * Parse a raw value into its actual value.
 	 * @async
 	 * @param {object[]} cell raw value representation
@@ -291,6 +308,11 @@ class ResultSet {
 			case ResultSetValueTypes.VALUE_PATH:
 				scalar = await this.parsePath(value);
 				break;
+
+			case ResultSetValueTypes.VALUE_MAP:
+				scalar = await this.parseMap(value);
+				break;
+
 			case ResultSetValueTypes.VALUE_UNKNOWN:
 				console.log("Unknown scalar type\n");
 				break;
