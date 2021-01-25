@@ -276,6 +276,35 @@ describe("RedisGraphAPI Test", () => {
 		assert.deepStrictEqual([nodeA, nodeB], record.get(0));
 	});
 
+	it("test map", async () => {
+		// return empty map
+		let resultSet = await api.query("RETURN {}");
+		assert.equal(resultSet.size(), 1);
+		assert.ok(resultSet.hasNext());
+
+		let record = resultSet.next();
+		assert.deepStrictEqual({}, record.get(0));
+		assert.ok(!resultSet.hasNext());
+
+		// return map with multiple types
+		await api.query("CREATE (:person{v:1})-[:R{v:2}]->(:person{v:3})")
+		resultSet = await api.query("MATCH (a)-[e]->(b) RETURN {a:'a', b:1, c:null, d:true, e:[1,2], f:{x:1}, src:a, edge:e, dest:b}");
+		assert.equal(resultSet.size(), 1);
+		assert.ok(resultSet.hasNext());
+
+		let src = new Node("person", { v: 1 });
+		src.setId(0);
+		let dest = new Node("person", { v: 3 });
+		dest.setId(1);
+		let edge = new Edge(0, "R", 1, {v: 2});
+		edge.setId(0);
+
+		let expected = {a:'a', b:1, c:null, d:true, e:[1,2], f:{x:1}, src:src, edge:edge, dest:dest};
+		record = resultSet.next();
+		assert.deepStrictEqual(expected, record.get(0));
+		assert.ok(!resultSet.hasNext());
+	});
+
 	it("test multi thread", async () => {
 		await api.query("CREATE (:person {name:'roi', age:34})");
 		var promises = [];
