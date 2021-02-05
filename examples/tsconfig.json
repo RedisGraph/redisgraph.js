@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "UMD",
+        "lib": ["es5"],
+        "strict": true,
+        "allowJs": true,
+        "inlineSourceMap": true,
+        "inlineSources": true,
+        "outDir": "./dist",
+        "moduleResolution": "node",
+        "downlevelIteration": true,
+        "rootDir": "./",
+        "baseUrl": "./",
+        "declaration": true,
+       
+    },
+    "include": ["./"],
+    "exclude": ["dist"]
+}

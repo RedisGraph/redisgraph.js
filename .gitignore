@@ -7,3 +7,4 @@ yarn.lock
 examples/node_modules
 coverage/
 .DS_Store
+dist/

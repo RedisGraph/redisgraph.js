@@ -1,4 +1,5 @@
-const RedisGraph = require("redisgraph.js").Graph;
+
+import {Graph as RedisGraph} from 'redisgraph.js';
 
 let graph = new RedisGraph("social");
 
@@ -18,7 +19,7 @@ try {
 			let record = res.next();
 			console.log(record.get("a.name"));
 		}
-		console.log(res.getStatistics().queryExecutionTime());
+		console.log(res.getStatistics()?.queryExecutionTime());
 
 		// Match with parameters.
 		let param = { age: 30 };

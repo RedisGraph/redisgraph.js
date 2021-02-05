@@ -1,11 +1,15 @@
 "use strict";
-class Path {
+
+import { Edge } from "edge";
+import { Node } from "node";
+
+export class Path {
     /**
      * @constructor
      * @param {Node[]} nodes - path's node list.
      * @param {Edge[]} edges - path's edge list.
      */
-	constructor(nodes, edges) {
+	constructor(public nodes: Node[], public edges: Edge[]) {
 		this.nodes = nodes;
 		this.edges = edges;
 	}
@@ -14,7 +18,7 @@ class Path {
      * Returns the path's nodes as list.
      * @returns {Node[]} path's nodes.
      */
-	get Nodes() {
+	get Nodes(): Node[] {
 		return this.nodes;
 	}
 
@@ -22,7 +26,7 @@ class Path {
      * Returns the path's edges as list.
      * @returns {Edge[]} paths' edges.
      */
-	get Edges() {
+	get Edges(): Edge[] {
 		return this.edges;
     }
 
@@ -31,7 +35,7 @@ class Path {
      * @param {int} index 
      * @returns {Node} node in the given index.
      */
-	getNode(index) {
+	getNode(index: number) {
 		return this.nodes[index];
 	}
 
@@ -40,7 +44,7 @@ class Path {
      * @param {int} index 
      * @returns {Edge} edge in a given index.
      */
-	getEdge(index) {
+	getEdge(index: number) {
 		return this.edges[index];
 	}
 
@@ -48,7 +52,7 @@ class Path {
      * Returns the path's first node.
      * @returns {Node} first node.
      */
-	get firstNode() {
+	get firstNode(): Node {
 		return this.nodes[0];
 	}
 
@@ -56,7 +60,7 @@ class Path {
      * Returns the last node of the path.
      * @returns {Node} last node.
      */
-	get lastNode() {
+	get lastNode():Node {
 		return this.nodes[this.nodes.length - 1];
 	}
 
@@ -64,7 +68,7 @@ class Path {
      * Returns the amount of nodes in th path.
      * @returns {int} amount of nodes.
      */
-	get nodeCount() {
+	get nodeCount(): number {
 		return this.nodes.length;
 	}
 
@@ -72,7 +76,7 @@ class Path {
      * Returns the amount of edges in the path.
      * @returns {int} amount of edges.
      */
-	get edgeCount() {
+	get edgeCount(): number {
 		return this.edges.length;
 	}
 
@@ -80,9 +84,8 @@ class Path {
      * Returns the path string representation.
      * @returns {string} path string representation.
      */
-	toString() {
+	toString(): string {
 		return JSON.stringify(this);
 	}
 }
 
-module.exports = Path;

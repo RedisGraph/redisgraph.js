@@ -13,10 +13,13 @@
 		"redis": "^3.0.2"
 	},
 	"devDependencies": {
-		"mocha": "^7.0.1"
+		"@types/deep-equal": "^1.0.1",
+		"@types/redis": "^2.8.28",
+		"mocha": "^7.0.1",
+		"typescript": "^4.1.3"
 	},
 	"scripts": {
-		"test": "mocha --exit"
+		"test": "npx tsc && mocha --exit"
 	},
-	"main": "index.js"
+	"main": "dist/index.js"
 }

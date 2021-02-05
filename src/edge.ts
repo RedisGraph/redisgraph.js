@@ -1,8 +1,10 @@
-"use strict";
+import {Node} from "./node";
 /**
  * An edge connecting two nodes.
  */
-class Edge {
+export class Edge {
+
+     private id?: number;
     /**
      * Builds an Edge object.
      * @constructor
@@ -11,7 +13,7 @@ class Edge {
      * @param {Node} destNode - Destination node of the edge.
      * @param {Map} properties - Properties map of the edge.
      */
-	constructor(srcNode, relation, destNode, properties) {
+	constructor(private srcNode: Node, private relation: string, private destNode: Node, private properties: Map<string, any>) {
 		this.id = undefined;            //edge's id - set by RedisGraph
 		this.relation = relation;       //edge's relationship type
 		this.srcNode = srcNode;         //edge's source node
@@ -23,7 +25,7 @@ class Edge {
      * Sets the edge ID.
      * @param {int} id 
      */
-	setId(id) {
+	setId(id:number) {
 		this.id = id;
     }
     
@@ -35,4 +37,3 @@ class Edge {
 	}
 }
 
-module.exports = Edge;

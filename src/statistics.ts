@@ -1,21 +1,24 @@
 "use strict";
-const Label = require("./label");
 
-class Statistics {
+import { Label } from "./label";
+
+
+export class Statistics {
     /**
      * Builds a query statistics object out of raw data.
      * @constructor
      * @param {object[]} raw - raw data.
      */
-	constructor(raw) {
-		this._raw = raw;
+	constructor(private _raw: any[]) {
 	}
+	
+	private _statistics: any;
 
     /**
      * Returns a statistics value according to the statistics label.
      * @param {Label} label - Statistics label.
      */
-	getStringValue(label) {
+	getStringValue(label: string) {
 		return this.getStatistics()[label];
 	}
 
@@ -39,7 +42,7 @@ class Statistics {
      * @param {Label} label 
      * @returns {int} The actual value if exists, 0 otherwise.
      */
-	getIntValue(label) {
+	getIntValue(label: string): number {
 		let value = this.getStringValue(label);
 		return value ? parseInt(value) : 0;
 	}
@@ -49,7 +52,7 @@ class Statistics {
      * @param {Label} label 
      * @returns {float} The actual value if exists, 0 otherwise.
      */
-	getFloatValue(label) {
+	getFloatValue(label: string): number {
 		let value = this.getStringValue(label);
 		return value ? parseFloat(value) : 0;
 	}
@@ -57,72 +60,71 @@ class Statistics {
     /**
      * @returns {int} The amount of nodes created by th query.
      */
-	nodesCreated() {
+	nodesCreated(): number {
 		return this.getIntValue(Label.NODES_CREATED);
 	}
 
     /**
      * @returns {int} The amount of nodes deleted by the query.
      */
-	nodesDeleted() {
+	nodesDeleted(): number  {
 		return this.getIntValue(Label.NODES_DELETED);
 	}
 
     /**
      * @returns {int} The amount of labels created by the query.
      */
-	labelsAdded() {
+	labelsAdded(): number  {
 		return this.getIntValue(Label.LABELS_ADDED);
 	}
 
     /**
      * @returns {int} The amount of relationships deleted by the query.
      */
-	relationshipsDeleted() {
+	relationshipsDeleted(): number  {
 		return this.getIntValue(Label.RELATIONSHIPS_DELETED);
 	}
 
     /**
      * @returns {int} The amount of relationships created by the query.
      */
-	relationshipsCreated() {
+	relationshipsCreated(): number  {
 		return this.getIntValue(Label.RELATIONSHIPS_CREATED);
 	}
 
     /**
      * @returns {int} The amount of properties set by the query.
      */
-	propertiesSet() {
+	propertiesSet(): number  {
 		return this.getIntValue(Label.PROPERTIES_SET);
 	}
 
     /**
      * @returns {int} The amount of indices created by the query.
      */
-	indicesCreated() {
+	indicesCreated(): number  {
 		return this.getIntValue(Label.INDICES_CREATED);
 	}
 
     /**
      * @returns {int} The amount of indices deleted by the query.
      */
-	indicesDeleted() {
+	indicesDeleted(): number  {
 		return this.getIntValue(Label.INDICES_DELETED);
     }
 
     /**
      * @returns {boolean} The execution plan was cached on RedisGraph.
      */
-    cachedExecution() {
+    cachedExecution(): boolean  {
         return  this.getIntValue(Label.CACHED_EXECUTION) == 1;
     }
 
     /**
      * @returns {float} The query execution time in ms.
      */
-	queryExecutionTime() {
+	queryExecutionTime(): number  {
 		return this.getFloatValue(Label.QUERY_INTERNAL_EXECUTION_TIME);
 	}
 }
 
-module.exports = Statistics;

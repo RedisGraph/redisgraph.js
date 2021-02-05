@@ -1,11 +1,7 @@
 "use strict";
 const assert = require("assert"),
 	redis = require("redis"),
-	Label = require("../src/label"),
-	RedisGraph = require("../src/graph"),
-	Node = require("../src/node"),
-	Edge = require("../src/edge"),
-	Path = require("../src/path"),
+	{ Label, Graph: RedisGraph, Node, Edge, Path } = require("../dist/index"),
 	PathBuilder = require("./pathBuilder"),
 	deepEqual = require("deep-equal");
 

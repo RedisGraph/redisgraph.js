@@ -1,6 +1,7 @@
 "use strict";
 const assert = require("assert"),
-	Record = require("../src/record");
+	RedisGraph = require("../dist/index"), 
+	Record = RedisGraph.Record;
 
 describe("Record Test", () => {
 	describe('getString()', () => {

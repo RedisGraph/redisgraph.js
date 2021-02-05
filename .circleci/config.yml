@@ -45,6 +45,7 @@ jobs:
         
       # run tests!
       - run: sudo npm install -g istanbul codecov
+      - run: npx tsc
       - run: istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec --exit 
       - early_return_for_forked_pull_requests
       - run: codecov -t ${CODECOV_TOKEN}

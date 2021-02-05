@@ -2,14 +2,16 @@
 /**
  * A node within the garph.
  */
-class Node {
+export class Node {
+
+    private id?: number;
     /**
      * Builds a node object.
      * @constructor
      * @param {string} label - node label.
      * @param {Map} properties - properties map.
      */
-	constructor(label, properties) {
+	constructor(public label: string, public properties: Map<string, any>) {
 		this.id = undefined;            //node's id - set by RedisGraph
 		this.label = label;             //node's label
 		this.properties = properties;   //node's list of properties (list of Key:Value)
@@ -19,16 +21,15 @@ class Node {
      * Sets the node id.
      * @param {int} id 
      */
-	setId(id) {
+	setId(id: number) {
 		this.id = id;
 	}
 
     /**
      * @returns {string} The string representation of the node.
      */
-	toString() {
+	toString(): string {
 		return JSON.stringify(this);
 	}
 }
 
-module.exports = Node;
