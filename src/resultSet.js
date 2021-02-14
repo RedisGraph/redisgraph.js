@@ -6,6 +6,10 @@ const Statistics = require("./statistics"),
 	Path = require("./path"),
 	ReplyError = require("redis").ReplyError;
 
+/**
+ * @enum {number}
+ * @readonly
+ */
 const ResultSetColumnTypes = {
 	COLUMN_UNKNOWN: 0,
 	COLUMN_SCALAR: 1,
@@ -13,6 +17,10 @@ const ResultSetColumnTypes = {
 	COLUMN_RELATION: 3,
 };
 
+/**
+ * @enum {number}
+ * @readonly
+ */
 const ResultSetValueTypes = {
 	VALUE_UNKNOWN: 0,
 	VALUE_NULL: 1,
@@ -34,7 +42,7 @@ class ResultSet {
 	/**
 	 * Builds an empty ResultSet object.
 	 * @constructor
-	 * @param {Graph} graph
+	 * @param {import('./graph')} graph
 	 */
 	constructor(graph) {
 		this._graph = graph; //_graph is graph api
@@ -132,7 +140,7 @@ class ResultSet {
 	 * Parse raw entity properties representation into a Map
 	 * @async
 	 * @param {object[]} props raw properties representation
-	 * @returns {Map} Map with the parsed properties.
+	 * @returns {Promise<object>} Map with the parsed properties.
 	 */
 	async parseEntityProperties(props) {
 		// [[name, value, value type] X N]
@@ -163,7 +171,7 @@ class ResultSet {
 	 * Parse raw node representation into a Node object.
 	 * @async
 	 * @param {object[]} cell raw node representation.
-	 * @returns {Node} Node object.
+	 * @returns {Promise<import('./node')>} Node object.
 	 */
 	async parseNode(cell) {
 		// Node ID (integer),
@@ -193,7 +201,7 @@ class ResultSet {
 	 * Parse a raw edge representation into an Edge object.
 	 * @async
 	 * @param {object[]} cell raw edge representation
-	 * @returns {Edge} Edge object.
+	 * @returns {Promise<import('./edge')>} Edge object.
 	 */
 	async parseEdge(cell) {
 		// Edge ID (integer),
@@ -228,7 +236,7 @@ class ResultSet {
 	 * Parse and in-place replace raw array into an array of values or objects.
 	 * @async
 	 * @param {object[]} rawArray raw array representation
-	 * @returns {object[]} Parsed array.
+	 * @returns {Promise<object[]>} Parsed array.
 	 */
 	async parseArray(rawArray) {
 		for (var i = 0; i < rawArray.length; i++) {
@@ -241,7 +249,7 @@ class ResultSet {
 	 * Parse a raw path representation into Path object.
 	 * @async
 	 * @param {object[]} rawPath raw path representation
-	 * @returns {Path} Path object.
+	 * @returns {Promise<import('./path')>} Path object.
 	 */
 	async parsePath(rawPath) {
 		let nodes = await this.parseScalar(rawPath[0]);
@@ -253,7 +261,7 @@ class ResultSet {
 	 * Parse a raw map representation into Map object.
 	 * @async
 	 * @param {object[]} rawMap raw map representation
-	 * @returns {Map} Map object.
+	 * @returns {Promise<object>} Map object.
 	 */
 	async parseMap(rawMap) {
 		let m = {};
@@ -269,7 +277,7 @@ class ResultSet {
 	 * Parse a raw value into its actual value.
 	 * @async
 	 * @param {object[]} cell raw value representation
-	 * @returns {object} Actual value - scalar, array, Node, Edge, Path
+	 * @returns {Promise<object>} Actual value - scalar, array, Node, Edge, Path
 	 */
 	async parseScalar(cell) {
 		let scalar_type = cell[0];
@@ -349,7 +357,7 @@ class ResultSet {
 	}
 
 	/**
-	 * @returns {int} Result set size.
+	 * @returns {number} Result set size. (integer)
 	 */
 	size() {
 		return this._resultsCount;

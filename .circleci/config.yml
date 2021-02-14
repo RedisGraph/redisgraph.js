@@ -42,7 +42,11 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-        
+
+
+      # generate types
+      - run: tsc
+
       # run tests!
       - run: sudo npm install -g istanbul codecov
       - run: istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec --exit 

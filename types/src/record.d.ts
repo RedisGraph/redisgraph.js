@@ -1,80 +1,45 @@
-"use strict";
+export = Record;
 /**
  * Hold a query record
  */
-class Record {
+declare class Record {
     /**
      * Builds a Record object
      * @constructor
-     * @param {string[]} header 
-     * @param {object[]} values 
+     * @param {string[]} header
+     * @param {object[]} values
      */
-	constructor(header, values) {
-		this._header = header;
-		this._values = values;
-	}
-
+    constructor(header: string[], values: object[]);
+    _header: string[];
+    _values: any[];
     /**
      * Returns a value of the given schema key or in the given position.
      * @param {string | number} key (integer)
      * @returns {object} Requested value.
      */
-	get(key) {
-		let index = key;
-		if (typeof key === "string") {
-			index = this._header.indexOf(key);
-		}
-		return this._values[index];
-	}
-
+    get(key: string | number): object;
     /**
      * Returns a string representation for the value of the given schema key or in the given position.
      * @param {string | number} key (integer)
      * @returns {string} Requested string representation of the value.
      */
-	getString(key) {
-		let index = key;
-		if (typeof key === "string") {
-			index = this._header.indexOf(key);
-		}
-
-		let value = this._values[index];
-		if (value !== undefined && value !== null) {
-			return value.toString();
-		}
-
-		return null;
-	}
-
+    getString(key: string | number): string;
     /**
      * @returns {string[]} The record header - List of strings.
      */
-	keys() {
-		return this._header;
-	}
-
+    keys(): string[];
     /**
      * @returns {object[]} The record values - List of values.
      */
-	values() {
-		return this._values;
-	}
-
+    values(): object[];
     /**
      * Returns if the header contains a given key.
-     * @param {string} key 
+     * @param {string} key
      * @returns {boolean} true if header contains key.
      */
-	containsKey(key) {
-		return this._header.includes(key);
-	}
-
+    containsKey(key: string): boolean;
     /**
      * @returns {number} The amount of values in the record. (integer)
      */
-	size() {
-		return this._header.length;
-	}
+    size(): number;
 }
-
-module.exports = Record;
