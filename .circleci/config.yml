@@ -45,7 +45,7 @@ jobs:
 
 
       # generate types
-      - run: ./node_modules/.bin/tsc
+      - run: npm run types
 
       # run tests!
       - run: sudo npm install -g istanbul codecov
