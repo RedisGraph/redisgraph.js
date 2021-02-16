@@ -17,7 +17,7 @@ class Node {
 
     /**
      * Sets the node id.
-     * @param {int} id 
+     * @param {number} id (integer)
      */
 	setId(id) {
 		this.id = id;

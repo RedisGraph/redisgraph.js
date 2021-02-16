@@ -1,6 +1,8 @@
 "use strict";
 /**
  * Different Statistics labels
+ * @readonly
+ * @enum {string}
  */
 var Label = Object.freeze({
 	LABELS_ADDED: "Labels added",

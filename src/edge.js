@@ -1,14 +1,14 @@
 "use strict";
-/**
+/*
  * An edge connecting two nodes.
  */
 class Edge {
     /**
      * Builds an Edge object.
      * @constructor
-     * @param {Node} srcNode - Source node of the edge.
+     * @param {import('./node')} srcNode - Source node of the edge.
      * @param {string} relation - Relationship type of the edge.
-     * @param {Node} destNode - Destination node of the edge.
+     * @param {import('./node')} destNode - Destination node of the edge.
      * @param {Map} properties - Properties map of the edge.
      */
 	constructor(srcNode, relation, destNode, properties) {
@@ -21,7 +21,7 @@ class Edge {
 
     /**
      * Sets the edge ID.
-     * @param {int} id 
+     * @param {number} id (integer)
      */
 	setId(id) {
 		this.id = id;

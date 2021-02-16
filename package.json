@@ -13,10 +13,12 @@
 		"redis": "^3.0.2"
 	},
 	"devDependencies": {
-		"mocha": "^7.0.1"
+		"mocha": "^7.0.1",
+		"typescript": "^4.1.5"
 	},
 	"scripts": {
 		"test": "mocha --exit"
 	},
-	"main": "index.js"
+	"main": "index.js",
+	"types": "./types"
 }
