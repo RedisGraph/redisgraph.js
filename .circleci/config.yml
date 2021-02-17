@@ -45,7 +45,7 @@ jobs:
 
 
       # generate types
-      - run: ./node_modules/.bin/tsc
+      - run: npm run types
 
       # run tests!
       - run: sudo npm install -g istanbul codecov
@@ -73,7 +73,7 @@ jobs:
             git config user.name "ci-build"
       - run:
           name: Create docs with jsdoc
-          command: jsdoc ./src -r -d ./docs -R ./README.md
+          command: npm run docs
       - run:
           name: Deploy docs to gh-pages branch
           command: gh-pages --dist ./docs --branch master --dest ./docs --message "[skip ci] Updates"

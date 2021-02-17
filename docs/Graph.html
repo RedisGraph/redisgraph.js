@@ -132,7 +132,7 @@ See: node_redis for more options on createClient
 <span class="param-type">string</span>
 |
 
-<span class="param-type">RedisClient</span>
+<span class="param-type">redis.RedisClient</span>
 
 
             
@@ -152,7 +152,7 @@ See: node_redis for more options on createClient
 
             
 
-            <td class="description last">Redis host or node_redis client</td>
+            <td class="description last">Redis host or node_redis client TODO RedisClient</td>
         </tr>
 
     
@@ -168,7 +168,7 @@ See: node_redis for more options on createClient
 <span class="param-type">string</span>
 |
 
-<span class="param-type">int</span>
+<span class="param-type">number</span>
 
 
             
@@ -188,7 +188,7 @@ See: node_redis for more options on createClient
 
             
 
-            <td class="description last">Redis port</td>
+            <td class="description last">Redis port (integer)</td>
         </tr>
 
     
@@ -201,7 +201,7 @@ See: node_redis for more options on createClient
             <td class="type">
             
                 
-<span class="param-type">ClientOpts</span>
+<span class="param-type">Object</span>
 
 
             
@@ -262,7 +262,7 @@ See: node_redis for more options on createClient
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line9">line 9</a>
+        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -420,7 +420,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line48">line 48</a>
+        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line50">line 50</a>
     </li></ul></dd>
     
 
@@ -579,7 +579,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line87">line 87</a>
+        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line89">line 89</a>
     </li></ul></dd>
     
 
@@ -637,7 +637,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
 
     
-    <h4 class="name" id="callProcedure"><span class="type-signature"></span>callProcedure<span class="signature">(procedure, args<span class="signature-attributes">opt</span>, y<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="ResultSet.html">ResultSet</a>}</span></h4>
+    <h4 class="name" id="callProcedure"><span class="type-signature"></span>callProcedure<span class="signature">(procedure, args<span class="signature-attributes">opt</span>, y<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="ResultSet.html">ResultSet</a>>}</span></h4>
     
 
     
@@ -814,7 +814,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line140">line 140</a>
+        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line142">line 142</a>
     </li></ul></dd>
     
 
@@ -854,7 +854,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     </dt>
     <dd>
         
-<span class="param-type"><a href="ResultSet.html">ResultSet</a></span>
+<span class="param-type">Promise.&lt;<a href="ResultSet.html">ResultSet</a>></span>
 
 
     </dd>
@@ -924,7 +924,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line38">line 38</a>
+        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line40">line 40</a>
     </li></ul></dd>
     
 
@@ -960,7 +960,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
 
     
-    <h4 class="name" id="deleteGraph"><span class="type-signature">(async) </span>deleteGraph<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="ResultSet.html">ResultSet</a>}</span></h4>
+    <h4 class="name" id="deleteGraph"><span class="type-signature">(async) </span>deleteGraph<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="ResultSet.html">ResultSet</a>>}</span></h4>
     
 
     
@@ -1012,7 +1012,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line123">line 123</a>
+        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line125">line 125</a>
     </li></ul></dd>
     
 
@@ -1052,7 +1052,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     </dt>
     <dd>
         
-<span class="param-type"><a href="ResultSet.html">ResultSet</a></span>
+<span class="param-type">Promise.&lt;<a href="ResultSet.html">ResultSet</a>></span>
 
 
     </dd>
@@ -1070,7 +1070,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
 
     
-    <h4 class="name" id="fetchAndGetLabel"><span class="type-signature">(async) </span>fetchAndGetLabel<span class="signature">(id)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="fetchAndGetLabel"><span class="type-signature">(async) </span>fetchAndGetLabel<span class="signature">(id)</span><span class="type-signature"> &rarr; {Promise.&lt;string>}</span></h4>
     
 
     
@@ -1120,7 +1120,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
             <td class="type">
             
                 
-<span class="param-type">int</span>
+<span class="param-type">number</span>
 
 
             
@@ -1130,7 +1130,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
 
             
 
-            <td class="description last">internal ID of label.</td>
+            <td class="description last">internal ID of label. (integer)</td>
         </tr>
 
     
@@ -1171,7 +1171,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line214">line 214</a>
+        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line216">line 216</a>
     </li></ul></dd>
     
 
@@ -1211,7 +1211,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">Promise.&lt;string></span>
 
 
     </dd>
@@ -1229,7 +1229,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
 
     
-    <h4 class="name" id="fetchAndGetProperty"><span class="type-signature">(async) </span>fetchAndGetProperty<span class="signature">(id)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="fetchAndGetProperty"><span class="type-signature">(async) </span>fetchAndGetProperty<span class="signature">(id)</span><span class="type-signature"> &rarr; {Promise.&lt;string>}</span></h4>
     
 
     
@@ -1279,7 +1279,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
             <td class="type">
             
                 
-<span class="param-type">int</span>
+<span class="param-type">number</span>
 
 
             
@@ -1289,7 +1289,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
 
             
 
-            <td class="description last">internal ID of property.</td>
+            <td class="description last">internal ID of property. (integer)</td>
         </tr>
 
     
@@ -1330,7 +1330,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line254">line 254</a>
+        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line256">line 256</a>
     </li></ul></dd>
     
 
@@ -1370,7 +1370,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">Promise.&lt;string></span>
 
 
     </dd>
@@ -1388,7 +1388,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
 
     
-    <h4 class="name" id="fetchAndGetRelationship"><span class="type-signature">(async) </span>fetchAndGetRelationship<span class="signature">(id)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="fetchAndGetRelationship"><span class="type-signature">(async) </span>fetchAndGetRelationship<span class="signature">(id)</span><span class="type-signature"> &rarr; {Promise.&lt;string>}</span></h4>
     
 
     
@@ -1438,7 +1438,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
             <td class="type">
             
                 
-<span class="param-type">int</span>
+<span class="param-type">number</span>
 
 
             
@@ -1448,7 +1448,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
 
             
 
-            <td class="description last">internal ID of relationship type.</td>
+            <td class="description last">internal ID of relationship type. (integer)</td>
         </tr>
 
     
@@ -1489,7 +1489,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line234">line 234</a>
+        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line236">line 236</a>
     </li></ul></dd>
     
 
@@ -1529,7 +1529,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">Promise.&lt;string></span>
 
 
     </dd>
@@ -1597,7 +1597,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
             <td class="type">
             
                 
-<span class="param-type">int</span>
+<span class="param-type">number</span>
 
 
             
@@ -1607,7 +1607,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
 
             
 
-            <td class="description last">internal ID of label.</td>
+            <td class="description last">internal ID of label. (integer)</td>
         </tr>
 
     
@@ -1648,7 +1648,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line204">line 204</a>
+        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line206">line 206</a>
     </li></ul></dd>
     
 
@@ -1756,7 +1756,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
             <td class="type">
             
                 
-<span class="param-type">int</span>
+<span class="param-type">number</span>
 
 
             
@@ -1766,7 +1766,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
 
             
 
-            <td class="description last">internal ID of property.</td>
+            <td class="description last">internal ID of property. (integer)</td>
         </tr>
 
     
@@ -1807,7 +1807,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line244">line 244</a>
+        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line246">line 246</a>
     </li></ul></dd>
     
 
@@ -1865,7 +1865,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
 
     
-    <h4 class="name" id="getRelationship"><span class="type-signature"></span>getRelationship<span class="signature">(id)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getRelationship"><span class="type-signature"></span>getRelationship<span class="signature">(id)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -1915,7 +1915,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
             <td class="type">
             
                 
-<span class="param-type">int</span>
+<span class="param-type">number</span>
 
 
             
@@ -1925,7 +1925,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
 
             
 
-            <td class="description last">internal ID of relationship type.</td>
+            <td class="description last">internal ID of relationship type. (integer)</td>
         </tr>
 
     
@@ -1966,7 +1966,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line224">line 224</a>
+        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line226">line 226</a>
     </li></ul></dd>
     
 
@@ -1995,10 +1995,22 @@ db.labels, db.propertyKeys and db.relationshipTypes
 
         
 <div class="param-desc">
-    String relationship type.
+    relationship type.
 </div>
 
 
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
 
     
 
@@ -2064,7 +2076,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line149">line 149</a>
+        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line151">line 151</a>
     </li></ul></dd>
     
 
@@ -2150,7 +2162,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">*</span>
 
 
             
@@ -2201,7 +2213,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line61">line 61</a>
+        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line63">line 63</a>
     </li></ul></dd>
     
 
@@ -2311,7 +2323,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line185">line 185</a>
+        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line187">line 187</a>
     </li></ul></dd>
     
 
@@ -2347,7 +2359,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
 
     
-    <h4 class="name" id="query"><span class="type-signature">(async) </span>query<span class="signature">(query, params<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="ResultSet.html">ResultSet</a>}</span></h4>
+    <h4 class="name" id="query"><span class="type-signature">(async) </span>query<span class="signature">(query, params<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="ResultSet.html">ResultSet</a>>}</span></h4>
     
 
     
@@ -2491,7 +2503,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line105">line 105</a>
+        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line107">line 107</a>
     </li></ul></dd>
     
 
@@ -2531,7 +2543,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     </dt>
     <dd>
         
-<span class="param-type"><a href="ResultSet.html">ResultSet</a></span>
+<span class="param-type">Promise.&lt;<a href="ResultSet.html">ResultSet</a>></span>
 
 
     </dd>
@@ -2601,7 +2613,7 @@ db.labels, db.propertyKeys and db.relationshipTypes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line167">line 167</a>
+        <a href="graph.js.html">graph.js</a>, <a href="graph.js.html#line169">line 169</a>
     </li></ul></dd>
     
 
@@ -2647,13 +2659,13 @@ db.labels, db.propertyKeys and db.relationshipTypes
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Edge.html">Edge</a></li><li><a href="Graph.html">Graph</a></li><li><a href="Node.html">Node</a></li><li><a href="Path.html">Path</a></li><li><a href="Record.html">Record</a></li><li><a href="ResultSet.html">ResultSet</a></li><li><a href="Statistics.html">Statistics</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Label">Label</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Edge.html">Edge</a></li><li><a href="Graph.html">Graph</a></li><li><a href="Node.html">Node</a></li><li><a href="Path.html">Path</a></li><li><a href="Record.html">Record</a></li><li><a href="ResultSet.html">ResultSet</a></li><li><a href="Statistics.html">Statistics</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Label">Label</a></li><li><a href="global.html#ResultSetColumnTypes">ResultSetColumnTypes</a></li><li><a href="global.html#ResultSetValueTypes">ResultSetValueTypes</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Jan 25 2021 06:48:04 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed Feb 17 2021 14:48:32 GMT-0500 (Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

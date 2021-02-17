@@ -8,11 +8,11 @@ declare class Graph {
      * See: node_redis for more options on createClient
      *
      * @param {string} graphId the graph id
-     * @param {string | import('redis').RedisClient} [host] Redis host or node_redis client
+     * @param {string | redis.RedisClient} [host] Redis host or node_redis client
      * @param {string | number} [port] Redis port (integer)
      * @param {Object} [options] node_redis options
      */
-    constructor(graphId: string, host?: string | import('redis').RedisClient, port?: string | number, options?: any);
+    constructor(graphId: string, host?: string | any, port?: string | number, options?: any);
     _graphId: string;
     _labels: any[];
     _relationshipTypes: any[];
@@ -29,10 +29,10 @@ declare class Graph {
     /**
      * Auxiliary function to extract string(s) data from procedures such as:
      * db.labels, db.propertyKeys and db.relationshipTypes
-     * @param {import('./resultSet')} resultSet - a procedure result set
+     * @param {ResultSet} resultSet - a procedure result set
      * @returns {string[]} strings array.
      */
-    _extractStrings(resultSet: import('./resultSet')): string[];
+    _extractStrings(resultSet: ResultSet): string[];
     /**
      * Transforms a parameter value to string.
      * @param {*} paramValue
@@ -50,23 +50,23 @@ declare class Graph {
      * @async
      * @param {string} query Cypher query
      * @param {Map} [params] Parameters map
-     * @returns {Promise<import('./resultSet')>} a promise contains a result set
+     * @returns {Promise<ResultSet>} a promise contains a result set
      */
-    query(query: string, params?: Map<any, any>): Promise<import('./resultSet')>;
+    query(query: string, params?: Map<any, any>): Promise<ResultSet>;
     /**
      * Deletes the entire graph
      * @async
-     * @returns {Promise<import('./resultSet')>} a promise contains the delete operation running time statistics
+     * @returns {Promise<ResultSet>} a promise contains the delete operation running time statistics
      */
-    deleteGraph(): Promise<import('./resultSet')>;
+    deleteGraph(): Promise<ResultSet>;
     /**
      * Calls procedure
      * @param {string} procedure Procedure to call
      * @param {string[]} [args] Arguments to pass
      * @param {string[]} [y] Yield outputs
-     * @returns {Promise<import('./resultSet')>} a promise contains the procedure result set data
+     * @returns {Promise<ResultSet>} a promise contains the procedure result set data
      */
-    callProcedure(procedure: string, args?: string[], y?: string[]): Promise<import('./resultSet')>;
+    callProcedure(procedure: string, args?: string[], y?: string[]): Promise<ResultSet>;
     /**
      * Retrieves all labels in graph.
      * @async
@@ -122,3 +122,4 @@ declare class Graph {
      */
     fetchAndGetProperty(id: number): Promise<string>;
 }
+import ResultSet = require("./resultSet");

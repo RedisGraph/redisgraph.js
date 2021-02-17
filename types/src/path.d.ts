@@ -1,43 +1,48 @@
 export = Path;
+/**
+ * @typedef {import('./node')} Node
+ */
+/**
+ * @typedef {import('./edge')} Edge
+ */
 declare class Path {
     /**
-     * @constructor
-     * @param {import('./node')[]} nodes - path's node list.
-     * @param {import('./edge')[]} edges - path's edge list.
+     * @param {Node[]} nodes - path's node list.
+     * @param {Edge[]} edges - path's edge list.
      */
-    constructor(nodes: import('./node')[], edges: import('./edge')[]);
+    constructor(nodes: Node[], edges: Edge[]);
     nodes: import("./node")[];
     edges: import("./edge")[];
     /**
      * Returns the path's nodes as list.
-     * @returns {import('./node')[]} path's nodes.
+     * @returns {Node[]} path's nodes.
      */
     get Nodes(): import("./node")[];
     /**
      * Returns the path's edges as list.
-     * @returns {import('./edge')[]} paths' edges.
+     * @returns {Edge[]} paths' edges.
      */
     get Edges(): import("./edge")[];
     /**
      * Returns a node in a given index.
      * @param {number} index (integer)
-     * @returns {import('./node')} node in the given index.
+     * @returns {Node} node in the given index.
      */
-    getNode(index: number): import('./node');
+    getNode(index: number): Node;
     /**
      * Returns an edge in a given index.
      * @param {number} index (integer)
-     * @returns {import('./edge')} edge in a given index.
+     * @returns {Edge} edge in a given index.
      */
-    getEdge(index: number): import('./edge');
+    getEdge(index: number): Edge;
     /**
      * Returns the path's first node.
-     * @returns {import('./node')} first node.
+     * @returns {Node} first node.
      */
     get firstNode(): import("./node");
     /**
      * Returns the last node of the path.
-     * @returns {import('./node')} last node.
+     * @returns {Node} last node.
      */
     get lastNode(): import("./node");
     /**
@@ -56,3 +61,8 @@ declare class Path {
      */
     toString(): string;
 }
+declare namespace Path {
+    export { Node, Edge };
+}
+type Node = import("./node");
+type Edge = import("./edge");

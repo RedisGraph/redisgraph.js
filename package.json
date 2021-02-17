@@ -13,11 +13,14 @@
 		"redis": "^3.0.2"
 	},
 	"devDependencies": {
+		"jsdoc-ts-utils": "^1.1.2",
 		"mocha": "^7.0.1",
 		"typescript": "^4.1.5"
 	},
 	"scripts": {
-		"test": "mocha --exit"
+		"test": "mocha --exit",
+		"types": "tsc",
+		"docs": "jsdoc -c jsdoc.conf.json ./src -r -d ./docs -R ./README.md"
 	},
 	"main": "index.js",
 	"types": "./types"
