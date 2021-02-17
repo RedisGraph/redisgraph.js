@@ -62,7 +62,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints:
+          fi jsdoc ./src -r -d ./docs -R ./README.mdngerprints:
             - "76:ad:7c:fa:32:41:29:d0:cc:f6:63:06:62:b6:54:9c"     
       - run:
           name: Install and configure dependencies
@@ -73,7 +73,7 @@ jobs:
             git config user.name "ci-build"
       - run:
           name: Create docs with jsdoc
-          command: jsdoc ./src -r -d ./docs -R ./README.md
+          command: npm run docs
       - run:
           name: Deploy docs to gh-pages branch
           command: gh-pages --dist ./docs --branch master --dest ./docs --message "[skip ci] Updates"

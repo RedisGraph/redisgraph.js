@@ -1,4 +1,5 @@
 "use strict";
+
 const redis = require("redis"),
 	// @ts-ignore
 	util = require("util"),
@@ -13,7 +14,7 @@ class Graph {
       * See: node_redis for more options on createClient 
       * 
       * @param {string} graphId the graph id
-      * @param {string | import('redis').RedisClient} [host] Redis host or node_redis client
+      * @param {string | redis.RedisClient} [host] Redis host or node_redis client
       * @param {string | number} [port] Redis port (integer)
       * @param {Object} [options] node_redis options
       */
@@ -43,7 +44,7 @@ class Graph {
 	/**
 	 * Auxiliary function to extract string(s) data from procedures such as:
 	 * db.labels, db.propertyKeys and db.relationshipTypes
-	 * @param {import('./resultSet')} resultSet - a procedure result set
+	 * @param {ResultSet} resultSet - a procedure result set
      * @returns {string[]} strings array.
 	 */
 	_extractStrings(resultSet) {
@@ -101,7 +102,7 @@ class Graph {
      * @async
 	 * @param {string} query Cypher query
 	 * @param {Map} [params] Parameters map
-	 * @returns {Promise<import('./resultSet')>} a promise contains a result set
+	 * @returns {Promise<ResultSet>} a promise contains a result set
 	 */
 	async query(query, params) {
 		if (params) {
@@ -119,7 +120,7 @@ class Graph {
 	/**
 	 * Deletes the entire graph
      * @async
-	 * @returns {Promise<import('./resultSet')>} a promise contains the delete operation running time statistics
+	 * @returns {Promise<ResultSet>} a promise contains the delete operation running time statistics
 	 */
 	async deleteGraph() {
 		var res = await this._sendCommand("graph.DELETE", [this._graphId]);
@@ -136,7 +137,7 @@ class Graph {
 	 * @param {string} procedure Procedure to call
 	 * @param {string[]} [args] Arguments to pass
 	 * @param {string[]} [y] Yield outputs
-	 * @returns {Promise<import('./resultSet')>} a promise contains the procedure result set data
+	 * @returns {Promise<ResultSet>} a promise contains the procedure result set data
 	 */
 	callProcedure(procedure, args = new Array(), y = new Array()) {
 		let q = "CALL " + procedure + "(" + args.join(",") + ")" + y.join(" ");

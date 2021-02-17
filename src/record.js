@@ -1,11 +1,12 @@
 "use strict";
+
 /**
  * Hold a query record
  */
 class Record {
     /**
      * Builds a Record object
-     * @constructor
+	 *
      * @param {string[]} header 
      * @param {object[]} values 
      */
