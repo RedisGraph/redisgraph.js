@@ -5,10 +5,10 @@ export = ResultSet;
 declare class ResultSet {
     /**
      * Builds an empty ResultSet object.
-     * @constructor
-     * @param {import('./graph')} graph
+     *
+     * @param {Graph} graph
      */
-    constructor(graph: import('./graph'));
+    constructor(graph: Graph);
     _graph: import("./graph");
     _position: number;
     _resultsCount: number;
@@ -20,7 +20,7 @@ declare class ResultSet {
      * @param {object[]} resp  - raw response representation - the raw representation of response is at most 3 lists of objects.
      *                    The last list is the statistics list.
      */
-    parseResponse(resp: object[]): Promise<ResultSet>;
+    parseResponse(resp: object[]): Promise<this>;
     _statistics: Statistics;
     /**
      * Parse a raw response body into header an records.
@@ -54,16 +54,16 @@ declare class ResultSet {
      * Parse raw node representation into a Node object.
      * @async
      * @param {object[]} cell raw node representation.
-     * @returns {Promise<import('./node')>} Node object.
+     * @returns {Promise<Node>} Node object.
      */
-    parseNode(cell: object[]): Promise<import('./node')>;
+    parseNode(cell: object[]): Promise<Node>;
     /**
      * Parse a raw edge representation into an Edge object.
      * @async
      * @param {object[]} cell raw edge representation
-     * @returns {Promise<import('./edge')>} Edge object.
+     * @returns {Promise<Edge>} Edge object.
      */
-    parseEdge(cell: object[]): Promise<import('./edge')>;
+    parseEdge(cell: object[]): Promise<Edge>;
     /**
      * Parse and in-place replace raw array into an array of values or objects.
      * @async
@@ -75,9 +75,9 @@ declare class ResultSet {
      * Parse a raw path representation into Path object.
      * @async
      * @param {object[]} rawPath raw path representation
-     * @returns {Promise<import('./path')>} Path object.
+     * @returns {Promise<Path>} Path object.
      */
-    parsePath(rawPath: object[]): Promise<import('./path')>;
+    parsePath(rawPath: object[]): Promise<Path>;
     /**
      * Parse a raw map representation into Map object.
      * @async
@@ -113,5 +113,12 @@ declare class ResultSet {
      */
     size(): number;
 }
+declare namespace ResultSet {
+    export { Graph };
+}
 import Statistics = require("./statistics");
+import Node = require("./node");
+import Edge = require("./edge");
+import Path = require("./path");
 import Record = require("./record");
+type Graph = import("./graph");

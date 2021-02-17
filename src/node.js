@@ -1,11 +1,12 @@
 "use strict";
+
 /**
- * A node within the garph.
+ * A node within the graph.
  */
 class Node {
     /**
      * Builds a node object.
-     * @constructor
+	 *
      * @param {string} label - node label.
      * @param {Map} properties - properties map.
      */

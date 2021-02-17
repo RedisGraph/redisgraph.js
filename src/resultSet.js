@@ -1,4 +1,9 @@
 "use strict";
+
+/**
+ * @typedef {import('./graph')} Graph
+ */
+
 const Statistics = require("./statistics"),
 	Record = require("./record"),
 	Node = require("./node"),
@@ -41,8 +46,8 @@ const ResultSetValueTypes = {
 class ResultSet {
 	/**
 	 * Builds an empty ResultSet object.
-	 * @constructor
-	 * @param {import('./graph')} graph
+	 *
+	 * @param {Graph} graph
 	 */
 	constructor(graph) {
 		this._graph = graph; //_graph is graph api
@@ -171,7 +176,7 @@ class ResultSet {
 	 * Parse raw node representation into a Node object.
 	 * @async
 	 * @param {object[]} cell raw node representation.
-	 * @returns {Promise<import('./node')>} Node object.
+	 * @returns {Promise<Node>} Node object.
 	 */
 	async parseNode(cell) {
 		// Node ID (integer),
@@ -201,7 +206,7 @@ class ResultSet {
 	 * Parse a raw edge representation into an Edge object.
 	 * @async
 	 * @param {object[]} cell raw edge representation
-	 * @returns {Promise<import('./edge')>} Edge object.
+	 * @returns {Promise<Edge>} Edge object.
 	 */
 	async parseEdge(cell) {
 		// Edge ID (integer),
@@ -249,7 +254,7 @@ class ResultSet {
 	 * Parse a raw path representation into Path object.
 	 * @async
 	 * @param {object[]} rawPath raw path representation
-	 * @returns {Promise<import('./path')>} Path object.
+	 * @returns {Promise<Path>} Path object.
 	 */
 	async parsePath(rawPath) {
 		let nodes = await this.parseScalar(rawPath[0]);

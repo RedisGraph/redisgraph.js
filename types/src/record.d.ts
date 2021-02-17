@@ -5,7 +5,7 @@ export = Record;
 declare class Record {
     /**
      * Builds a Record object
-     * @constructor
+     *
      * @param {string[]} header
      * @param {object[]} values
      */

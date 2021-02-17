@@ -11,5 +11,8 @@
 	"dependencies": {
 		"redisgraph.js": "../"
 	},
-	"main": "redisGraphExample.js"
+	"main": "redisGraphExample.js",
+	"devDependencies": {
+		"@types/node": "^14.14.28"
+	}
 }
