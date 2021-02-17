@@ -48,10 +48,9 @@ jobs:
       - run: npm run types
 
       # run tests!
-      - run: sudo npm install -g istanbul codecov
-      - run: istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec --exit 
+      - run: npm run istanbul
       - early_return_for_forked_pull_requests
-      - run: codecov -t ${CODECOV_TOKEN}
+      - run: npm run codecov
 
   docs:
     docker:
@@ -75,7 +74,7 @@ jobs:
           command: npm run docs
       - run:
           name: Deploy docs to gh-pages branch
-          command: gh-pages --dist ./docs --branch master --dest ./docs --message "[skip ci] Updates"
+          command: npm run gh-pages
 
 workflows:
   version: 2

@@ -13,7 +13,9 @@
 		"redis": "^3.0.2"
 	},
 	"devDependencies": {
+		"codecov": "^3.8.1",
 		"gh-pages": "2.0.1",
+		"istanbul": "^0.4.5",
 		"jsdoc": "^3.6.6",
 		"jsdoc-ts-utils": "^1.1.2",
 		"mocha": "^7.0.1",
@@ -22,7 +24,10 @@
 	"scripts": {
 		"test": "mocha --exit",
 		"types": "tsc",
-		"docs": "jsdoc -c jsdoc.conf.json ./src -r -d ./docs -R ./README.md"
+		"docs": "jsdoc -c jsdoc.conf.json ./src -r -d ./docs -R ./README.md",
+		"gh-pages": "gh-pages --dist ./docs --branch master --dest ./docs --message \"[skip ci] Updates\"",
+		"istanbul": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec --exit",
+		"codecov": "codecov -t ${CODECOV_TOKEN}"
 	},
 	"main": "index.js",
 	"types": "./types"
