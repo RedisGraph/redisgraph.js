@@ -38,6 +38,7 @@ const ResultSetValueTypes = {
 	VALUE_NODE: 8,
 	VALUE_PATH: 9,
 	VALUE_MAP: 10,
+	VALUE_POINT: 11,
 };
 
 /**
@@ -279,6 +280,20 @@ class ResultSet {
 	}
 
 	/**
+	 * Parse a raw Point representation into a lat-lon Map object.
+	 * @async
+	 * @param {object[]} rawPoint 2-valued lat-lon array representation
+	 * @returns {Promise<object>} Map object with latitude and longitude keys.
+	 */
+	async parsePoint(rawPoint) {
+		let m = {};
+		m["latitude"] = Number(rawPoint[0])
+		m["longitude"] = Number(rawPoint[1])
+
+		return m;
+	}
+
+	/**
 	 * Parse a raw value into its actual value.
 	 * @async
 	 * @param {object[]} cell raw value representation
@@ -324,6 +339,10 @@ class ResultSet {
 
 			case ResultSetValueTypes.VALUE_MAP:
 				scalar = await this.parseMap(value);
+				break;
+
+			case ResultSetValueTypes.VALUE_POINT:
+				scalar = await this.parsePoint(value);
 				break;
 
 			case ResultSetValueTypes.VALUE_UNKNOWN:

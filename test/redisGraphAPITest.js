@@ -305,6 +305,18 @@ describe("RedisGraphAPI Test", () => {
 		assert.ok(!resultSet.hasNext());
 	});
 
+	it("test point", async () => {
+		// return point value
+		let resultSet = await api.query("RETURN point({latitude: 32, longitude: 34})");
+		assert.equal(resultSet.size(), 1);
+		assert.ok(resultSet.hasNext());
+
+		let record = resultSet.next();
+		let expected = {latitude: 32, longitude: 34}
+		assert.deepStrictEqual(expected, record.get(0));
+		assert.ok(!resultSet.hasNext());
+	});
+
 	it("test multi thread", async () => {
 		await api.query("CREATE (:person {name:'roi', age:34})");
 		var promises = [];
