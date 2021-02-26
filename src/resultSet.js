@@ -282,7 +282,7 @@ class ResultSet {
 	/**
 	 * Parse a raw Point representation into a lat-lon Map object.
 	 * @param {object[]} rawPoint 2-valued lat-lon array representation
-	 * @returns {Promise<object>} Map object with latitude and longitude keys.
+	 * @returns {{ latitude: number, longitude: number }} Map object with latitude and longitude keys.
 	 */
 	parsePoint(rawPoint) {
 		let m = {};
