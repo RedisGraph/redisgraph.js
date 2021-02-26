@@ -281,11 +281,10 @@ class ResultSet {
 
 	/**
 	 * Parse a raw Point representation into a lat-lon Map object.
-	 * @async
 	 * @param {object[]} rawPoint 2-valued lat-lon array representation
 	 * @returns {Promise<object>} Map object with latitude and longitude keys.
 	 */
-	async parsePoint(rawPoint) {
+	parsePoint(rawPoint) {
 		let m = {};
 		m["latitude"] = Number(rawPoint[0])
 		m["longitude"] = Number(rawPoint[1])
@@ -308,13 +307,16 @@ class ResultSet {
 			case ResultSetValueTypes.VALUE_NULL:
 				scalar = null;
 				break;
+
 			case ResultSetValueTypes.VALUE_STRING:
 				scalar = String(value);
 				break;
+
 			case ResultSetValueTypes.VALUE_INTEGER:
 			case ResultSetValueTypes.VALUE_DOUBLE:
 				scalar = Number(value);
 				break;
+
 			case ResultSetValueTypes.VALUE_BOOLEAN:
 				if (value === "true") {
 					scalar = true;
@@ -324,15 +326,19 @@ class ResultSet {
 					console.log("Unknown boolean type\n");
 				}
 				break;
+
 			case ResultSetValueTypes.VALUE_ARRAY:
 				scalar = this.parseArray(value);
 				break;
+
 			case ResultSetValueTypes.VALUE_NODE:
 				scalar = await this.parseNode(value);
 				break;
+
 			case ResultSetValueTypes.VALUE_EDGE:
 				scalar = await this.parseEdge(value);
 				break;
+
 			case ResultSetValueTypes.VALUE_PATH:
 				scalar = await this.parsePath(value);
 				break;
@@ -342,7 +348,7 @@ class ResultSet {
 				break;
 
 			case ResultSetValueTypes.VALUE_POINT:
-				scalar = await this.parsePoint(value);
+				scalar = this.parsePoint(value);
 				break;
 
 			case ResultSetValueTypes.VALUE_UNKNOWN:
