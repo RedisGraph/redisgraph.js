@@ -6,6 +6,10 @@ const redis = require("redis"),
 	ResultSet = require("./resultSet");
 
 /**
+ * @typedef {import('ioredis') | redis.RedisClient} RedisClient
+ */
+
+/**
  * RedisGraph client
  */
 class Graph {
@@ -14,7 +18,7 @@ class Graph {
       * See: node_redis for more options on createClient 
       * 
       * @param {string} graphId the graph id
-      * @param {string | redis.RedisClient} [host] Redis host or node_redis client
+      * @param {string | RedisClient} [host] Redis host or node_redis client or ioredis client
       * @param {string | number} [port] Redis port (integer)
       * @param {Object} [options] node_redis options
       */
@@ -29,7 +33,7 @@ class Graph {
 		this._relationshipPromise = undefined;  // used as a synchronization mechanizom for relationship types retrival
 
 		this._client =
-			host instanceof redis.RedisClient
+			host && typeof host.send_command === 'function' // check if it's an instance of `redis` or `ioredis`
 				? host
 				: redis.createClient(port, host, options);
 		this._sendCommand = util.promisify(this._client.send_command).bind(this._client);
