@@ -109,10 +109,36 @@ class Graph {
 	 * @returns {Promise<ResultSet>} a promise contains a result set
 	 */
 	async query(query, params) {
+		return this._query("graph.QUERY", query, params);
+	}
+
+	/**
+	 * Execute a Cypher readonly query
+	 * @async
+	 * @param {string} query Cypher query
+	 * @param {Map} [params] Parameters map
+	 *
+	 * @returns {Promise<ResultSet>} a promise contains a result set
+	 */
+	async readonlyQuery(query, params) {
+		return this._query("graph.RO_QUERY", query, params);
+	}
+
+	/**
+	 * Execute a Cypher query
+	 * @private
+	 * @async
+	 * @param {'graph.QUERY'|'graph.RO_QUERY'} command
+	 * @param {string} query Cypher query
+	 * @param {Map} [params] Parameters map
+	 *
+	 * @returns {Promise<ResultSet>} a promise contains a result set
+	 */
+	async _query(command, query, params) {
 		if (params) {
 			query = this.buildParamsHeader(params) + query;
 		}
-		var res = await this._sendCommand("graph.QUERY", [
+		var res = await this._sendCommand(command, [
 			this._graphId,
 			query,
 			"--compact"
