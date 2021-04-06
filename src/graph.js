@@ -108,7 +108,7 @@ class Graph {
 	 * @param {Map} [params] Parameters map
 	 * @returns {Promise<ResultSet>} a promise contains a result set
 	 */
-	async query(query, params) {
+	query(query, params) {
 		return this._query("graph.QUERY", query, params);
 	}
 
@@ -120,7 +120,7 @@ class Graph {
 	 *
 	 * @returns {Promise<ResultSet>} a promise contains a result set
 	 */
-	async readonlyQuery(query, params) {
+	readonlyQuery(query, params) {
 		return this._query("graph.RO_QUERY", query, params);
 	}
 
