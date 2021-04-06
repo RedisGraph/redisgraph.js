@@ -373,6 +373,19 @@ describe("RedisGraphAPI Test", () => {
 		assert.equal(2, record.size());
 	});
 
+	it("test readonly query exception", async () => {
+		assert.rejects(
+			() => api.readonlyQuery(
+				"CREATE (r:human {name:'roi', age:34}), (a:human {name:'amit', age:32}), (r)-[:knows]->(a)"
+			),
+			err => {
+				assert.strictEqual(err.name, 'ReplyError');
+				assert.strictEqual(err.message, 'graph.RO_QUERY is to be executed only on read-only queries');
+				return true;
+			}
+		);
+	});
+
 	it("testCompileTimeException", async () => {
 		await api.query("CREATE ()");
 		try {
