@@ -335,6 +335,57 @@ describe("RedisGraphAPI Test", () => {
 		}
 	});
 
+	it("test readonly query", async () => {
+		// Create both source and destination nodes
+		await api.query(
+			"CREATE (r:human {name:'roi', age:34}), (a:human {name:'amit', age:32}), (r)-[:knows]->(a)"
+		);
+		// Query
+		let resultSet = await api.readonlyQuery(
+			"MATCH (r:human)-[:knows]->(a:human) RETURN r.age, r.name"
+		);
+		assert.equal(resultSet.size(), 1);
+		assert.ok(resultSet.hasNext());
+		assert.equal(0, resultSet.getStatistics().nodesCreated());
+		assert.equal(0, resultSet.getStatistics().nodesDeleted());
+		assert.equal(0, resultSet.getStatistics().labelsAdded());
+		assert.equal(0, resultSet.getStatistics().propertiesSet());
+		assert.equal(0, resultSet.getStatistics().relationshipsCreated());
+		assert.equal(0, resultSet.getStatistics().relationshipsDeleted());
+		assert.ok(
+			resultSet
+				.getStatistics()
+				.getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME)
+		);
+
+		assert.deepStrictEqual(["r.age", "r.name"], resultSet.getHeader());
+
+		let record = resultSet.next();
+		assert.equal(34, record.get(0));
+		assert.equal("34", record.getString(0));
+		assert.equal("roi", record.getString(1));
+		assert.equal("roi", record.getString("r.name"));
+
+		assert.deepStrictEqual(["r.age", "r.name"], record.keys());
+		assert.deepStrictEqual([34, "roi"], record.values());
+		assert.equal(false, record.containsKey("aa"));
+		assert.equal(true, record.containsKey("r.name"));
+		assert.equal(2, record.size());
+	});
+
+	it("test readonly query exception", async () => {
+		assert.rejects(
+			() => api.readonlyQuery(
+				"CREATE (r:human {name:'roi', age:34}), (a:human {name:'amit', age:32}), (r)-[:knows]->(a)"
+			),
+			err => {
+				assert.strictEqual(err.name, 'ReplyError');
+				assert.strictEqual(err.message, 'graph.RO_QUERY is to be executed only on read-only queries');
+				return true;
+			}
+		);
+	});
+
 	it("testCompileTimeException", async () => {
 		await api.query("CREATE ()");
 		try {
