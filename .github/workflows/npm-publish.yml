@@ -1,0 +1,28 @@
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: get version from tag
+        id: get_version
+        run: |
+            realversion="${GITHUB_REF/refs\/tags\//}"
+            realversion="${realversion//v/}"
+            echo "::set-output name=VERSION::$realversion"
+
+      - name: publish to npm
+        run: npm publish --tag ${{steps.get_version.outputs.VERSION}}
+        env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
