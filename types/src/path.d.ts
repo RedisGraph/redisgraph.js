@@ -64,5 +64,5 @@ declare class Path {
 declare namespace Path {
     export { Node, Edge };
 }
-type Node = import("./node");
-type Edge = import("./edge");
+type Node = import('./node');
+type Edge = import('./edge');

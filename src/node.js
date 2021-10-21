@@ -7,12 +7,12 @@ class Node {
     /**
      * Builds a node object.
 	 *
-     * @param {string} label - node label.
+     * @param {string|string[]} label - node label(s).
      * @param {Map} properties - properties map.
      */
 	constructor(label, properties) {
 		this.id = undefined;            //node's id - set by RedisGraph
-		this.label = label;             //node's label
+		this.label = label;             //node's label(s)
 		this.properties = properties;   //node's list of properties (list of Key:Value)
 	}
 
