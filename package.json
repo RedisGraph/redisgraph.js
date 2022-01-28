@@ -10,7 +10,7 @@
 	},
 	"dependencies": {
 		"deep-equal": "^2.0.1",
-		"redis": "^3.0.2"
+		"redis": "^4.0.1"
 	},
 	"devDependencies": {
 		"codecov": "^3.8.1",
