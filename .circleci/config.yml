@@ -45,7 +45,7 @@ jobs:
 
 
       # generate types
-      - run: npm install ioredis # ioredis is used in jsdocs (and the types built from the jsdoc)
+      - run: npm install ioredis@4.2 # ioredis is used in jsdocs (and the types built from the jsdoc)
       - run: npm run types
 
       # run tests!
