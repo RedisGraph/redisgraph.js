@@ -6,12 +6,18 @@
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/RedisGraph/redisgraph.js.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RedisGraph/redisgraph.js/context:javascript)
 [![Known Vulnerabilities](https://snyk.io/test/github/RedisGraph/redisgraph.js/badge.svg?targetFile=package.json)](https://snyk.io/test/github/RedisGraph/redisgraph.js?targetFile=package.json)
 
+
+
 # redisgraph.js
 [![Forum](https://img.shields.io/badge/Forum-RedisGraph-blue)](https://forum.redislabs.com/c/modules/redisgraph)
 [![Discord](https://img.shields.io/discord/697882427875393627?style=flat-square)](https://discord.gg/gWBRT6P)
 
 [RedisGraph](https://github.com/RedisLabsModules/redis-graph/) JavaScript Client - [API Docs](https://redisgraph.github.io/redisgraph.js/)
 
+-------
+## Deprecation notice
+This library is deprecated. [node-redis](https://www.github.com/redis/node-redis). It's features have been merged into [node-redis](https://www.github.com/redis/node-redis). Please either install it from npm or the repository.
+-----
 
 ## Installation
 
