@@ -6,12 +6,12 @@ declare class Node {
     /**
      * Builds a node object.
      *
-     * @param {string} label - node label.
+     * @param {string|string[]} label - node label(s).
      * @param {Map} properties - properties map.
      */
-    constructor(label: string, properties: Map<any, any>);
+    constructor(label: string | string[], properties: Map<any, any>);
     id: number;
-    label: string;
+    label: string | string[];
     properties: Map<any, any>;
     /**
      * Sets the node id.

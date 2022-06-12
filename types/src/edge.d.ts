@@ -32,4 +32,4 @@ declare class Edge {
 declare namespace Edge {
     export { Node };
 }
-type Node = import("./node");
+type Node = import('./node');
