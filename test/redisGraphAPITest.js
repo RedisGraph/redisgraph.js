@@ -395,7 +395,7 @@ describe("RedisGraphAPI Test", () => {
 			assert(err instanceof redis.ReplyError);
 			assert.equal(
 				err.message,
-				"Type mismatch: expected String but was Integer"
+				"Type mismatch: expected String or Null but was Integer"
 			);
 		}
 	});
@@ -409,7 +409,7 @@ describe("RedisGraphAPI Test", () => {
 			assert(err instanceof redis.ReplyError);
 			assert.equal(
 				err.message,
-				"Type mismatch: expected String but was Integer"
+				"Type mismatch: expected String or Null but was Integer"
 			);
 		}
 	});
