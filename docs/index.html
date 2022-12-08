@@ -19,11 +19,11 @@
 
     <h1 class="page-title">Home</h1>
 
-    
 
 
 
-    
+
+
 
 
     <h3> </h3>
@@ -37,7 +37,7 @@
 
 
 
-    
+
 
 
 
@@ -48,7 +48,6 @@
 <a href="https://github.com/RedisGraph/redisgraph.js/releases/latest"><img src="https://img.shields.io/github/release/RedisGraph/redisgraph.js.svg" alt="GitHub issues"></a>
 <a href="https://badge.fury.io/js/redisgraph.js"><img src="https://badge.fury.io/js/redisgraph.js.svg" alt="npm version"></a>
 <a href="https://codecov.io/gh/RedisGraph/redisgraph.js"><img src="https://codecov.io/gh/RedisGraph/redisgraph.js/branch/master/graph/badge.svg" alt="Codecov"></a>
-<a href="https://lgtm.com/projects/g/RedisGraph/redisgraph.js/context:javascript"><img src="https://img.shields.io/lgtm/grade/javascript/g/RedisGraph/redisgraph.js.svg?logo=lgtm&amp;logoWidth=18" alt="Language grade: JavaScript"></a>
 <a href="https://snyk.io/test/github/RedisGraph/redisgraph.js?targetFile=package.json"><img src="https://snyk.io/test/github/RedisGraph/redisgraph.js/badge.svg?targetFile=package.json" alt="Known Vulnerabilities"></a></p>
 <h1>redisgraph.js</h1>
 <p><a href="https://forum.redislabs.com/c/modules/redisgraph"><img src="https://img.shields.io/badge/Forum-RedisGraph-blue" alt="Forum"></a>
@@ -75,7 +74,7 @@ let graph = new RedisGraph(&quot;social&quot;);
         await graph.query(&quot;CREATE (:person{name:'roi',age:32})&quot;);
         await graph.query(&quot;CREATE (:person{name:'amit',age:30})&quot;);
         await graph.query(&quot;MATCH (a:person), (b:person) WHERE (a.name = 'roi' AND b.name='amit') CREATE (a)-[:knows]->(b)&quot;);
-        
+
         // Match query.
         let res = await graph.query(&quot;MATCH (a:person)-[:knows]->(:person) RETURN a.name&quot;);
         while (res.hasNext()) {
@@ -83,7 +82,7 @@ let graph = new RedisGraph(&quot;social&quot;);
             console.log(record.get(&quot;a.name&quot;));
         }
         console.log(res.getStatistics().queryExecutionTime());
-    
+
         // Match with parameters.
         let param = {'age': 30};
         res = await graph.query(&quot;MATCH (a {age: $age}) return a.name&quot;, param);
@@ -91,7 +90,7 @@ let graph = new RedisGraph(&quot;social&quot;);
             let record = res.next();
             console.log(record.get(&quot;a.name&quot;));
         }
-    
+
         // Named paths matching.
         res = await graph.query(&quot;MATCH p = (a:person)-[:knows]->(:person) RETURN p&quot;);
         while (res.hasNext()) {
@@ -101,7 +100,7 @@ let graph = new RedisGraph(&quot;social&quot;);
         }
         graph.deleteGraph();
         graph.close();
-    
+
     })();
 
 </code></pre>
