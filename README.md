@@ -1,5 +1,4 @@
 [![license](https://img.shields.io/github/license/RedisGraph/redisgraph.js.svg)](https://github.com/RedisGraph/redisgraph.js)
-[![CircleCI](https://circleci.com/gh/RedisGraph/redisgraph.js/tree/master.svg?style=svg)](https://circleci.com/gh/RedisGraph/redisgraph.js/tree/master)
 [![GitHub issues](https://img.shields.io/github/release/RedisGraph/redisgraph.js.svg)](https://github.com/RedisGraph/redisgraph.js/releases/latest)
 [![npm version](https://badge.fury.io/js/redisgraph.js.svg)](https://badge.fury.io/js/redisgraph.js)
 [![Codecov](https://codecov.io/gh/RedisGraph/redisgraph.js/branch/master/graph/badge.svg)](https://codecov.io/gh/RedisGraph/redisgraph.js)
@@ -47,7 +46,7 @@ let graph = new RedisGraph("social");
         await graph.query("CREATE (:person{name:'roi',age:32})");
         await graph.query("CREATE (:person{name:'amit',age:30})");
         await graph.query("MATCH (a:person), (b:person) WHERE (a.name = 'roi' AND b.name='amit') CREATE (a)-[:knows]->(b)");
-        
+
         // Match query.
         let res = await graph.query("MATCH (a:person)-[:knows]->(:person) RETURN a.name");
         while (res.hasNext()) {
@@ -55,7 +54,7 @@ let graph = new RedisGraph("social");
             console.log(record.get("a.name"));
         }
         console.log(res.getStatistics().queryExecutionTime());
-    
+
         // Match with parameters.
         let param = {'age': 30};
         res = await graph.query("MATCH (a {age: $age}) return a.name", param);
@@ -63,7 +62,7 @@ let graph = new RedisGraph("social");
             let record = res.next();
             console.log(record.get("a.name"));
         }
-    
+
         // Named paths matching.
         res = await graph.query("MATCH p = (a:person)-[:knows]->(:person) RETURN p");
         while (res.hasNext()) {
@@ -73,7 +72,7 @@ let graph = new RedisGraph("social");
         }
         graph.deleteGraph();
         graph.close();
-    
+
     })();
 
 ```
