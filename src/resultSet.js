@@ -174,6 +174,28 @@ class ResultSet {
 	}
 
 	/**
+	 * Parse label index into a label string.
+	 * @async
+	 * @param {number} label_idx index of label.
+	 * @returns {Promise<string>} string representation of label.
+	 */
+	async parseNodeLabel(label_idx) {
+		let label = this._graph.getLabel(label_idx);
+		// will try to get the right label for at most 10 times
+		var tries = 0;
+		while (label == undefined && tries < 10) {
+			label = await this._graph.fetchAndGetLabel(label_idx);
+			tries++;
+		}
+		if (label == undefined) {
+			console.warn(
+				"unable to retrieve label value for label index " + label_idx
+			);
+		}
+		return label;
+	}
+
+	/**
 	 * Parse raw node representation into a Node object.
 	 * @async
 	 * @param {object[]} cell raw node representation.
@@ -181,24 +203,18 @@ class ResultSet {
 	 */
 	async parseNode(cell) {
 		// Node ID (integer),
-		// [label string offset (integer)],
+		// [label string offset (integer) X N],
 		// [[name, value, value type] X N]
 
 		let node_id = cell[0];
-		let label = this._graph.getLabel(cell[1][0]);
-		// will try to get the right label for at most 10 times
-		var tries = 0;
-		while (label == undefined && tries < 10) {
-			label = await this._graph.fetchAndGetLabel(cell[1][0]);
-			tries++;
-		}
-		if (label == undefined) {
-			console.warn(
-				"unable to retrive label value for label index " + cell[1][0]
-			);
+		var labels = undefined;
+		if (cell[1].length == 1) {
+			labels = await this.parseNodeLabel(cell[1][0]);
+		} else {
+			labels = await Promise.all(cell[1].map(x => this.parseNodeLabel(x)));
 		}
 		let properties = await this.parseEntityProperties(cell[2]);
-		let node = new Node(label, properties);
+		let node = new Node(labels, properties);
 		node.setId(node_id);
 		return node;
 	}

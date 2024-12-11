@@ -95,6 +95,54 @@ describe("RedisGraphAPI Test", () => {
 		);
 	});
 
+	it("test Create Multi-Labeled Node", async () => {
+		// Create a node with 2 labels
+		let result = await api.query("CREATE (:human:male {name:'danny', age:12})");
+		assert.equal(result.size(), 0);
+		assert.ok(!result.hasNext());
+		assert.equal(
+			"1",
+			result.getStatistics().getStringValue(Label.NODES_CREATED)
+		);
+		assert.equal(
+			"2",
+			result.getStatistics().getStringValue(Label.PROPERTIES_SET)
+		);
+		assert.ok(
+			result
+				.getStatistics()
+				.getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME)
+		);
+
+		// Retrieve the node
+		let resultSet = await api.query(
+			"MATCH (a:human:male) RETURN a"
+		);
+		assert.equal(resultSet.size(), 1);
+		assert.ok(resultSet.hasNext());
+		assert.equal(0, resultSet.getStatistics().nodesCreated());
+		assert.equal(0, resultSet.getStatistics().nodesDeleted());
+		assert.equal(0, resultSet.getStatistics().labelsAdded());
+		assert.equal(0, resultSet.getStatistics().propertiesSet());
+		assert.equal(0, resultSet.getStatistics().relationshipsCreated());
+		assert.equal(0, resultSet.getStatistics().relationshipsDeleted());
+		assert.ok(
+			resultSet
+				.getStatistics()
+				.getStringValue(Label.QUERY_INTERNAL_EXECUTION_TIME)
+		);
+
+		assert.deepStrictEqual(["a"], resultSet.getHeader());
+
+		let record = resultSet.next();
+		let n = record.get(0);
+		assert.equal(12, n.properties["age"]);
+		assert.equal("danny", n.properties["name"]);
+		assert.deepEqual(["human", "male"], n.label);
+		assert.equal(0, n.id);
+
+	});
+
 	it("test Connect Nodes", async () => {
 		// Create both source and destination nodes
 		await api.query("CREATE (:person {name:'roi', age:34})");

@@ -1,5 +1,8 @@
 export = Graph;
 /**
+ * @typedef {import('ioredis') | redis.RedisClient} RedisClient
+ */
+/**
  * RedisGraph client
  */
 declare class Graph {
@@ -8,11 +11,11 @@ declare class Graph {
      * See: node_redis for more options on createClient
      *
      * @param {string} graphId the graph id
-     * @param {string | redis.RedisClient} [host] Redis host or node_redis client
+     * @param {string | RedisClient} [host] Redis host or node_redis client or ioredis client
      * @param {string | number} [port] Redis port (integer)
      * @param {Object} [options] node_redis options
      */
-    constructor(graphId: string, host?: string | any, port?: string | number, options?: any);
+    constructor(graphId: string, host?: string | RedisClient, port?: string | number, options?: any);
     _graphId: string;
     _labels: any[];
     _relationshipTypes: any[];
@@ -53,6 +56,26 @@ declare class Graph {
      * @returns {Promise<ResultSet>} a promise contains a result set
      */
     query(query: string, params?: Map<any, any>): Promise<ResultSet>;
+    /**
+     * Execute a Cypher readonly query
+     * @async
+     * @param {string} query Cypher query
+     * @param {Map} [params] Parameters map
+     *
+     * @returns {Promise<ResultSet>} a promise contains a result set
+     */
+    readonlyQuery(query: string, params?: Map<any, any>): Promise<ResultSet>;
+    /**
+     * Execute a Cypher query
+     * @private
+     * @async
+     * @param {'graph.QUERY'|'graph.RO_QUERY'} command
+     * @param {string} query Cypher query
+     * @param {Map} [params] Parameters map
+     *
+     * @returns {Promise<ResultSet>} a promise contains a result set
+     */
+    private _query;
     /**
      * Deletes the entire graph
      * @async
@@ -122,4 +145,8 @@ declare class Graph {
      */
     fetchAndGetProperty(id: number): Promise<string>;
 }
+declare namespace Graph {
+    export { RedisClient };
+}
 import ResultSet = require("./resultSet");
+type RedisClient = any | any;

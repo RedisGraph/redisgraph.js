@@ -51,6 +51,13 @@ declare class ResultSet {
      */
     parseEntityProperties(props: object[]): Promise<object>;
     /**
+     * Parse label index into a label string
+     * @async
+     * @param {number} label_idx index of label
+     * @returns {Promise<string>} string representation of label.
+     */
+    parseNodeLabel(label_idx: number): Promise<string>;
+    /**
      * Parse raw node representation into a Node object.
      * @async
      * @param {object[]} cell raw node representation.
@@ -85,6 +92,15 @@ declare class ResultSet {
      * @returns {Promise<object>} Map object.
      */
     parseMap(rawMap: object[]): Promise<object>;
+    /**
+     * Parse a raw Point representation into a lat-lon Map object.
+     * @param {object[]} rawPoint 2-valued lat-lon array representation
+     * @returns {{ latitude: number, longitude: number }} Map object with latitude and longitude keys.
+     */
+    parsePoint(rawPoint: object[]): {
+        latitude: number;
+        longitude: number;
+    };
     /**
      * Parse a raw value into its actual value.
      * @async
@@ -121,4 +137,4 @@ import Node = require("./node");
 import Edge = require("./edge");
 import Path = require("./path");
 import Record = require("./record");
-type Graph = import("./graph");
+type Graph = import('./graph');
